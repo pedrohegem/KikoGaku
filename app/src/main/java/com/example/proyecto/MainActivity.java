@@ -17,7 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.proyecto.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
-
+//Caracola
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
 
