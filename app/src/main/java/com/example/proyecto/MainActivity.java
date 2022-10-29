@@ -1,6 +1,5 @@
 package com.example.proyecto;
 
-import android.arch.persistence.room.Room;
 import android.os.Bundle;
 
 import com.example.proyecto.Room.RepoMontanaDAO;
@@ -20,6 +19,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
 
 import com.example.proyecto.databinding.ActivityMainBinding;
 import com.google.gson.Gson;
@@ -70,14 +70,8 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-
-        JsonReader reader = new JsonReader(new InputStreamReader(getResources().openRawResource(R.raw.codmontanas)));
-        List<RepoMontana> montanaList = Arrays.asList(new Gson().fromJson(reader, RepoMontana[].class));
-
-        for(RepoMontana a: montanaList){
-            TextView textView = findViewById(R.id.textView2);
-            textView.append(a.getCodigo() + " - " + a.getNombre());
-        }
+        // Cargamos los JSON en la base de datos
+        cargarJSON_en_DB();
     }
 
     @Override
@@ -92,5 +86,18 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    public void cargarJSON_en_DB(){
+        // -- CÓDIGO ENCARGADO DE CARGAR EL JSON CON LOS CÓDIGOS DE LAS MONTAÑAS
+        JsonReader reader = new JsonReader(new InputStreamReader(getResources().openRawResource(R.raw.codmontanas)));
+        List<RepoMontana> montanaList = Arrays.asList(new Gson().fromJson(reader, RepoMontana[].class));
+
+
+
+
+        // for(RepoMontana a: montanaList){
+        //    binding.textView2.append(a.getCodigo() + " - " + a.getNombre());
+        // }
     }
 }

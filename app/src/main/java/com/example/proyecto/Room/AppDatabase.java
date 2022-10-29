@@ -1,19 +1,19 @@
 package com.example.proyecto.Room;
 
 
-import android.arch.persistence.room.Database;
-import android.arch.persistence.room.Room;
-import android.arch.persistence.room.RoomDatabase;
+
 import android.content.Context;
 
+import androidx.room.Database;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
 
-@Database(entities = {UsuarioEntity.class, EventoEntity.class, RepoMontana.class}, version = 1)
+
+@Database(entities = {RepoMontana.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase appDataBase;
     private static Context contexto;
-    public abstract UsuarioDAO usuarioDAO();
-    public abstract EventoDAO eventoDAO();
-    public abstract EventoMontanaDAO eventoMontañaDAO();
+
     public abstract RepoMontanaDAO repoMontanaDAO();
 
     protected AppDatabase(){
