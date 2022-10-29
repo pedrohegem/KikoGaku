@@ -1,5 +1,5 @@
 
-package com.example.proyecto.Room;
+package com.example.proyecto.Json;
 
 
 import androidx.annotation.NonNull;
@@ -12,7 +12,7 @@ import com.google.gson.annotations.SerializedName;
 
 
 @Entity
-public class RepoMontana {
+public class Montana {
 
     @SerializedName("Codigo")
     @Expose
@@ -26,7 +26,7 @@ public class RepoMontana {
     @ColumnInfo
     private String nombre;
 
-    public RepoMontana(@NonNull String codigo, String nombre) {
+    public Montana(@NonNull String codigo, String nombre) {
         this.codigo = codigo;
         this.nombre = nombre;
     }

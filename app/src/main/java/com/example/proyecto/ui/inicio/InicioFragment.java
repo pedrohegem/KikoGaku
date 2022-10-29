@@ -11,9 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.proyecto.R;
-import com.example.proyecto.Room.RepoMontana;
+import com.example.proyecto.Json.Montana;
 import com.example.proyecto.databinding.FragmentInicioBinding;
-import com.example.proyecto.ui.inicio.InicioViewModel;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 
@@ -38,7 +37,7 @@ public class InicioFragment extends Fragment {
 
         // -- CÓDIGO ENCARGADO DE CARGAR EL JSON CON LOS CÓDIGOS DE LAS MONTAÑAS
         JsonReader reader = new JsonReader(new InputStreamReader(getResources().openRawResource(R.raw.codmontanas)));
-        List<RepoMontana> montanaList = Arrays.asList(new Gson().fromJson(reader, RepoMontana[].class));
+        List<Montana> montanaList = Arrays.asList(new Gson().fromJson(reader, Montana[].class));
 
         //for(RepoMontana a: montanaList){
         //    binding.textView2.append(a.getCodigo() + " - " + a.getNombre());

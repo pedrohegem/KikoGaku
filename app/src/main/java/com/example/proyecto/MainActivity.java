@@ -2,15 +2,13 @@ package com.example.proyecto;
 
 import android.os.Bundle;
 
-import com.example.proyecto.Room.RepoMontanaDAO;
+import com.example.proyecto.Json.Montana;
+import com.example.proyecto.Json.Municipio;
 import com.google.gson.stream.JsonReader;
 import android.view.View;
 import android.view.Menu;
-import android.widget.TextView;
 
 import com.example.proyecto.Room.AppDatabase;
-import com.example.proyecto.Room.RepoMontana;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.navigation.NavController;
@@ -90,9 +88,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void cargarJSON_en_DB(){
         // -- CÓDIGO ENCARGADO DE CARGAR EL JSON CON LOS CÓDIGOS DE LAS MONTAÑAS
-        JsonReader reader = new JsonReader(new InputStreamReader(getResources().openRawResource(R.raw.codmontanas)));
-        List<RepoMontana> montanaList = Arrays.asList(new Gson().fromJson(reader, RepoMontana[].class));
+        JsonReader readerMontanas = new JsonReader(new InputStreamReader(getResources().openRawResource(R.raw.codmontanas)));
+        List<Montana> montanaList = Arrays.asList(new Gson().fromJson(readerMontanas, Montana[].class));
 
+        JsonReader readerMunicipios = new JsonReader(new InputStreamReader(getResources().openRawResource(R.raw.codmunicipios)));
+        List<Municipio> municipioList = Arrays.asList(new Gson().fromJson(readerMunicipios, Municipio[].class));
 
 
 
