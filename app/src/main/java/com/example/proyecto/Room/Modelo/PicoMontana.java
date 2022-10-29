@@ -1,31 +1,30 @@
-package com.example.proyecto.Room;
+package com.example.proyecto.Room.Modelo;
 
-public class PicoMontaña {
-
-    private int nombreMontaña;
+public class PicoMontana {
+    private int nombreMontana;
     private int tempMax;
     private int tempMin;
     private int sensacionTerminaMax;
     private int getSensacionTerminaMin;
 
-    public PicoMontaña(){
+    public PicoMontana(){
 
     }
 
-    public PicoMontaña(int nombreMontaña, int tempMax, int tempMin, int sensacionTerminaMax, int getSensacionTerminaMin) {
-        this.nombreMontaña = nombreMontaña;
+    public PicoMontana(int nombreMontana, int tempMax, int tempMin, int sensacionTerminaMax, int getSensacionTerminaMin) {
+        this.nombreMontana = nombreMontana;
         this.tempMax = tempMax;
         this.tempMin = tempMin;
         this.sensacionTerminaMax = sensacionTerminaMax;
         this.getSensacionTerminaMin = getSensacionTerminaMin;
     }
 
-    public int getNombreMontaña() {
-        return nombreMontaña;
+    public int getNombreMontana() {
+        return nombreMontana;
     }
 
-    public void setNombreMontaña(int nombreMontaña) {
-        this.nombreMontaña = nombreMontaña;
+    public void setNombreMontana(int nombreMontana) {
+        this.nombreMontana = nombreMontana;
     }
 
     public int getTempMax() {

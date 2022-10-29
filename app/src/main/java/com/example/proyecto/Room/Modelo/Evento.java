@@ -1,65 +1,81 @@
-package com.example.proyecto.Room;
-
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
+package com.example.proyecto.Room.Modelo;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
+import com.example.proyecto.Room.javadb.DateConverter;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 @Entity
-public class EventoEntity {
+public class Evento {
+
+    @Ignore
+    public final static SimpleDateFormat FORMAT = new SimpleDateFormat(
+            "yyyy-MM-dd", Locale.US);
 
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo
     @NonNull
     private int ide;
 
-    @ColumnInfo
     private String titulo;
 
-    @ColumnInfo
-    private String ubicacion;
+    private int ubicacionCode;
 
-    @ColumnInfo
     private String descripcion;
 
-    @ColumnInfo
+    @TypeConverters(DateConverter.class)
     private Date fecha;
 
+    // Campos que no forman parte de la tabla
+    @Ignore
     private int probPrecipitacion;
-
+    @Ignore
     private String estadoCielo;
-
-    private int codCielo;
-
+    @Ignore
     private int velocidadViento;
-
+    @Ignore
     private int tempMax;
+    @Ignore
     private int tempMin;
-
+    @Ignore
     private int sensacionTerminaMax;
+    @Ignore
     private int getSensacionTerminaMin;
 
-    public EventoEntity(){
-
-    }
-
-    public EventoEntity(int ide, String titulo, String ubicacion, String descripcion, Date fecha, int probPrecipitacion, String estadoCielo, int codCielo, int velocidadViento, int tempMax, int tempMin, int sensacionTerminaMax, int getSensacionTerminaMin) {
-        this.ide = ide;
+    public Evento(String titulo, int ubicacionCode, String descripcion, Date fecha) {
         this.titulo = titulo;
-        this.ubicacion = ubicacion;
+        this.ubicacionCode = ubicacionCode;
         this.descripcion = descripcion;
         this.fecha = fecha;
+    }
+    @Ignore
+    public Evento(int ide, String titulo, int ubicacionCode, String descripcion, String fecha, int probPrecipitacion, String estadoCielo, int velocidadViento, int tempMax, int tempMin, int sensacionTerminaMax, int getSensacionTerminaMin) {
+        this.ide = ide;
+        this.titulo = titulo;
+        this.ubicacionCode = ubicacionCode;
+        this.descripcion = descripcion;
         this.probPrecipitacion = probPrecipitacion;
         this.estadoCielo = estadoCielo;
-        this.codCielo = codCielo;
         this.velocidadViento = velocidadViento;
         this.tempMax = tempMax;
         this.tempMin = tempMin;
         this.sensacionTerminaMax = sensacionTerminaMax;
         this.getSensacionTerminaMin = getSensacionTerminaMin;
+
+        try {
+            this.fecha = Evento.FORMAT.parse(fecha);
+        } catch (ParseException e) {
+            this.fecha = new Date();
+        }
+
     }
 
     public int getIde() {
@@ -78,12 +94,12 @@ public class EventoEntity {
         this.titulo = titulo;
     }
 
-    public String getUbicacion() {
-        return ubicacion;
+    public int getUbicacionCode() {
+        return ubicacionCode;
     }
 
-    public void setUbicacion(String ubicacion) {
-        this.ubicacion = ubicacion;
+    public void setUbicacionCode(int ubicacionCode) {
+        this.ubicacionCode = ubicacionCode;
     }
 
     public String getDescripcion() {
@@ -116,14 +132,6 @@ public class EventoEntity {
 
     public void setEstadoCielo(String estadoCielo) {
         this.estadoCielo = estadoCielo;
-    }
-
-    public int getCodCielo() {
-        return codCielo;
-    }
-
-    public void setCodCielo(int codCielo) {
-        this.codCielo = codCielo;
     }
 
     public int getVelocidadViento() {
