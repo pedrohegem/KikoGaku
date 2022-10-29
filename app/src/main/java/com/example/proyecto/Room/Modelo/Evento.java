@@ -2,8 +2,8 @@ package com.example.proyecto.Room.Modelo;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
+import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverter;
 import androidx.room.TypeConverters;
 
 import com.example.proyecto.Room.javadb.DateConverter;
@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+@Entity
 public class Evento {
 
     public final static SimpleDateFormat FORMAT = new SimpleDateFormat(
@@ -27,7 +28,7 @@ public class Evento {
     private String titulo;
 
     @ColumnInfo
-    private String ubicacion;
+    private int ubicacionCode;
 
     @ColumnInfo
     private String descripcion;
@@ -36,10 +37,11 @@ public class Evento {
     @TypeConverters(DateConverter.class)
     private Date fecha;
 
+    // Campos que no forman parte de la tabla
+
     private int probPrecipitacion;
 
     private String estadoCielo;
-
 
     private int velocidadViento;
 
@@ -50,10 +52,10 @@ public class Evento {
     private int getSensacionTerminaMin;
 
 
-    public Evento(int ide, String titulo, String ubicacion, String descripcion, String fecha, int probPrecipitacion, String estadoCielo, int velocidadViento, int tempMax, int tempMin, int sensacionTerminaMax, int getSensacionTerminaMin) {
+    public Evento(int ide, String titulo, int ubicacion, String descripcion, String fecha, int probPrecipitacion, String estadoCielo, int velocidadViento, int tempMax, int tempMin, int sensacionTerminaMax, int getSensacionTerminaMin) {
         this.ide = ide;
         this.titulo = titulo;
-        this.ubicacion = ubicacion;
+        this.ubicacionCode = ubicacion;
         this.descripcion = descripcion;
         this.probPrecipitacion = probPrecipitacion;
         this.estadoCielo = estadoCielo;
@@ -87,12 +89,12 @@ public class Evento {
         this.titulo = titulo;
     }
 
-    public String getUbicacion() {
-        return ubicacion;
+    public int getUbicacionCode() {
+        return ubicacionCode;
     }
 
-    public void setUbicacion(String ubicacion) {
-        this.ubicacion = ubicacion;
+    public void setUbicacionCode(int ubicacionCode) {
+        this.ubicacionCode = ubicacionCode;
     }
 
     public String getDescripcion() {
