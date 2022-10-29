@@ -1,6 +1,10 @@
+
 package com.example.proyecto.Room;
 
+
 import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import androidx.annotation.NonNull;
@@ -8,7 +12,8 @@ import androidx.annotation.NonNull;
 import java.util.Date;
 import java.util.List;
 
-public class EventoMontañaEntity {
+@Entity
+public class EventoMontanaEntity {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo
@@ -24,20 +29,20 @@ public class EventoMontañaEntity {
     @ColumnInfo
     private String descripcion;
 
-    @ColumnInfo
-    private Date fecha;
-
+    //@ColumnInfo
+    //private Date fecha;
+    @Ignore
     private List<PicoMontaña> picosLista;
 
-    public EventoMontañaEntity() {
+    public EventoMontanaEntity() {
     }
 
-    public EventoMontañaEntity(int ide, String titulo, String ubicacion, String descripcion, Date fecha, List<PicoMontaña> picosLista) {
+    public EventoMontanaEntity(int ide, String titulo, String ubicacion, String descripcion, Date fecha, List<PicoMontaña> picosLista) {
         this.ide = ide;
         this.titulo = titulo;
         this.ubicacion = ubicacion;
         this.descripcion = descripcion;
-        this.fecha = fecha;
+        //this.fecha = fecha;
         this.picosLista = picosLista;
     }
 
@@ -72,15 +77,15 @@ public class EventoMontañaEntity {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-
-    public Date getFecha() {
+/*
+    public String getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(String fecha) {
         this.fecha = fecha;
     }
-
+*/
     public List<PicoMontaña> getPicosLista() {
         return picosLista;
     }
@@ -88,4 +93,6 @@ public class EventoMontañaEntity {
     public void setPicosLista(List<PicoMontaña> picosLista) {
         this.picosLista = picosLista;
     }
+
+
 }

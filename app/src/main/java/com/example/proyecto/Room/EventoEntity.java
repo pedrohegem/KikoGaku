@@ -25,8 +25,8 @@ public class EventoEntity {
     @ColumnInfo
     private String descripcion;
 
-    @ColumnInfo
-    private Date fecha;
+    //@ColumnInfo
+    //private String fecha;
 
     private int probPrecipitacion;
 
@@ -51,7 +51,7 @@ public class EventoEntity {
         this.titulo = titulo;
         this.ubicacion = ubicacion;
         this.descripcion = descripcion;
-        this.fecha = fecha;
+        //this.fecha = fecha;
         this.probPrecipitacion = probPrecipitacion;
         this.estadoCielo = estadoCielo;
         this.codCielo = codCielo;
@@ -93,7 +93,7 @@ public class EventoEntity {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-
+/*
     public Date getFecha() {
         return fecha;
     }
@@ -101,7 +101,7 @@ public class EventoEntity {
     public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
-
+*/
     public int getProbPrecipitacion() {
         return probPrecipitacion;
     }

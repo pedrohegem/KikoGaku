@@ -19,11 +19,7 @@ public class UsuarioEntity {
     private String password;
 
 
-    public UsuarioEntity(){
-        this.idu = 0;
-        this.username = "";
-        this.password = "";
-    }
+
 
     public UsuarioEntity(int idu, String username, String password) {
         this.idu = idu;
@@ -31,27 +27,27 @@ public class UsuarioEntity {
         this.password = password;
     }
 
-    private int getIdu() {
+    public  int getIdu() {
         return idu;
     }
 
-    private void setIdu(int idu) {
+    public void setIdu(int idu) {
         this.idu = idu;
     }
 
-    private String getUsername() {
+    public String getUsername() {
         return username;
     }
 
-    private void setUsername(String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
-    private String getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    private void setPassword(String password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 }

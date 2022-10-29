@@ -1,0 +1,38 @@
+[
+ {
+  "Codigo": "peu1",
+  "Nombre": "Picos de Europa"
+ },
+ {
+  "Codigo": "nav1",
+  "Nombre": "Pirineo Navarro"
+ },
+ {
+  "Codigo": "arn1",
+  "Nombre": "Pirineo Aragones"
+ },
+ {
+  "Codigo": "cat1",
+  "Nombre": "Pirineo Catalán"
+ },
+ {
+  "Codigo": "rio1",
+  "Nombre": "Ibérica Riojana"
+ },
+ {
+  "Codigo": "arn2",
+  "Nombre": "Ibérica Aragonesa"
+ },
+ {
+  "Codigo": "mad2",
+  "Nombre": "Sierras de Guadarrama y Somosierra"
+ },
+ {
+  "Codigo": "gre1",
+  "Nombre": "Sierra de Gredos"
+ },
+ {
+  "Codigo": "nev1",
+  "Nombre": "Sierra Nevada"
+ }
+]

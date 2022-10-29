@@ -1,10 +1,12 @@
 package com.example.proyecto.Room;
 
+import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
+import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.Query;
+
 import java.util.List;
-import androidx.room.Dao;
-import androidx.room.Insert;
-import androidx.room.Query;
-import androidx.room.Delete;
+
 
 import java.util.List;
 
@@ -17,12 +19,11 @@ public interface EventoDAO {
     public void insertar(EventoEntity e);
 
     //todo cambiar codigo por el codigo del evento
-    @Query("SELECT * FROM eventoEntity WHERE codigo = (:codigo)")
-    public List<EventoEntity> obtenerEvento(String codigo);
+    @Query("SELECT * FROM eventoEntity WHERE ide = (:codigo)")
+    public List<EventoEntity> obtenerEvento(int codigo);
 
 
-    @Query("SELECT * FROM eventoEntity WHERE codigoMunicipio = (:codigoMunicipio)")
-    public List<EventoEntity> obtenerPorMunicipio(String codigoMunicipio);
+
 
     @Delete
     public void borrar(EventoEntity e);
