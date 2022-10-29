@@ -41,4 +41,9 @@ public class Municipio {
         this.provincia = provincia;
     }
 
+    public Municipio(String codigo, String municipio, String provincia) {
+        this.codigo = codigo;
+        this.municipio = municipio;
+        this.provincia = provincia;
+    }
 }

@@ -14,13 +14,26 @@ public class JsonSingleton {
         montanaMap = new TreeMap<String, Montana>();
     }
 
-    public static JsonSingleton getInstance(String value) {
+    public static JsonSingleton getInstance() {
         if (instance == null) {
             instance = new JsonSingleton();
         }
         return instance;
     }
-    //TODO Mejorar Listas y implemetar metodos
 
+    public TreeMap<String, Municipio> getMunicipioMap() {
+        return municipioMap;
+    }
 
+    public void setMunicipioMap(TreeMap<String, Municipio> municipioMap) {
+        this.municipioMap = municipioMap;
+    }
+
+    public TreeMap<String, Montana> getMontanaMap() {
+        return montanaMap;
+    }
+
+    public void setMontanaMap(TreeMap<String, Montana> montanaMap) {
+        this.montanaMap = montanaMap;
+    }
 }

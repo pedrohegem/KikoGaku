@@ -2,6 +2,7 @@ package com.example.proyecto;
 
 import android.os.Bundle;
 
+import com.example.proyecto.Json.JsonSingleton;
 import com.example.proyecto.Json.Montana;
 import com.example.proyecto.Json.Municipio;
 import com.google.gson.stream.JsonReader;
@@ -25,6 +26,7 @@ import com.google.gson.Gson;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 //Caracola culo
@@ -88,16 +90,25 @@ public class MainActivity extends AppCompatActivity {
 
     public void cargarJSON_en_DB(){
         // -- CÓDIGO ENCARGADO DE CARGAR EL JSON CON LOS CÓDIGOS DE LAS MONTAÑAS
+        JsonSingleton jsonSingleton = JsonSingleton.getInstance();
+
+        // CÓDIGO DE MONTAÑAS
         JsonReader readerMontanas = new JsonReader(new InputStreamReader(getResources().openRawResource(R.raw.codMontanas)));
         List<Montana> montanaList = Arrays.asList(new Gson().fromJson(readerMontanas, Montana[].class));
+        Map<String,Object> montanaMap = null;
 
+        for (Montana m: montanaList) {
+            montanaMap.put(m.getNombre(), m.getCodigo());
+        }
+
+        // CÓDIGO DE MUNICIPIOS
         JsonReader readerMunicipios = new JsonReader(new InputStreamReader(getResources().openRawResource(R.raw.codMunicipios)));
         List<Municipio> municipioList = Arrays.asList(new Gson().fromJson(readerMunicipios, Municipio[].class));
+        Map<String,Object> municipioMap = null;
 
+        for (Municipio m: municipioList) {
+            municipioMap.put(m.getMunicipio(), new Municipio(m.getCodigo(), m.getMunicipio(), m.getProvincia()));
+        }
 
-
-        // for(RepoMontana a: montanaList){
-        //    binding.textView2.append(a.getCodigo() + " - " + a.getNombre());
-        // }
     }
 }
