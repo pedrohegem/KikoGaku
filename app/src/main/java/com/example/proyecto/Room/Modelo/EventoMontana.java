@@ -3,6 +3,7 @@ package com.example.proyecto.Room.Modelo;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
@@ -17,29 +18,33 @@ import java.util.Locale;
 @Entity
 public class EventoMontana {
 
+    @Ignore
     public final static SimpleDateFormat FORMAT = new SimpleDateFormat(
             "yyyy-MM-dd", Locale.US);
 
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo
     @NonNull
     private int ide;
 
-    @ColumnInfo
     private String titulo;
 
-    @ColumnInfo
     private String ubicacionCode;
 
-    @ColumnInfo
     private String descripcion;
 
-    @ColumnInfo
     @TypeConverters(DateConverter.class)
     private Date fecha;
 
+    @Ignore
     private List<PicoMontana> picosLista;
 
+    public EventoMontana(String titulo, String ubicacionCode, String descripcion, Date fecha) {
+        this.titulo = titulo;
+        this.ubicacionCode = ubicacionCode;
+        this.descripcion = descripcion;
+        this.fecha = fecha;
+    }
+    @Ignore
     public EventoMontana(int ide, String titulo, String ubicacionCode, String descripcion, String fecha, List<PicoMontana> picosLista) {
         this.ide = ide;
         this.titulo = titulo;

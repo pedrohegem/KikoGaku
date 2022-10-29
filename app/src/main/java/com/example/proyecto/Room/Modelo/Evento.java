@@ -3,6 +3,7 @@ package com.example.proyecto.Room.Modelo;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
@@ -16,46 +17,50 @@ import java.util.Locale;
 @Entity
 public class Evento {
 
+    @Ignore
     public final static SimpleDateFormat FORMAT = new SimpleDateFormat(
             "yyyy-MM-dd", Locale.US);
 
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo
     @NonNull
     private int ide;
 
-    @ColumnInfo
     private String titulo;
 
-    @ColumnInfo
     private int ubicacionCode;
 
-    @ColumnInfo
     private String descripcion;
 
-    @ColumnInfo
     @TypeConverters(DateConverter.class)
     private Date fecha;
 
     // Campos que no forman parte de la tabla
-
+    @Ignore
     private int probPrecipitacion;
-
+    @Ignore
     private String estadoCielo;
-
+    @Ignore
     private int velocidadViento;
-
+    @Ignore
     private int tempMax;
+    @Ignore
     private int tempMin;
-
+    @Ignore
     private int sensacionTerminaMax;
+    @Ignore
     private int getSensacionTerminaMin;
 
-
-    public Evento(int ide, String titulo, int ubicacion, String descripcion, String fecha, int probPrecipitacion, String estadoCielo, int velocidadViento, int tempMax, int tempMin, int sensacionTerminaMax, int getSensacionTerminaMin) {
+    public Evento(String titulo, int ubicacionCode, String descripcion, Date fecha) {
+        this.titulo = titulo;
+        this.ubicacionCode = ubicacionCode;
+        this.descripcion = descripcion;
+        this.fecha = fecha;
+    }
+    @Ignore
+    public Evento(int ide, String titulo, int ubicacionCode, String descripcion, String fecha, int probPrecipitacion, String estadoCielo, int velocidadViento, int tempMax, int tempMin, int sensacionTerminaMax, int getSensacionTerminaMin) {
         this.ide = ide;
         this.titulo = titulo;
-        this.ubicacionCode = ubicacion;
+        this.ubicacionCode = ubicacionCode;
         this.descripcion = descripcion;
         this.probPrecipitacion = probPrecipitacion;
         this.estadoCielo = estadoCielo;

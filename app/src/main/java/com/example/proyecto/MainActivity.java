@@ -6,6 +6,8 @@ import com.example.proyecto.Json.JsonSingleton;
 import com.example.proyecto.Json.Montana;
 import com.example.proyecto.Json.Municipio;
 import com.google.gson.stream.JsonReader;
+
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 
@@ -24,9 +26,11 @@ import com.example.proyecto.databinding.ActivityMainBinding;
 import com.google.gson.Gson;
 
 import java.io.InputStreamReader;
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -85,26 +89,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void cargarJSON_en_Singleton(){
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        Log.d("PITO",timestamp.toString());
+
         // -- CÓDIGO ENCARGADO DE CARGAR EL JSON CON LOS CÓDIGOS DE LAS MONTAÑAS
         JsonSingleton jsonSingleton = JsonSingleton.getInstance();
 
         // CÓDIGO DE MONTAÑAS
-        JsonReader readerMontanas = new JsonReader(new InputStreamReader(getResources().openRawResource(R.raw.codMontanas)));
+        JsonReader readerMontanas = new JsonReader(new InputStreamReader(getResources().openRawResource(R.raw.codmontanas)));
         List<Montana> montanaList = Arrays.asList(new Gson().fromJson(readerMontanas, Montana[].class));
-        Map<String,Object> montanaMap = null;
+        Map<String,String> montanaMap = new TreeMap<String, String>();
 
         for (Montana m: montanaList) {
             montanaMap.put(m.getNombre(), m.getCodigo());
         }
 
         // CÓDIGO DE MUNICIPIOS
-        JsonReader readerMunicipios = new JsonReader(new InputStreamReader(getResources().openRawResource(R.raw.codMunicipios)));
+        JsonReader readerMunicipios = new JsonReader(new InputStreamReader(getResources().openRawResource(R.raw.codmunicipios)));
         List<Municipio> municipioList = Arrays.asList(new Gson().fromJson(readerMunicipios, Municipio[].class));
-        Map<String,Object> municipioMap = null;
+        Map<String,Municipio> municipioMap = new TreeMap<String, Municipio>();
 
         for (Municipio m: municipioList) {
             municipioMap.put(m.getMunicipio(), new Municipio(m.getCodigo(), m.getMunicipio(), m.getProvincia()));
         }
+        Timestamp timestamp2 = new Timestamp(System.currentTimeMillis());
+        Log.d("PITO2",timestamp2.toString());
     }
 
 
