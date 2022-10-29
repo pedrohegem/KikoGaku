@@ -7,6 +7,8 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.example.proyecto.Json.Montana;
+import com.example.proyecto.Room.DAO.EventoDAO;
+import com.example.proyecto.Room.DAO.UsuarioDAO;
 import com.example.proyecto.Room.Modelo.Evento;
 import com.example.proyecto.Room.Modelo.EventoMontana;
 import com.example.proyecto.Room.Modelo.Usuario;
@@ -16,6 +18,10 @@ import com.example.proyecto.Room.Modelo.Usuario;
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase appDataBase;
     private static Context contexto;
+
+    public abstract UsuarioDAO usuarioDAO();
+    public abstract EventoDAO eventoDAO();
+    public abstract EventoMontana eventoMontana();
 
     protected AppDatabase(){
     }

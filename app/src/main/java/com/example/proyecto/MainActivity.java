@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-//Caracola culo
+
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
 
@@ -42,20 +42,17 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(binding.appBarMain.toolbar);
 
-        AppDatabase db = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "database.db").build();
+        // Cargamos la base de datos (en la primera vez, se crea)
+        AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "database.db").build();
+
+        // Cargamos los JSON en la base de datos
+        cargarJSON_en_Singleton();
 
         binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-
                 //        .setAction("Action", null).show();
-
-
-
-
-
             }
         });
         DrawerLayout drawer = binding.drawerLayout;
@@ -70,9 +67,8 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        // Cargamos los JSON en la base de datos
-        cargarJSON_en_DB();
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -88,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
-    public void cargarJSON_en_DB(){
+    public void cargarJSON_en_Singleton(){
         // -- CÓDIGO ENCARGADO DE CARGAR EL JSON CON LOS CÓDIGOS DE LAS MONTAÑAS
         JsonSingleton jsonSingleton = JsonSingleton.getInstance();
 
@@ -109,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
         for (Municipio m: municipioList) {
             municipioMap.put(m.getMunicipio(), new Municipio(m.getCodigo(), m.getMunicipio(), m.getProvincia()));
         }
-
     }
+
+
 }
