@@ -1,5 +1,10 @@
 package com.example.proyecto;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 
 import com.example.proyecto.Json.JsonSingleton;
@@ -14,6 +19,7 @@ import android.view.Menu;
 import com.example.proyecto.Room.AppDatabase;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.core.app.ActivityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -51,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Cargamos los JSON en la base de datos
         cargarJSON_en_Singleton();
+        tiempoUbicacionActual();
 
         binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_inicio,R.id.nav_eventos, R.id.nav_perfil, R.id.nav_ajustes)
+                R.id.nav_inicio, R.id.nav_eventos, R.id.nav_perfil, R.id.nav_ajustes)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
@@ -88,9 +95,9 @@ public class MainActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
-    public void cargarJSON_en_Singleton(){
+    public void cargarJSON_en_Singleton() {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        Log.d("PITO",timestamp.toString());
+        Log.d("PITO", timestamp.toString());
 
         // -- CÓDIGO ENCARGADO DE CARGAR EL JSON CON LOS CÓDIGOS DE LAS MONTAÑAS
         JsonSingleton jsonSingleton = JsonSingleton.getInstance();
@@ -98,22 +105,36 @@ public class MainActivity extends AppCompatActivity {
         // CÓDIGO DE MONTAÑAS
         JsonReader readerMontanas = new JsonReader(new InputStreamReader(getResources().openRawResource(R.raw.codmontanas)));
         List<Montana> montanaList = Arrays.asList(new Gson().fromJson(readerMontanas, Montana[].class));
-        Map<String,String> montanaMap = new TreeMap<String, String>();
+        Map<String, String> montanaMap = new TreeMap<String, String>();
 
-        for (Montana m: montanaList) {
+        for (Montana m : montanaList) {
             montanaMap.put(m.getNombre(), m.getCodigo());
         }
 
         // CÓDIGO DE MUNICIPIOS
         JsonReader readerMunicipios = new JsonReader(new InputStreamReader(getResources().openRawResource(R.raw.codmunicipios)));
         List<Municipio> municipioList = Arrays.asList(new Gson().fromJson(readerMunicipios, Municipio[].class));
-        Map<String,Municipio> municipioMap = new TreeMap<String, Municipio>();
+        Map<String, Municipio> municipioMap = new TreeMap<String, Municipio>();
 
-        for (Municipio m: municipioList) {
+        for (Municipio m : municipioList) {
             municipioMap.put(m.getMunicipio(), new Municipio(m.getCodigo(), m.getMunicipio(), m.getProvincia()));
         }
         Timestamp timestamp2 = new Timestamp(System.currentTimeMillis());
-        Log.d("PITO2",timestamp2.toString());
+        Log.d("PITO2", timestamp2.toString());
+    }
+
+    public void tiempoUbicacionActual() {
+
+        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            return;
+        }else {
+            Log.d("PERMISOS", "SI HAY PERMISOS DE LOCALIZACIÓN");
+        }
+        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        double longitude = location.getLongitude();
+        double latitude = location.getLatitude();
     }
 
 
