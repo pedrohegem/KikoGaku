@@ -115,6 +115,4 @@ public class MainActivity extends AppCompatActivity {
         Timestamp timestamp2 = new Timestamp(System.currentTimeMillis());
         Log.d("PITO2",timestamp2.toString());
     }
-
-
 }
