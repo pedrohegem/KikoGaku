@@ -15,11 +15,14 @@ import com.google.gson.stream.JsonReader;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
+import android.widget.Toast;
 
 import com.example.proyecto.Room.AppDatabase;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -33,6 +36,7 @@ import com.google.gson.Gson;
 
 import java.io.InputStreamReader;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -43,9 +47,28 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
 
+    // Código para gestionar el callback
+    private final int PERMISSIONS_REQUEST = 0;
+
+    // Array con todos los permisos necesarios por la app
+    private String[] requiredPermissions = {
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION
+    };
+    private List<String> missingPermissions = new ArrayList<String>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Gestión de permisos (antes de cargar la UI)
+        Log.d("PERMISSIONS", "Checking for permissions....");
+        fillMissingPermissions();
+        if(!missingPermissions.isEmpty()) { // Si hay permisos sin conceder
+            requestMissingPermissions();
+        }
+        //----------------------------------------------
+
+
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -57,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Cargamos los JSON en la base de datos
         cargarJSON_en_Singleton();
-        tiempoUbicacionActual();
 
         binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +108,42 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    public void fillMissingPermissions() {
+        this.missingPermissions = new ArrayList<String>();
+        for( String requiredPermission : this.requiredPermissions) {
+            if(ActivityCompat.checkSelfPermission(this, requiredPermission) != PackageManager.PERMISSION_GRANTED) {
+                missingPermissions.add(requiredPermission);
+            }
+        }
+    }
+
+    public void requestMissingPermissions () {
+        ActivityCompat.requestPermissions(this, missingPermissions.toArray(new String[missingPermissions.size()]), PERMISSIONS_REQUEST);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults)
+    {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == PERMISSIONS_REQUEST) {
+            // Checking whether user granted the permission or not.
+            if (permissions.length == this.missingPermissions.size() && grantResults.length == this.missingPermissions.size()) {
+                boolean allPermissionsGranted = true;
+                for( int grantResult : grantResults) {
+                    if(grantResult == PackageManager.PERMISSION_DENIED) {
+                        allPermissionsGranted = false;
+                        break;
+                    }
+                }
+            }
+            else {
+            }
+        }
     }
 
     @Override
@@ -124,17 +182,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void tiempoUbicacionActual() {
-
+        Log.d("PERMISOS", "TIEMPO ACTUAL Y LOCALIZACIÓN");
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Log.d("PERMISOS", "NO HAY PERMISOS DE LOCALIZACIÓN");
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[]{"ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"},
+                    0);
             return;
         }else {
             Log.d("PERMISOS", "SI HAY PERMISOS DE LOCALIZACIÓN");
+            Toast.makeText(MainActivity.this, "Permission already granted", Toast.LENGTH_SHORT).show();
         }
-        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        double longitude = location.getLongitude();
-        double latitude = location.getLatitude();
     }
 
 
