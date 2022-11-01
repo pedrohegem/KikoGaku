@@ -15,10 +15,10 @@ import com.example.proyecto.Room.Modelo.EventoMontana;
 import com.example.proyecto.Room.Modelo.Usuario;
 
 
-@Database(entities = {Usuario.class, Evento.class, EventoMontana.class}, version = 2, exportSchema = false)
+@Database(entities = {Usuario.class, Evento.class, EventoMontana.class}, version = 4, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase appDataBase;
-    private static Context contexto;
+    private static Usuario usuario;
 
     public abstract UsuarioDAO usuarioDAO();
     public abstract EventoDAO eventoDAO();
@@ -35,4 +35,7 @@ public abstract class AppDatabase extends RoomDatabase {
         return appDataBase;
     }
 
+    public static Usuario getUsuario() {return usuario;}
+
+    public static void setUsuario(Usuario usuario) {AppDatabase.usuario = usuario;}
 }

@@ -1,10 +1,13 @@
 package com.example.proyecto;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.proyecto.Json.JsonSingleton;
 import com.example.proyecto.Json.Montana;
 import com.example.proyecto.Json.Municipio;
+import com.example.proyecto.Room.DAO.UsuarioDAO;
+import com.example.proyecto.Room.Modelo.Usuario;
 import com.google.gson.stream.JsonReader;
 
 import android.util.Log;
@@ -39,6 +42,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // -- La primera comprobación antes de hacer nada es ver si un usuario está conectado a la aplicación --
+        validarConexion();
+
+
         super.onCreate(savedInstanceState);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -116,5 +123,19 @@ public class MainActivity extends AppCompatActivity {
         Log.d("PITO2",timestamp2.toString());
     }
 
+    public void validarConexion(){
+        AppDatabase appDatabase = AppDatabase.getInstance(getApplicationContext());
+        final UsuarioDAO usuarioDAO = appDatabase.usuarioDAO();
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Usuario usuario = usuarioDAO.usuarioConectado(true);
+                // Si no hay ningun usuario con el campo 'conectado' a true, entonces nos dirigimos al iniciar sesion
+                if(usuario == null){
+                    startActivity(new Intent(MainActivity.this, InicioSesion.class));
+                }
+            }
+        }).start();
+    }
 }
