@@ -1,8 +1,11 @@
 package com.example.proyecto;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -34,11 +37,13 @@ import androidx.room.Room;
 import com.example.proyecto.databinding.ActivityMainBinding;
 import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -46,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
+    public String locality;
 
     // Código para gestionar el callback
     private final int PERMISSIONS_REQUEST = 0;
@@ -60,14 +66,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         // Gestión de permisos (antes de cargar la UI)
-        Log.d("PERMISSIONS", "Checking for permissions....");
         fillMissingPermissions();
         if(!missingPermissions.isEmpty()) { // Si hay permisos sin conceder
             requestMissingPermissions();
         }
         //----------------------------------------------
 
+        // Caso de uso: Obtener tiempo ubicación actual
+        // TODO Obtener el tiempo de la API
+        this.locality = getLocality(getLocationCoords());
+        Log.d("Locality", "Locality: " + locality);
 
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -142,6 +152,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             else {
+                String noPerms = "No se han concedido todos los permisos necesarios para el correcto funcionamiento de la aplicación.";
+                Toast toastNoPerms = Toast.makeText(getApplicationContext(), noPerms, Toast.LENGTH_LONG);
+                toastNoPerms.show();
             }
         }
     }
@@ -181,20 +194,25 @@ public class MainActivity extends AppCompatActivity {
         Log.d("PITO2", timestamp2.toString());
     }
 
-    public void tiempoUbicacionActual() {
-        Log.d("PERMISOS", "TIEMPO ACTUAL Y LOCALIZACIÓN");
-        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Log.d("PERMISOS", "NO HAY PERMISOS DE LOCALIZACIÓN");
-            ActivityCompat.requestPermissions(MainActivity.this,
-                    new String[]{"ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"},
-                    0);
-            return;
-        }else {
-            Log.d("PERMISOS", "SI HAY PERMISOS DE LOCALIZACIÓN");
-            Toast.makeText(MainActivity.this, "Permission already granted", Toast.LENGTH_SHORT).show();
+    public Double[] getLocationCoords() {
+
+        // Obtain latitude and longitude from current location
+        LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        @SuppressLint("MissingPermission") Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        return new Double[] {location.getLatitude(), location.getLongitude()};
+    }
+
+    public String getLocality(Double[] coords) {
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        List<Address> addresses = null;
+        try {
+            addresses = geocoder.getFromLocation(coords[0], coords[1], 1);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        assert addresses != null;
+        return addresses.get(0).getLocality();
     }
 
 
