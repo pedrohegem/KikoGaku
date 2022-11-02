@@ -27,7 +27,7 @@ public class Evento {
 
     private String titulo;
 
-    private int ubicacionCode;
+    private String ubicacionCode;
 
     private String descripcion;
 
@@ -50,14 +50,14 @@ public class Evento {
     @Ignore
     private int getSensacionTerminaMin;
 
-    public Evento(String titulo, int ubicacionCode, String descripcion, Date fecha) {
+    public Evento(String titulo, String ubicacionCode, String descripcion, Date fecha) {
         this.titulo = titulo;
         this.ubicacionCode = ubicacionCode;
         this.descripcion = descripcion;
         this.fecha = fecha;
     }
     @Ignore
-    public Evento(int ide, String titulo, int ubicacionCode, String descripcion, String fecha, int probPrecipitacion, String estadoCielo, int velocidadViento, int tempMax, int tempMin, int sensacionTerminaMax, int getSensacionTerminaMin) {
+    public Evento(int ide, String titulo, String ubicacionCode, String descripcion, String fecha, int probPrecipitacion, String estadoCielo, int velocidadViento, int tempMax, int tempMin, int sensacionTerminaMax, int getSensacionTerminaMin) {
         this.ide = ide;
         this.titulo = titulo;
         this.ubicacionCode = ubicacionCode;
@@ -94,11 +94,11 @@ public class Evento {
         this.titulo = titulo;
     }
 
-    public int getUbicacionCode() {
+    public String getUbicacionCode() {
         return ubicacionCode;
     }
 
-    public void setUbicacionCode(int ubicacionCode) {
+    public void setUbicacionCode(String ubicacionCode) {
         this.ubicacionCode = ubicacionCode;
     }
 

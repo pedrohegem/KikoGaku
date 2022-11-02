@@ -16,4 +16,38 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="textview">TextView</string>
+
+    <!-- STRINGS DE LUIS-->
+    <string name="n_iniciar_sesion">Iniciar sesión</string>
+    <string name="n_registrarse">Registrarse</string>
+    <string name="n_correo_electronico">Correo electrónico</string>
+    <string name="n_contrasena">Contraseña</string>
+    <string name="n_pregunta"><u>¿Aún no tienes una cuenta?</u></string>
+
+
+    <string name="title_activity_lista_eventos">Lista de eventos</string>
+    <string name="title_activity_registrarse">Inicio</string>
+    <string name="title_activity_modificar_evento">Modificar evento</string>
+
+    <!-- Eventos -->
+    <string name="n_etiqueta_evento">Crear un evento</string>
+    <string name="n_nombre_evento">Nombre del evento</string>
+    <string name="n_localidad_evento">Localidad</string>
+    <string name="n_fecha_inicio_evento">Fecha de inicio</string>
+    <string name="n_fecha_fin_evento">Fecha de fin</string>
+    <string name="n_descripcion_evento">Descripición del evento</string>
+    <string name="n_etiqueta_crear">Crear evento</string>
+
+    <string name="n_eliminar_evento">Eliminar evento</string>
+
+    <string name="n_tipo_localidad">Tipo de evento:</string>
+    <string name="n_municipio">Municipio</string>
+    <string name="n_montana">Montaña</string>
+
+    <string name="n_detalles_localidad">Localidad:</string>
+    <string name="n_detalles_fecha_inicio">Fecha de inicio:</string>
+    <string name="n_detalles_fecha_fin">Fecha de fin:</string>
+    <string name="n_detalles_descripcion">Descripción:</string>
+
+
 </resources>

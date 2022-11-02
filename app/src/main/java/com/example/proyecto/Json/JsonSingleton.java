@@ -20,4 +20,20 @@ public class JsonSingleton {
         }
         return instance;
     }
+
+    public Municipio buscarMunicipio(String nombreMunicipio){
+        Municipio m = null;
+        if(municipioMap.containsKey(nombreMunicipio)){
+            m = municipioMap.get(nombreMunicipio);
+        }
+        return m;
+    }
+
+    public Montana buscarMontana(String nombreMontana){
+        Montana m = null;
+        if(montanaMap.containsKey(nombreMontana)){
+            m = montanaMap.get(nombreMontana);
+        }
+        return m;
+    }
 }
