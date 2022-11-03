@@ -13,40 +13,48 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.proyecto.R;
+import com.example.proyecto.Room.AppDatabase;
+import com.example.proyecto.Room.DAO.EventoDAO;
 import com.example.proyecto.Room.Modelo.Evento;
-import com.example.proyecto.ui.ListaEventos.placeholder.PlaceholderContent;
+import com.example.proyecto.Room.Modelo.EventoMontana;
+import com.example.proyecto.ui.ListaEventos.placeholder.PlaceholderItem;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
  * A fragment representing a list of Items.
  */
 public class EventoFragment extends Fragment {
-
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
+
     private int mColumnCount = 1;
     private String nombre;
     private String fecha;
+
+    public static final List<PlaceholderItem> ITEMS = new ArrayList<>();
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
     public EventoFragment() {
+
     }
 
-    // TODO: Customize parameter initialization
+    /*Crea una nueva fila*/
     @SuppressWarnings("unused")
     public static EventoFragment newInstance(int columnCount,String nom, String fech) {
         EventoFragment fragment = new EventoFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
+
         fragment.setArguments(args);
         return fragment;
     }
 
+    /* recoje el numero de filas, como argumento*/
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,8 +62,32 @@ public class EventoFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+
+
+        try{
+            for (int u=0;u<5;u++){
+                AppDatabase.getInstance(getContext()).eventoDAO().insertEvent(new Evento("Evento",u,"Descripcion",new Date()));
+                AppDatabase.getInstance(getContext()).eventoMontanaDAO().insertMontana(new EventoMontana("Evento","Uniforme","Descripcion",new Date()));
+            }
+
+            List<Evento> eventos = AppDatabase.getInstance(getContext()).eventoDAO().getAll();
+            List<EventoMontana> eventosMontana = AppDatabase.getInstance(getContext()).eventoMontanaDAO().getAll();
+            int i=0;
+            for (i=0; i<eventos.size() ;i++){
+                ITEMS.add(new PlaceholderItem(String.valueOf(i),eventos.get(i).getTitulo(),eventos.get(i).getFecha().toString()));
+            }
+            int a = i;
+            while (i-a<eventosMontana.size()){
+                ITEMS.add(new PlaceholderItem(String.valueOf(i),eventosMontana.get(i).getTitulo(),eventosMontana.get(i).getFecha().toString()));
+                i++;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
+    /*Inicialializa all */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -70,7 +102,7 @@ public class EventoFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new ListaEventosAdapter(PlaceholderContent.ITEMS));
+            recyclerView.setAdapter(new ListaEventosAdapter(ITEMS));
         }
         return view;
     }

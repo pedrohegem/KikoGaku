@@ -6,11 +6,10 @@
     android:name="com.example.proyecto.ui.ListaEventos.EventoFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
+    android:layout_marginLeft="1dp"
+    android:layout_marginRight="1dp"
     app:layoutManager="LinearLayoutManager"
     tools:context=".ui.ListaEventos.EventoFragment"
-    tools:listitem="@layout/evento_lista" >
-
+    tools:listitem="@layout/evento_lista">
 
 </androidx.recyclerview.widget.RecyclerView>

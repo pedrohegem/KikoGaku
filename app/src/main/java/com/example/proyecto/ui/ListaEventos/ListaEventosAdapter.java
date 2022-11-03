@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.proyecto.databinding.EventoListaBinding;
-import com.example.proyecto.ui.ListaEventos.placeholder.PlaceholderContent.PlaceholderItem;
+import com.example.proyecto.ui.ListaEventos.placeholder.PlaceholderItem;
 
 import java.util.List;
 
@@ -43,6 +43,7 @@ public class ListaEventosAdapter extends RecyclerView.Adapter<ListaEventosAdapte
         return mValues.size();
     }
 
+    /* Representa a la fila que se muestra */
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView mIdView;
         public final TextView mNombreView;
