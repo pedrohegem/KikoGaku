@@ -76,9 +76,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Caso de uso: Obtener tiempo ubicación actual
         // TODO Obtener el tiempo de la API
-        this.locality = getLocality(getLocationCoords());
-        Log.d("Locality", "Locality: " + locality);
-
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -194,24 +191,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("PITO2", timestamp2.toString());
     }
 
-    public Double[] getLocationCoords() {
 
-        // Obtain latitude and longitude from current location
-        LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        @SuppressLint("MissingPermission") Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-        return new Double[] {location.getLatitude(), location.getLongitude()};
-    }
 
-    public String getLocality(Double[] coords) {
-        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-        List<Address> addresses = null;
-        try {
-            addresses = geocoder.getFromLocation(coords[0], coords[1], 1);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        assert addresses != null;
-        return addresses.get(0).getLocality();
-    }
 }
