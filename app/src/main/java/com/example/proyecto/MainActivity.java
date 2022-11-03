@@ -214,6 +214,4 @@ public class MainActivity extends AppCompatActivity {
         assert addresses != null;
         return addresses.get(0).getLocality();
     }
-
-
 }
