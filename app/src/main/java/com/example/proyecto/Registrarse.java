@@ -2,6 +2,7 @@ package com.example.proyecto;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -53,6 +54,7 @@ public class Registrarse extends AppCompatActivity {
                                     Toast.makeText(Registrarse.this, "Usuario " + usuario.getUsername() + " registrado correctamente", Toast.LENGTH_SHORT).show();
                                 }
                             });
+                            startActivity(new Intent(Registrarse.this, InicioSesion.class));
                         }
                     }).start();
                 }

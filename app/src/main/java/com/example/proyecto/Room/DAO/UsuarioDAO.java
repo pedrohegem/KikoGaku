@@ -22,6 +22,9 @@ public interface UsuarioDAO {
     @Query("SELECT * FROM usuario WHERE conectado = (:conectado)")
     Usuario usuarioConectado(boolean conectado);
 
+    @Update
+    void modificarUsuario(Usuario usuario);
+
     @Delete
     void deleteUser(Usuario delete);
 }

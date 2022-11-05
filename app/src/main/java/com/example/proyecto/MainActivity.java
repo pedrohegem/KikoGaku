@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // -- La primera comprobación antes de hacer nada es ver si un usuario está conectado a la aplicación --
+        Log.d("UNO", "----------- INICIO MAIN ACTIVITY---------------");
         validarConexion();
 
 
@@ -52,9 +53,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.appBarMain.toolbar);
-
-        // Cargamos la base de datos (en la primera vez, se crea)
-        AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "database.db").build();
 
         // Cargamos los JSON en la base de datos
         cargarJSON_en_Singleton();
@@ -135,6 +133,11 @@ public class MainActivity extends AppCompatActivity {
                 if(usuario == null){
                     startActivity(new Intent(MainActivity.this, InicioSesion.class));
                 }
+                else{
+                    // Si existe un usuario conectado a la aplicacion, entonces se añade en el Singleton
+                    AppDatabase.getInstance(getApplicationContext()).setUsuario(usuario);
+                }
+                //Log.d("MODIFICAR", "Username: " + AppDatabase.getInstance(getApplicationContext()).getUsuario().getUsername() + " -  " + AppDatabase.getInstance(getApplicationContext()).getUsuario().getPassword());
             }
         }).start();
     }

@@ -45,7 +45,6 @@ public class InicioSesion extends AppCompatActivity {
                     // Obtenemos la base de datos
                     AppDatabase appDatabase = AppDatabase.getInstance(getApplicationContext());
                     final UsuarioDAO usuarioDAO = appDatabase.usuarioDAO();
-                    Log.d("ELSE", "DENTRO ELSE CREDENCIALES CORRECTOS");
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -60,10 +59,9 @@ public class InicioSesion extends AppCompatActivity {
                                 });
                             }
                             else{
-                                Log.d("HILO1", "DENTRO HILO ELSE USUARIO NOT NULL");
                                 // Insertamos una instancia de usuario en el Singleton de AppDatabase
                                 usuario.setConectado(true);
-                                AppDatabase.setUsuario(usuario);
+                                appDatabase.setUsuario(usuario);
 
                                 // Modificamos el estado 'conectado' del usuario en la base de datos a 'true' para controlar cuando se mantiene iniciada la sesión
                                 usuarioDAO.activarEstadoConexion(true, usuario.getIdu());
@@ -84,5 +82,11 @@ public class InicioSesion extends AppCompatActivity {
                 startActivity(new Intent(InicioSesion.this, Registrarse.class));
             }
         });
+    }
+
+    // De esta forma evitamos que al hacer un back, se inicie la mainactivity con el inicio o la mainactivity con el perfil (Puesto que MainActivity es la main).
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
     }
 }

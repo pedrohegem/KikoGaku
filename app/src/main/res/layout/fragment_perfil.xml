@@ -7,16 +7,100 @@
     tools:context=".ui.perfil.PerfilFragment">
 
     <TextView
-        android:id="@+id/text_perfil"
+        android:id="@+id/textView3"
+        style="@style/TextAppearance.AppCompat.Headline"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_margin="22sp"
+        android:text="@string/editar_perfil"
         android:textAlignment="center"
-        android:textSize="20sp"
+        android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.095"/>
+
+    <EditText
+        android:inputType="text"
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="22sp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="52dp"
+        android:layout_marginBottom="544dp"
+        android:hint="@string/introduce_username"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        app:layout_constraintVertical_bias="0.0"
+        android:autofillHints="" />
+
+    <EditText
+        android:id="@+id/newPassword"
+        android:inputType="textPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="22sp"
+        android:layout_marginTop="44dp"
+        android:layout_marginBottom="474dp"
+        android:hint="@string/nueva_contrase_a"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.909"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/username"
+        app:layout_constraintVertical_bias="0.0"
+        android:autofillHints="" />
+
+    <EditText
+        android:id="@+id/currentPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="22sp"
+        android:layout_marginTop="48dp"
+        android:layout_marginBottom="404dp"
+        android:hint="@string/introduzca_contrase_a_actual"
+        android:inputType="textPassword"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newPassword"
+        app:layout_constraintVertical_bias="0.0"
+        android:autofillHints="" />
+
+    <Button
+        android:id="@+id/bGuardar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="22sp"
+        android:layout_marginTop="334dp"
+        android:layout_marginBottom="308dp"
+        android:backgroundTint="@color/purple_700"
+        android:text="@string/guardar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/currentPassword"
+        app:layout_constraintVertical_bias="0.122" />
+
+    <Button
+        android:id="@+id/bEliminar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="22sp"
+        android:layout_marginTop="226dp"
+        android:layout_marginBottom="308dp"
+        android:backgroundTint="#AE0101"
+        android:text="Eliminar cuenta"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bGuardar"
+        app:layout_constraintVertical_bias="0.846" />
 </androidx.constraintlayout.widget.ConstraintLayout>

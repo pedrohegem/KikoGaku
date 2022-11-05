@@ -1,5 +1,6 @@
 package com.example.proyecto.ui.inicio;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.proyecto.R;
 import com.example.proyecto.Json.Montana;
+import com.example.proyecto.Room.AppDatabase;
+import com.example.proyecto.Room.Modelo.Usuario;
 import com.example.proyecto.databinding.FragmentInicioBinding;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
@@ -23,6 +26,7 @@ import java.util.List;
 public class InicioFragment extends Fragment {
 
     private FragmentInicioBinding binding;
+    private Context mContext;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -32,17 +36,8 @@ public class InicioFragment extends Fragment {
         binding = FragmentInicioBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textInicio;
-        inicioViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-
-        // -- CÓDIGO ENCARGADO DE CARGAR EL JSON CON LOS CÓDIGOS DE LAS MONTAÑAS
-        JsonReader reader = new JsonReader(new InputStreamReader(getResources().openRawResource(R.raw.codmontanas)));
-        List<Montana> montanaList = Arrays.asList(new Gson().fromJson(reader, Montana[].class));
-
-        //for(RepoMontana a: montanaList){
-        //    binding.textView2.append(a.getCodigo() + " - " + a.getNombre());
-        //}
-
+        AppDatabase appDatabase = AppDatabase.getInstance(mContext);
+        Usuario usuario = appDatabase.getUsuario();
 
         return root;
     }
@@ -51,5 +46,11 @@ public class InicioFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
     }
 }
