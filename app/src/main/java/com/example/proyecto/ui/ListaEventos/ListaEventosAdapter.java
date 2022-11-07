@@ -4,8 +4,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.proyecto.R;
 import com.example.proyecto.databinding.EventoListaBinding;
 import com.example.proyecto.ui.ListaEventos.placeholder.PlaceholderItem;
 
@@ -36,6 +38,11 @@ public class ListaEventosAdapter extends RecyclerView.Adapter<ListaEventosAdapte
         holder.mIdView.setText(mValues.get(position).id);
         holder.mNombreView.setText(mValues.get(position).nombre);
         holder.mFechaView.setText(mValues.get(position).fecha);
+        if(mValues.get(position).evento){
+            holder.mIcono.setImageResource(R.drawable.ic_evento);
+        }else{
+            holder.mIcono.setImageResource(R.drawable.ic_evemontanas);
+        }
     }
 
     @Override
@@ -48,6 +55,7 @@ public class ListaEventosAdapter extends RecyclerView.Adapter<ListaEventosAdapte
         public final TextView mIdView;
         public final TextView mNombreView;
         public final TextView mFechaView;
+        public final ImageView mIcono;
         public PlaceholderItem mItem;
 
         public ViewHolder(EventoListaBinding binding) {
@@ -55,6 +63,7 @@ public class ListaEventosAdapter extends RecyclerView.Adapter<ListaEventosAdapte
             mIdView = binding.itemNumber;
             mNombreView = binding.Nombre;
             mFechaView = binding.Fecha;
+            mIcono = binding.iconoEvento;
         }
 
         @Override

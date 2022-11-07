@@ -1,30 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
     <TextView
         android:id="@+id/item_number"
-        android:layout_width="28dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_margin="@dimen/text_margin"
-        android:text="i - "
+        android:text="@string/i"
         android:textAppearance="?attr/textAppearanceListItem" />
 
     <TextView
         android:id="@+id/Nombre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_margin="@dimen/text_margin"
+        android:hapticFeedbackEnabled="false"
+        android:textAlignment="center"
         android:textAppearance="?attr/textAppearanceListItem"
         tools:text="Nombre Evento" />
+
+    <ImageView
+        android:id="@+id/iconoEvento"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        app:srcCompat="@drawable/ic_evento" />
 
     <TextView
         android:id="@+id/Fecha"
         android:layout_width="89dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center|right"
         android:layout_margin="@dimen/text_margin"
         android:gravity="right"
         android:textAppearance="?attr/textAppearanceListItem"

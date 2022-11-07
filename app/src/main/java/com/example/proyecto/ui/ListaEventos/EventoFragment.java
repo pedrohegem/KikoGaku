@@ -14,10 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.proyecto.AppExecutors;
 import com.example.proyecto.R;
 import com.example.proyecto.Room.AppDatabase;
-import com.example.proyecto.Room.DAO.EventoDAO;
 import com.example.proyecto.Room.Modelo.Evento;
 import com.example.proyecto.Room.Modelo.EventoMontana;
 import com.example.proyecto.ui.ListaEventos.placeholder.PlaceholderItem;
@@ -68,31 +66,24 @@ public class EventoFragment extends Fragment {
 
 
         try{
-            new AsyncTask<Void, Void, String>() {
-
+            new Thread(new Runnable() {
                 @Override
-                protected String doInBackground(Void... voids) {
+                public void run() {
                     List<Evento> eventos = AppDatabase.getInstance(getContext()).eventoDAO().getAll();
                     List<EventoMontana> eventosMontana = AppDatabase.getInstance(getContext()).eventoMontanaDAO().getAll();
-                    Log.i("Nofunciona", "eventos: "+eventos.size());
-                    Log.i("Nofunciona", "eventosMontana: "+eventosMontana.size());
+                    Log.i("Recoleccion", "eventos: "+eventos.size());
+                    Log.i("Recoleccion", "eventosMontana: "+eventosMontana.size());
                     int i=0;
                     for (i=0; i<eventos.size() ;i++){
-                        ITEMS.add(new PlaceholderItem(String.valueOf(i),eventos.get(i).getTitulo(),eventos.get(i).getFecha().toString()));
+                        ITEMS.add(new PlaceholderItem(String.valueOf(i),eventos.get(i).getTitulo(),eventos.get(i).getFecha().toString(), true));
                     }
 
                     for (int a = i;i-a<eventosMontana.size();i++){
-                        ITEMS.add(new PlaceholderItem(String.valueOf(i),eventosMontana.get(i-a).getTitulo(),eventosMontana.get(i-a).getFecha().toString()));
+                        ITEMS.add(new PlaceholderItem(String.valueOf(i),eventosMontana.get(i-a).getTitulo(),eventosMontana.get(i-a).getFecha().toString(), false));
                     }
-                    return null;
+                    requireActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());
                 }
-
-                @Override
-                protected void onPostExecute(String result) {
-                    adapter.notifyDataSetChanged();
-                }
-
-            }.execute();
+            }).start();
 
 
         }catch (Exception e){
