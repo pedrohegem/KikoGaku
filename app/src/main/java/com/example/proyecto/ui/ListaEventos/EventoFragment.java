@@ -1,6 +1,7 @@
 package com.example.proyecto.ui.ListaEventos;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,10 +9,12 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.proyecto.AppExecutors;
 import com.example.proyecto.R;
 import com.example.proyecto.Room.AppDatabase;
 import com.example.proyecto.Room.DAO.EventoDAO;
@@ -34,7 +37,7 @@ public class EventoFragment extends Fragment {
     private String fecha;
 
     public static final List<PlaceholderItem> ITEMS = new ArrayList<>();
-
+    public ListaEventosAdapter adapter = new ListaEventosAdapter(ITEMS);
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -65,22 +68,33 @@ public class EventoFragment extends Fragment {
 
 
         try{
-            for (int u=0;u<5;u++){
-                AppDatabase.getInstance(getContext()).eventoDAO().insertEvent(new Evento("Evento",u,"Descripcion",new Date()));
-                AppDatabase.getInstance(getContext()).eventoMontanaDAO().insertMontana(new EventoMontana("Evento","Uniforme","Descripcion",new Date()));
-            }
+            new AsyncTask<Void, Void, String>() {
 
-            List<Evento> eventos = AppDatabase.getInstance(getContext()).eventoDAO().getAll();
-            List<EventoMontana> eventosMontana = AppDatabase.getInstance(getContext()).eventoMontanaDAO().getAll();
-            int i=0;
-            for (i=0; i<eventos.size() ;i++){
-                ITEMS.add(new PlaceholderItem(String.valueOf(i),eventos.get(i).getTitulo(),eventos.get(i).getFecha().toString()));
-            }
-            int a = i;
-            while (i-a<eventosMontana.size()){
-                ITEMS.add(new PlaceholderItem(String.valueOf(i),eventosMontana.get(i).getTitulo(),eventosMontana.get(i).getFecha().toString()));
-                i++;
-            }
+                @Override
+                protected String doInBackground(Void... voids) {
+                    List<Evento> eventos = AppDatabase.getInstance(getContext()).eventoDAO().getAll();
+                    List<EventoMontana> eventosMontana = AppDatabase.getInstance(getContext()).eventoMontanaDAO().getAll();
+                    Log.i("Nofunciona", "eventos: "+eventos.size());
+                    Log.i("Nofunciona", "eventosMontana: "+eventosMontana.size());
+                    int i=0;
+                    for (i=0; i<eventos.size() ;i++){
+                        ITEMS.add(new PlaceholderItem(String.valueOf(i),eventos.get(i).getTitulo(),eventos.get(i).getFecha().toString()));
+                    }
+
+                    for (int a = i;i-a<eventosMontana.size();i++){
+                        ITEMS.add(new PlaceholderItem(String.valueOf(i),eventosMontana.get(i-a).getTitulo(),eventosMontana.get(i-a).getFecha().toString()));
+                    }
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(String result) {
+                    adapter.notifyDataSetChanged();
+                }
+
+            }.execute();
+
+
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -102,7 +116,7 @@ public class EventoFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new ListaEventosAdapter(ITEMS));
+            recyclerView.setAdapter(adapter);
         }
         return view;
     }
