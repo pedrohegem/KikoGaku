@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -38,7 +39,10 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
     private TextView textViewTempMin;
     private TextView textViewTempMax;
     private TextView textViewTempDesc;
-    private boolean defaultWeather = true;
+
+    private Double latitud;
+    private Double longitud;
+
 
     private FragmentInicioBinding binding;
 
@@ -49,8 +53,8 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
         View root = binding.getRoot();
 
         APIManager apiManager = new APIManager(this);
-        Double coords[] = getLocationCoords();
-        apiManager.getEventWeather(coords[0], coords[1]);
+        getLocationCoords();
+        apiManager.getEventWeather(latitud, longitud);
 
         return root;
     }
@@ -69,37 +73,27 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
     }
 
 
-    public Double[] getLocationCoords() {
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return new Double[] {39.522, -6.3748}; // Devuelve las coordenadas de Cáceres por defecto.
-        }
-        defaultWeather = false;
-        // Obtain latitude and longitude from current location
-        LocationManager lm = (LocationManager) getActivity().getSystemService(getContext().LOCATION_SERVICE);
+    public void getLocationCoords() {
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
-        Location location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        if(location == null) { // Network provider no funciona. No hay internet
-            return new Double[] {39.522, -6.3748}; // Devuelve las coordenadas de Cáceres por defecto.
-        }
-        return new Double[] {location.getLatitude(), location.getLongitude()};
-    }
+            LocationManager lm = (LocationManager) getActivity().getSystemService(getContext().LOCATION_SERVICE);
+            Location location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
-    public String getLocality(Double[] coords) {
-        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
-        List<Address> addresses = null;
-        try {
-            addresses = geocoder.getFromLocation(coords[0], coords[1], 1);
-        } catch (IOException e) {
-            e.printStackTrace();
+            if(location == null) { // Network provider no funciona. Se establecen las coordenadas de Madrid por defecto
+                String noPerms = "No se ha podido acceder a tu localización. Se ha establecido Madrid por defecto. Compruebe el estado del GPS.";
+                Toast.makeText(getContext(), noPerms, Toast.LENGTH_LONG).show();
+                latitud = 40.4165;
+                longitud = -3.7026;
+            } else {
+                latitud = location.getLatitude();
+                longitud = location.getLongitude();
+            }
         }
-        assert addresses != null;
-        return addresses.get(0).getLocality();
     }
 
     @Override
     public void onGetWeatherSuccess(Weather weather) {
-        Log.d("CALLBACK", weather.ciudad);
-
         textViewCiudad = binding.textViewCiudad;
         textViewTemp = binding.textViewTemp;
         textViewTempMin = binding.textViewTempMin;
@@ -115,6 +109,7 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
 
     @Override
     public void onGetWeatherFailure() {
-
+        String noPerms = "No se ha podido acceder al tiempo de la localización actual. Comprueba tu conexión a Internet";
+        Toast.makeText(getContext(), noPerms, Toast.LENGTH_LONG).show();
     }
 }
