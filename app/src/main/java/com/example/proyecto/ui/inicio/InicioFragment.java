@@ -1,8 +1,9 @@
 package com.example.proyecto.ui.inicio;
 
 
-
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -36,6 +38,7 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
     private TextView textViewTempMin;
     private TextView textViewTempMax;
     private TextView textViewTempDesc;
+    private boolean defaultWeather = true;
 
     private FragmentInicioBinding binding;
 
@@ -45,11 +48,9 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
         binding = FragmentInicioBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-
         APIManager apiManager = new APIManager(this);
         Double coords[] = getLocationCoords();
         apiManager.getEventWeather(coords[0], coords[1]);
-
 
         return root;
     }
@@ -67,12 +68,19 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
         binding = null;
     }
 
+
     public Double[] getLocationCoords() {
-
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return new Double[] {39.522, -6.3748}; // Devuelve las coordenadas de Cáceres por defecto.
+        }
+        defaultWeather = false;
         // Obtain latitude and longitude from current location
-        LocationManager lm = (LocationManager)getActivity().getSystemService(getContext().LOCATION_SERVICE);
-        @SuppressLint("MissingPermission") Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        LocationManager lm = (LocationManager) getActivity().getSystemService(getContext().LOCATION_SERVICE);
 
+        Location location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        if(location == null) { // Network provider no funciona. No hay internet
+            return new Double[] {39.522, -6.3748}; // Devuelve las coordenadas de Cáceres por defecto.
+        }
         return new Double[] {location.getLatitude(), location.getLongitude()};
     }
 

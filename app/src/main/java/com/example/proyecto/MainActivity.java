@@ -58,23 +58,12 @@ public class MainActivity extends AppCompatActivity{
     public String locality;
 
     // Código para gestionar el callback
-    private final int PERMISSIONS_REQUEST = 0;
 
     // Array con todos los permisos necesarios por la app
-    private String[] requiredPermissions = {
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION
-    };
-    private List<String> missingPermissions = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        fillMissingPermissions();
-        if(!missingPermissions.isEmpty()) { // Si hay permisos sin conceder
-            requestMissingPermissions();
-        }
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -114,45 +103,6 @@ public class MainActivity extends AppCompatActivity{
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
-    }
-
-    public void fillMissingPermissions() {
-        this.missingPermissions = new ArrayList<String>();
-        for( String requiredPermission : this.requiredPermissions) {
-            if(ActivityCompat.checkSelfPermission(this, requiredPermission) != PackageManager.PERMISSION_GRANTED) {
-                missingPermissions.add(requiredPermission);
-            }
-        }
-    }
-
-    public void requestMissingPermissions () {
-        ActivityCompat.requestPermissions(this, missingPermissions.toArray(new String[missingPermissions.size()]), PERMISSIONS_REQUEST);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults)
-    {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == PERMISSIONS_REQUEST) {
-            // Checking whether user granted the permission or not.
-            if (permissions.length == this.missingPermissions.size() && grantResults.length == this.missingPermissions.size()) {
-                boolean allPermissionsGranted = true;
-                for( int grantResult : grantResults) {
-                    if(grantResult == PackageManager.PERMISSION_DENIED) {
-                        allPermissionsGranted = false;
-                        break;
-                    }
-                }
-            }
-            else {
-                String noPerms = "No se han concedido todos los permisos necesarios para el correcto funcionamiento de la aplicación.";
-                Toast toastNoPerms = Toast.makeText(getApplicationContext(), noPerms, Toast.LENGTH_LONG);
-                toastNoPerms.show();
-            }
-        }
     }
 
     @Override
