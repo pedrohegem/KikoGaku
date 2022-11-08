@@ -31,51 +31,35 @@ public class Evento {
 
     private String descripcion;
 
+    private boolean esMunicipio;
+
     @TypeConverters(DateConverter.class)
     private Date fecha;
 
     // Campos que no forman parte de la tabla
-    @Ignore
-    private int probPrecipitacion;
-    @Ignore
-    private String estadoCielo;
-    @Ignore
-    private int velocidadViento;
-    @Ignore
-    private int tempMax;
-    @Ignore
-    private int tempMin;
-    @Ignore
-    private int sensacionTerminaMax;
-    @Ignore
-    private int getSensacionTerminaMin;
+    /*@Ignore
+    private Weather weather;*/
 
-    public Evento(String titulo, String ubicacionCode, String descripcion, Date fecha) {
+    public Evento(String titulo, String ubicacionCode, String descripcion, Date fecha, boolean esMunicipio) {
         this.titulo = titulo;
         this.ubicacionCode = ubicacionCode;
         this.descripcion = descripcion;
         this.fecha = fecha;
+        this.esMunicipio = esMunicipio;
     }
     @Ignore
-    public Evento(int ide, String titulo, String ubicacionCode, String descripcion, String fecha, int probPrecipitacion, String estadoCielo, int velocidadViento, int tempMax, int tempMin, int sensacionTerminaMax, int getSensacionTerminaMin) {
+    public Evento(int ide, String titulo, String ubicacionCode, String descripcion, String fecha/*,  Weather weather*/, boolean esMunicipio) {
         this.ide = ide;
         this.titulo = titulo;
         this.ubicacionCode = ubicacionCode;
         this.descripcion = descripcion;
-        this.probPrecipitacion = probPrecipitacion;
-        this.estadoCielo = estadoCielo;
-        this.velocidadViento = velocidadViento;
-        this.tempMax = tempMax;
-        this.tempMin = tempMin;
-        this.sensacionTerminaMax = sensacionTerminaMax;
-        this.getSensacionTerminaMin = getSensacionTerminaMin;
-
         try {
             this.fecha = Evento.FORMAT.parse(fecha);
         } catch (ParseException e) {
             this.fecha = new Date();
         }
-
+        this.esMunicipio = esMunicipio;
+        //this.weather = weather;
     }
 
     public int getIde() {
@@ -110,6 +94,14 @@ public class Evento {
         this.descripcion = descripcion;
     }
 
+    public boolean getEsMunicipio(){
+        return esMunicipio;
+    }
+
+    public void setEsMunicipio(boolean esMunicipio){
+        this.esMunicipio = esMunicipio;
+    }
+
     public Date getFecha() {
         return fecha;
     }
@@ -117,60 +109,12 @@ public class Evento {
     public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
-
-    public int getProbPrecipitacion() {
-        return probPrecipitacion;
+/*
+    public Weather getWeather(){
+        return this.weather;
     }
 
-    public void setProbPrecipitacion(int probPrecipitacion) {
-        this.probPrecipitacion = probPrecipitacion;
-    }
-
-    public String getEstadoCielo() {
-        return estadoCielo;
-    }
-
-    public void setEstadoCielo(String estadoCielo) {
-        this.estadoCielo = estadoCielo;
-    }
-
-    public int getVelocidadViento() {
-        return velocidadViento;
-    }
-
-    public void setVelocidadViento(int velocidadViento) {
-        this.velocidadViento = velocidadViento;
-    }
-
-    public int getTempMax() {
-        return tempMax;
-    }
-
-    public void setTempMax(int tempMax) {
-        this.tempMax = tempMax;
-    }
-
-    public int getTempMin() {
-        return tempMin;
-    }
-
-    public void setTempMin(int tempMin) {
-        this.tempMin = tempMin;
-    }
-
-    public int getSensacionTerminaMax() {
-        return sensacionTerminaMax;
-    }
-
-    public void setSensacionTerminaMax(int sensacionTerminaMax) {
-        this.sensacionTerminaMax = sensacionTerminaMax;
-    }
-
-    public int getGetSensacionTerminaMin() {
-        return getSensacionTerminaMin;
-    }
-
-    public void setGetSensacionTerminaMin(int getSensacionTerminaMin) {
-        this.getSensacionTerminaMin = getSensacionTerminaMin;
-    }
+    public void setWeather(Weather weather){
+        this.weather = weather;
+    }*/
 }

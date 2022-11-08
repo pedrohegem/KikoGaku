@@ -3,13 +3,26 @@ package com.example.proyecto.Room.DAO;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.Query;
+import androidx.room.Update;
 
 import com.example.proyecto.Room.Modelo.Evento;
+
+import java.util.List;
 
 @Dao
 public interface EventoDAO {
     @Insert
     void insertEvent(Evento evento);
+
+    @Query("SELECT * FROM evento")
+    List<Evento> getAll();
+
+    @Query("SELECT * FROM evento WHERE ide = (:idEvento)")
+    List<Evento> getEvent(int idEvento);
+
+    @Update
+    void updateEvent(Evento evento);
 
     @Delete
     void deleteEvent(Evento evento);

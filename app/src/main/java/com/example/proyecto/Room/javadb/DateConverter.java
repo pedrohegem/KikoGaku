@@ -13,7 +13,7 @@ public class DateConverter {
     }
     @TypeConverter
     public static Date toDate(String timestamp){
-        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         Date myDate = new Date();
         try {
             myDate = df.parse(timestamp);
@@ -26,5 +26,10 @@ public class DateConverter {
     @TypeConverter
     public static Long toTimestamp(Date date){
         return date == null ? null : date.getTime();
+    }
+    @TypeConverter
+    public static String toString(Date date){
+        String cadena= date.getDay() + "/" + date.getMonth() + "/" + date.getYear();
+        return cadena;
     }
 }

@@ -1,10 +1,13 @@
 package com.example.proyecto;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.proyecto.Json.JsonSingleton;
 import com.example.proyecto.Json.Montana;
 import com.example.proyecto.Json.Municipio;
+import com.example.proyecto.Room.DAO.UsuarioDAO;
+import com.example.proyecto.Room.Modelo.Usuario;
 import com.google.gson.stream.JsonReader;
 
 import android.util.Log;
@@ -39,15 +42,16 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // -- La primera comprobación antes de hacer nada es ver si un usuario está conectado a la aplicación --
+        Log.d("UNO", "----------- INICIO MAIN ACTIVITY---------------");
+
+
         super.onCreate(savedInstanceState);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.appBarMain.toolbar);
-
-        // Cargamos la base de datos (en la primera vez, se crea)
-        AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "database.db").build();
 
         // Cargamos los JSON en la base de datos
         cargarJSON_en_Singleton();
@@ -115,6 +119,5 @@ public class MainActivity extends AppCompatActivity {
         Timestamp timestamp2 = new Timestamp(System.currentTimeMillis());
         Log.d("PITO2",timestamp2.toString());
     }
-
 
 }

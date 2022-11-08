@@ -6,23 +6,19 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.example.proyecto.Json.Montana;
 import com.example.proyecto.Room.DAO.EventoDAO;
-import com.example.proyecto.Room.DAO.EventoMontanaDAO;
 import com.example.proyecto.Room.DAO.UsuarioDAO;
 import com.example.proyecto.Room.Modelo.Evento;
-import com.example.proyecto.Room.Modelo.EventoMontana;
 import com.example.proyecto.Room.Modelo.Usuario;
 
 
-@Database(entities = {Usuario.class, Evento.class, EventoMontana.class}, version = 2, exportSchema = false)
+@Database(entities = {Usuario.class, Evento.class}, version = 3, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase appDataBase;
     private static Context contexto;
 
     public abstract UsuarioDAO usuarioDAO();
     public abstract EventoDAO eventoDAO();
-    public abstract EventoMontanaDAO eventoMontanaDAO();
 
     protected AppDatabase(){
     }

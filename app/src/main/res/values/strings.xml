@@ -30,13 +30,25 @@
     <string name="title_activity_modificar_evento">Modificar evento</string>
 
     <!-- Eventos -->
-    <string name="n_etiqueta_evento">Crear un evento</string>
+    <string name="n_crear_evento">Selecciona el tipo de evento a crear</string>
+    <string name="n_opcion_municipio">Evento de municipio</string>
+    <string name="n_opcion">ó</string>
+    <string name="n_opcion_montana">Evento de montaña</string>
+
+    <string name="n_crear_municipio">Crear un evento de municipio</string>
+    <string name="n_crear_montana">Crear un evento de montaña</string>
     <string name="n_nombre_evento">Nombre del evento</string>
-    <string name="n_localidad_evento">Localidad</string>
+    <string name="n_localidad_evento">Municipio</string>
+    <string name="n_montana_evento">Montaña</string>
+    <string name="n_latitud_evento">Latitud</string>
+    <string name="n_longitud_evento">Longitud</string>
     <string name="n_fecha_inicio_evento">Fecha de inicio</string>
     <string name="n_fecha_fin_evento">Fecha de fin</string>
     <string name="n_descripcion_evento">Descripición del evento</string>
     <string name="n_etiqueta_crear">Crear evento</string>
+
+    <string name="n_modificar">Modificar un evento</string>
+    <string name="n_etiqueta_modificar">Modificar evento</string>
 
     <string name="n_eliminar_evento">Eliminar evento</string>
 
@@ -48,6 +60,17 @@
     <string name="n_detalles_fecha_inicio">Fecha de inicio:</string>
     <string name="n_detalles_fecha_fin">Fecha de fin:</string>
     <string name="n_detalles_descripcion">Descripción:</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
-
+    <string-array name="planets_array">
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Earth</item>
+        <item>Mars</item>
+        <item>Jupiter</item>
+        <item>Saturn</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
+    </string-array>
 </resources>
