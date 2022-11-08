@@ -1,8 +1,9 @@
 package com.example.proyecto.ui.inicio;
 
 
-
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -13,8 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -37,6 +40,10 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
     private TextView textViewTempMax;
     private TextView textViewTempDesc;
 
+    private Double latitud;
+    private Double longitud;
+
+
     private FragmentInicioBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -45,11 +52,9 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
         binding = FragmentInicioBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-
         APIManager apiManager = new APIManager(this);
-        Double coords[] = getLocationCoords();
-        apiManager.getEventWeather(coords[0], coords[1]);
-
+        getLocationCoords();
+        apiManager.getEventWeather(latitud, longitud);
 
         return root;
     }
@@ -67,31 +72,28 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
         binding = null;
     }
 
-    public Double[] getLocationCoords() {
 
-        // Obtain latitude and longitude from current location
-        LocationManager lm = (LocationManager)getActivity().getSystemService(getContext().LOCATION_SERVICE);
-        @SuppressLint("MissingPermission") Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+    public void getLocationCoords() {
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
-        return new Double[] {location.getLatitude(), location.getLongitude()};
-    }
+            LocationManager lm = (LocationManager) getActivity().getSystemService(getContext().LOCATION_SERVICE);
+            Location location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
-    public String getLocality(Double[] coords) {
-        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
-        List<Address> addresses = null;
-        try {
-            addresses = geocoder.getFromLocation(coords[0], coords[1], 1);
-        } catch (IOException e) {
-            e.printStackTrace();
+            if(location == null) { // Network provider no funciona. Se establecen las coordenadas de Madrid por defecto
+                String noPerms = "No se ha podido acceder a tu localización. Se ha establecido Madrid por defecto. Compruebe el estado del GPS.";
+                Toast.makeText(getContext(), noPerms, Toast.LENGTH_LONG).show();
+                latitud = 40.4165;
+                longitud = -3.7026;
+            } else {
+                latitud = location.getLatitude();
+                longitud = location.getLongitude();
+            }
         }
-        assert addresses != null;
-        return addresses.get(0).getLocality();
     }
 
     @Override
     public void onGetWeatherSuccess(Weather weather) {
-        Log.d("CALLBACK", weather.ciudad);
-
         textViewCiudad = binding.textViewCiudad;
         textViewTemp = binding.textViewTemp;
         textViewTempMin = binding.textViewTempMin;
@@ -107,6 +109,7 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
 
     @Override
     public void onGetWeatherFailure() {
-
+        String noPerms = "No se ha podido acceder al tiempo de la localización actual. Comprueba tu conexión a Internet";
+        Toast.makeText(getContext(), noPerms, Toast.LENGTH_LONG).show();
     }
 }
