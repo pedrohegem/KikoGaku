@@ -3,12 +3,12 @@ package com.example.proyecto.ui.inicio;
 
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,22 +17,25 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
 
+import com.example.proyecto.utils.APIManagerDelegate;
 import com.example.proyecto.R;
-import com.example.proyecto.Json.Montana;
+import com.example.proyecto.Room.Modelo.Weather;
 import com.example.proyecto.databinding.FragmentInicioBinding;
 import com.example.proyecto.ui.ListaEventos.EventoFragment;
-import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
+import com.example.proyecto.utils.APIManager;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-public class InicioFragment extends Fragment {
+public class InicioFragment extends Fragment implements APIManagerDelegate {
+
+    private TextView textViewCiudad;
+    private TextView textViewTemp;
+    private TextView textViewTempMin;
+    private TextView textViewTempMax;
+    private TextView textViewTempDesc;
 
     private FragmentInicioBinding binding;
 
@@ -42,8 +45,11 @@ public class InicioFragment extends Fragment {
         binding = FragmentInicioBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textInicio;
-        textView.setText(getLocality(getLocationCoords()));
+
+        APIManager apiManager = new APIManager(this);
+        Double coords[] = getLocationCoords();
+        apiManager.getEventWeather(coords[0], coords[1]);
+
 
         return root;
     }
@@ -80,5 +86,27 @@ public class InicioFragment extends Fragment {
         }
         assert addresses != null;
         return addresses.get(0).getLocality();
+    }
+
+    @Override
+    public void onGetWeatherSuccess(Weather weather) {
+        Log.d("CALLBACK", weather.ciudad);
+
+        textViewCiudad = binding.textViewCiudad;
+        textViewTemp = binding.textViewTemp;
+        textViewTempMin = binding.textViewTempMin;
+        textViewTempMax = binding.textViewTempMax;
+        textViewTempDesc = binding.textViewDesc;
+
+        textViewCiudad.setText(weather.ciudad);
+        textViewTemp.setText(weather.temperatura + "º");
+        textViewTempMin.setText(weather.tempMinima + "º /");
+        textViewTempMax.setText(weather.tempMaxima + "º");
+        textViewTempDesc.setText(weather.descEstadoTiempo);
+    }
+
+    @Override
+    public void onGetWeatherFailure() {
+
     }
 }
