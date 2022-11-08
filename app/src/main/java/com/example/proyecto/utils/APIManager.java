@@ -2,7 +2,6 @@ package com.example.proyecto.utils;
 
 import android.util.Log;
 
-import com.example.proyecto.APIManagerDelegate;
 import com.example.proyecto.Room.Modelo.Weather;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -30,6 +29,7 @@ public class APIManager {
         RequestParams requestParams = new RequestParams();
         requestParams.put("q", city);
         requestParams.put("appid", API_KEY);
+        requestParams.put("lang", "es");
         weatherNetworking(requestParams);
     }
 
@@ -39,6 +39,7 @@ public class APIManager {
         requestParams.put("lat", lat);
         requestParams.put("lon", lon);
         requestParams.put("appid", API_KEY);
+        requestParams.put("lang", "es");
         weatherNetworking(requestParams);
     }
 
@@ -48,7 +49,7 @@ public class APIManager {
         client.get(WEATHER_URL, requestParams, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess (int statusCode, Header[] headers, JSONObject response) {
-                Log.d("Clima", "onSuccess: " + response.toString());
+                Log.d("WeatherCall", "onSuccess: " + response.toString());
                 try {
                     delegate.onGetWeatherSuccess(Weather.fromJson(response));
                 } catch (JSONException e) {
@@ -58,7 +59,7 @@ public class APIManager {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject response) {
-                Log.e("Clima", "onFailure: " + e.toString());
+                Log.e("WeatherCall", "onFailure: " + e.toString());
             }
         });
     }

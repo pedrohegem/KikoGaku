@@ -3,7 +3,6 @@ package com.example.proyecto.ui.inicio;
 
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -18,21 +17,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
 
-import com.example.proyecto.APIManagerDelegate;
+import com.example.proyecto.utils.APIManagerDelegate;
 import com.example.proyecto.R;
-import com.example.proyecto.Json.Montana;
 import com.example.proyecto.Room.Modelo.Weather;
 import com.example.proyecto.databinding.FragmentInicioBinding;
 import com.example.proyecto.ui.ListaEventos.EventoFragment;
 import com.example.proyecto.utils.APIManager;
-import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 

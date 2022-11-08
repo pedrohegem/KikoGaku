@@ -1,4 +1,4 @@
-package com.example.proyecto;
+package com.example.proyecto.utils;
 
 import com.example.proyecto.Room.Modelo.Weather;
 
