@@ -47,7 +47,8 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
 
 
         APIManager apiManager = new APIManager(this);
-        apiManager.getEventWeather(getLocality(getLocationCoords()));
+        Double coords[] = getLocationCoords();
+        apiManager.getEventWeather(coords[0], coords[1]);
 
 
         return root;
@@ -102,5 +103,10 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
         textViewTempMin.setText(weather.tempMinima + "º /");
         textViewTempMax.setText(weather.tempMaxima + "º");
         textViewTempDesc.setText(weather.descEstadoTiempo);
+    }
+
+    @Override
+    public void onGetWeatherFailure() {
+
     }
 }

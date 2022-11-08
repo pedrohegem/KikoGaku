@@ -18,6 +18,9 @@ public class APIManager {
     public APIManagerDelegate delegate = null;
 
     private final String WEATHER_URL = "http://api.openweathermap.org/data/2.5/weather";
+    private final String FORECAST_URL = "http://api.openweathermap.org/data/2.5/forecast";
+
+    // TODO: Ocultar key en local.properties, añadiendola en metadatos del manifest y añadir plugin com.google.secrets_gradle_plugin a build.gradle...etc
     private final String API_KEY = "3c37b8776fd8ba64116ac542be924ff1";
 
     public APIManager(APIManagerDelegate delegate) {
@@ -43,6 +46,16 @@ public class APIManager {
         weatherNetworking(requestParams);
     }
 
+    // Método que parametriza la llamada a la PREDICCIÓN del tiempo de X día en base a la CIUDAD
+    // X será un día de 0 (actual) a 4 de los 5 que devuelve la predicción de la API.
+    public void getEventForecast(String city, int dia) {
+        RequestParams requestParams = new RequestParams();
+        requestParams.put("q", city);
+        requestParams.put("appid", API_KEY);
+        requestParams.put("lang", "es");
+        forecastNetworking(requestParams, dia);
+    }
+
 
     public void weatherNetworking(RequestParams requestParams) {
         AsyncHttpClient client = new AsyncHttpClient();
@@ -60,6 +73,28 @@ public class APIManager {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject response) {
                 Log.e("WeatherCall", "onFailure: " + e.toString());
+                delegate.onGetWeatherFailure();
+            }
+        });
+    }
+
+    public void forecastNetworking(RequestParams requestParams, int dia) {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(FORECAST_URL, requestParams, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess (int statusCode, Header[] headers, JSONObject response) {
+                Log.d("ForecastCall", "onSuccess: " + response.toString());
+                try {
+                    delegate.onGetWeatherSuccess(Weather.fromJson(response, dia));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject response) {
+                Log.e("ForecastCall", "onFailure: " + e.toString());
+                delegate.onGetWeatherFailure();
             }
         });
     }

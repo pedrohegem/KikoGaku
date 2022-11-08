@@ -37,4 +37,23 @@ public class Weather {
         return weather;
     }
 
+    public static Weather fromJson(JSONObject object, int dia) throws JSONException {
+        int index = dia * 8;
+
+        Weather weather = new Weather();
+        weather.ciudad = object.getJSONObject("city").getString("name");
+        weather.temperatura = (int) Math.round(object.getJSONArray("list").getJSONObject(index).getJSONObject("main").getDouble("temp") - 273.15);
+        weather.sensTermica = (int) Math.round(object.getJSONArray("list").getJSONObject(index).getJSONObject("main").getDouble("feels_like") - 273.15);
+        weather.tempMinima = (int) Math.round(object.getJSONArray("list").getJSONObject(index).getJSONObject("main").getDouble("temp_min") - 273.15);
+        weather.tempMaxima = (int) Math.round(object.getJSONArray("list").getJSONObject(index).getJSONObject("main").getDouble("temp_max") - 273.15);
+        weather.presion = object.getJSONArray("list").getJSONObject(index).getJSONObject("main").getInt("pressure");
+        weather.humedad = object.getJSONArray("list").getJSONObject(index).getJSONObject("main").getInt("humidity");
+        weather.velocidadViento = object.getJSONArray("list").getJSONObject(index).getJSONObject("wind").getDouble("speed");
+        weather.estadoTiempo = object.getJSONArray("list").getJSONObject(index).getJSONArray("weather").getJSONObject(0).getString("main");
+        weather.descEstadoTiempo = object.getJSONArray("list").getJSONObject(index).getJSONArray("weather").getJSONObject(0).getString("description");
+        // TODO Set Nombre Icono based on range
+
+        return weather;
+    }
+
 }
