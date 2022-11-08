@@ -71,7 +71,7 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
 
         // Obtain latitude and longitude from current location
         LocationManager lm = (LocationManager)getActivity().getSystemService(getContext().LOCATION_SERVICE);
-        @SuppressLint("MissingPermission") Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        @SuppressLint("MissingPermission") Location location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
         return new Double[] {location.getLatitude(), location.getLongitude()};
     }
