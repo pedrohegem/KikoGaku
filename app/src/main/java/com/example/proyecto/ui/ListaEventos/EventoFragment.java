@@ -20,7 +20,9 @@ import com.example.proyecto.Room.Modelo.Evento;
 import com.example.proyecto.Room.Modelo.EventoMontana;
 import com.example.proyecto.ui.ListaEventos.placeholder.PlaceholderItem;
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -69,6 +71,10 @@ public class EventoFragment extends Fragment {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    for (int i=0; i<5;i++){
+                        AppDatabase.getInstance(getContext()).eventoDAO().insertEvent(new Evento("Evento",i,"Descripcion", Calendar.getInstance().getTime()));
+                        AppDatabase.getInstance(getContext()).eventoMontanaDAO().insertMontana(new EventoMontana("Evento","Madrid","Descripcion", Calendar.getInstance().getTime()));
+                    }
                     List<Evento> eventos = AppDatabase.getInstance(getContext()).eventoDAO().getAll();
                     List<EventoMontana> eventosMontana = AppDatabase.getInstance(getContext()).eventoMontanaDAO().getAll();
                     Log.i("Recoleccion", "eventos: "+eventos.size());
