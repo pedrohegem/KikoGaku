@@ -1,33 +1,24 @@
 package com.example.proyecto;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.proyecto.Json.JsonSingleton;
 import com.example.proyecto.Json.Montana;
 import com.example.proyecto.Json.Municipio;
-import com.example.proyecto.Room.DAO.UsuarioDAO;
-import com.example.proyecto.Room.Modelo.Usuario;
-import com.example.proyecto.ui.Eventos.CrearEvento;
-import com.example.proyecto.ui.Eventos.CrearEventoActivity;
 import com.google.gson.stream.JsonReader;
 
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 
-import com.example.proyecto.Room.AppDatabase;
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
 
 import com.example.proyecto.databinding.ActivityMainBinding;
 import com.google.gson.Gson;
@@ -81,9 +72,6 @@ public class MainActivity extends AppCompatActivity {
                 fragmentTransaction.add(R.id.nav_host_fragment_content_main, crearEvento).commit();*/
 
                 navController.navigate(R.id.nav_crear_evento);
-
-                //Intent intent = new Intent(getApplicationContext(), CrearEventoActivity.class);
-                //startActivity(intent);
             }
         });
     }
