@@ -8,6 +8,8 @@ import com.example.proyecto.Json.Montana;
 import com.example.proyecto.Json.Municipio;
 import com.example.proyecto.Room.DAO.UsuarioDAO;
 import com.example.proyecto.Room.Modelo.Usuario;
+import com.example.proyecto.ui.Eventos.CrearEvento;
+import com.example.proyecto.ui.Eventos.CrearEventoActivity;
 import com.google.gson.stream.JsonReader;
 
 import android.util.Log;
@@ -17,6 +19,8 @@ import android.view.Menu;
 import com.example.proyecto.Room.AppDatabase;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -56,13 +60,6 @@ public class MainActivity extends AppCompatActivity {
         // Cargamos los JSON en la base de datos
         cargarJSON_en_Singleton();
 
-        binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                //        .setAction("Action", null).show();
-            }
-        });
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each
@@ -75,6 +72,20 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+        binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*CrearEvento crearEvento = new CrearEvento();
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(R.id.nav_host_fragment_content_main, crearEvento).commit();*/
+
+                navController.navigate(R.id.nav_crear_evento);
+
+                //Intent intent = new Intent(getApplicationContext(), CrearEventoActivity.class);
+                //startActivity(intent);
+            }
+        });
     }
 
 
