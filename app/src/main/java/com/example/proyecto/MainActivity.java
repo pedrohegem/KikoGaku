@@ -1,5 +1,6 @@
 package com.example.proyecto;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -11,8 +12,10 @@ import com.example.proyecto.Room.Modelo.Usuario;
 import com.google.gson.stream.JsonReader;
 
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.Toast;
 
 import com.example.proyecto.Room.AppDatabase;
 import com.google.android.material.navigation.NavigationView;
@@ -39,11 +42,13 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // -- La primera comprobación antes de hacer nada es ver si un usuario está conectado a la aplicación --
         Log.d("UNO", "----------- INICIO MAIN ACTIVITY---------------");
+        mContext = getApplicationContext();
         validarConexion();
 
 
@@ -84,6 +89,39 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.cerrarSesion) {
+            // Se invoca un metodo del DAO usuario que se encarga de modificar el estadoConectado a false del usuario. De esta forma, al
+            UsuarioDAO usuarioDAO = AppDatabase.getInstance(getApplicationContext()).usuarioDAO();
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    AppDatabase.getInstance(mContext).usuarioDAO().activarEstadoConexion(false, AppDatabase.getUsuario().getIdu());
+                    // Se pone a null el usuario del singleton AppDataBase
+                    AppDatabase.setUsuario(null);
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(mContext, "Se ha cerrado sesión", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    // Se inicia la actividad Main para comprobar que, efectivamente, el usuario ha cerrado sesión
+                    startActivity(new Intent(mContext, InicioSesion.class));
+                }
+            }).start();
+
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -137,8 +175,9 @@ public class MainActivity extends AppCompatActivity {
                     // Si existe un usuario conectado a la aplicacion, entonces se añade en el Singleton
                     AppDatabase.getInstance(getApplicationContext()).setUsuario(usuario);
                 }
-                //Log.d("MODIFICAR", "Username: " + AppDatabase.getInstance(getApplicationContext()).getUsuario().getUsername() + " -  " + AppDatabase.getInstance(getApplicationContext()).getUsuario().getPassword());
             }
         }).start();
     }
+
+
 }
