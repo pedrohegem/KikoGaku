@@ -1,11 +1,16 @@
 package com.example.proyecto.ui.ListaEventos;
 
+
+import static android.app.PendingIntent.getActivity;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.proyecto.R;
 import com.example.proyecto.databinding.EventoListaBinding;
@@ -21,14 +26,15 @@ public class ListaEventosAdapter extends RecyclerView.Adapter<ListaEventosAdapte
 
     private final List<PlaceholderItem> mValues;
 
+
     public ListaEventosAdapter(List<PlaceholderItem> items) {
         mValues = items;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-        return new ViewHolder(EventoListaBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.evento_lista, parent, false);
+        return new ViewHolder(view);
 
     }
 
