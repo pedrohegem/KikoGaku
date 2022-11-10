@@ -42,12 +42,14 @@ import java.util.Date;
  */
 public class CrearEventoMunicipio extends Fragment{
 
+    private Context mContext;
+
     private MainActivity main;
 
     private EditText nombreEvento, fechaEvento, descripcionEvento, localidadEvento;
     private Button botonCrear;
 
-    private Evento evento;
+    int idEvento;
 
     String localidad;
 
@@ -144,28 +146,25 @@ public class CrearEventoMunicipio extends Fragment{
                     snackbar.show();
                 } else {
                     Log.d("LOCALIDAD", "Localidad es" + localidad);
-                    evento = new Evento(nombre, localidad, descripcion, fecha, true);
-                    EventoDAO eventoDAO = AppDatabase.getInstance(getContext()).eventoDAO();
-                    try {
+                    Evento evento = new Evento(0, nombre, localidad, descripcion, fecha, true);
+                    EventoDAO eventoDAO = AppDatabase.getInstance(mContext).eventoDAO();
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                eventoDAO.insertEvent(evento);
-                                evento = eventoDAO.getEvent(evento.getTitulo()).get(0);
+                                idEvento = (int)eventoDAO.insertEvent(evento);
+                                Log.d("IdCreado", idEvento+"");
                             }
-                        }).start();
 
+                        }).start();
                         DetallesEvento detallesEvento = new DetallesEvento();
                         Bundle bundle = new Bundle();
-                        bundle.putInt("idEvento", evento.getIde());
+
+                        bundle.putInt("idEvento", idEvento);
                         detallesEvento.setArguments(bundle);
 
                         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                         fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, detallesEvento).commit();
 
-                    } catch (Exception exception) {
-                        exception.printStackTrace();
-                    }
                 }
             }
         });
@@ -188,6 +187,7 @@ public class CrearEventoMunicipio extends Fragment{
     @Override
     public void onAttach(@NonNull Context context) {
         main = (MainActivity) context;
+        mContext = context;
         super.onAttach(context);
     }
 

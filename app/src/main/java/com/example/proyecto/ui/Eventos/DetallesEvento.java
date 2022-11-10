@@ -34,6 +34,8 @@ public class DetallesEvento extends Fragment {
 
     private MainActivity main;
 
+    private Context mContext;
+
     TextView nombreEvento, localidadEvento, fechaEvento, descripcionEvento;
     private Button botonModificar, botonBorrar;
 
@@ -47,35 +49,22 @@ public class DetallesEvento extends Fragment {
         // Required empty public constructor
     }
 
-    public static DetallesEvento newInstance() {
+    public static DetallesEvento newInstance(int IdEvento) {
         DetallesEvento fragment = new DetallesEvento();
+        Bundle args = new Bundle();
+        args.putInt("idEvento", IdEvento);
+        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            idEvento = getArguments().getInt("idEvento", 0);
-
-            EventoDAO eventoDao = AppDatabase.getInstance(getContext()).eventoDAO();
-            try {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        List<Evento> eventos = eventoDao.getEvent(idEvento);
-                        if(eventos.isEmpty() == true){
-                            //todo gestionar error
-                            Log.d("ERROR", "AAAAAAAAAAAAAAAAAAAA");
-                        }
-                        else{
-                            evento = eventos.get(0);
-                        }
-                    }
-                }).start();
-            } catch (Exception exception){
-                exception.printStackTrace();
-            }
+        if(getArguments() != null){
+            idEvento = getArguments().getInt("idEvento");
+        }
+        else{
+            Log.d("No", "Tristeza");
         }
     }
 
@@ -94,36 +83,43 @@ public class DetallesEvento extends Fragment {
         botonModificar = binding.BotonModificar;
         botonBorrar = binding.BotonEliminar;
 
-        nombreEvento.setText(evento.getTitulo());
+        Log.d("IdEvento", idEvento+"");
 
-        //todo buscar localidad con el JSON
-        localidadEvento.setText(evento.getUbicacion());
+        EventoDAO eventoDao = AppDatabase.getInstance(mContext).eventoDAO();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    List<Evento> eventos = eventoDao.getEvent(idEvento);
+                    if (eventos.isEmpty() == true) {
+                        //todo gestionar error
+                        Log.d("ERROR", "AAAAAAAAAAAAAAAAAAAA");
+                    } else {
+                        evento = eventos.get(0);
 
-        fechaEvento.setText(DateConverter.toString(evento.getFecha()));
-        descripcionEvento.setText(evento.getDescripcion());
+                        nombreEvento.setText(evento.getTitulo());
 
-        botonModificar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ModificarEvento modificarEvento = new ModificarEvento();
-                Bundle bundle = new Bundle();
-                bundle.putInt("idEvento", idEvento);
-                /*bundle.putString("nombreEvento", evento.getTitulo());
+                        //todo buscar localidad con el JSON
+                        localidadEvento.setText(evento.getUbicacion());
 
-                //todo obtener localidad con el JSON
-                bundle.putString("localidadEvento", evento.getUbicacionCode());
+                        fechaEvento.setText(DateConverter.toString(evento.getFecha()));
+                        descripcionEvento.setText(evento.getDescripcion());
+                        botonModificar.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                ModificarEvento modificarEvento = new ModificarEvento();
+                                Bundle bundle = new Bundle();
+                                bundle.putInt("idEvento", idEvento);
 
-                bundle.putString("descripcionEvento", evento.getDescripcion());
-                bundle.putBoolean("esMunicipio", evento.getEsMunicipio());
-                bundle.putString("fechaEvento", DateConverter.toString(evento.getFecha()));*/
+                                modificarEvento.setArguments(bundle);
+                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, modificarEvento).commit();
 
-                modificarEvento.setArguments(bundle);
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, modificarEvento).commit();
-
-                //Navigation.findNavController(main, R.id.nav_host_fragment_content_main).navigate();
-            }
-        });
+                                //Navigation.findNavController(main, R.id.nav_host_fragment_content_main).navigate();
+                            }
+                        });
+                    }
+                }
+            }).start();
 
         botonBorrar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,66 +138,69 @@ public class DetallesEvento extends Fragment {
         return root;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    /*
+        @Override
+        public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+            super.onViewCreated(view, savedInstanceState);
 
-        nombreEvento = binding.EtiquetaDetalles;
-        localidadEvento = binding.DetallesLocalidad;
-        fechaEvento = binding.DetallesFechaDeInicio;
-        descripcionEvento = binding.DetallesDescripcion;
+            nombreEvento = binding.EtiquetaDetalles;
+            localidadEvento = binding.DetallesLocalidad;
+            fechaEvento = binding.DetallesFechaDeInicio;
+            descripcionEvento = binding.DetallesDescripcion;
 
-        botonModificar = binding.BotonModificar;
-        botonBorrar = binding.BotonEliminar;
+            botonModificar = binding.BotonModificar;
+            botonBorrar = binding.BotonEliminar;
 
-        nombreEvento.setText(evento.getTitulo());
+            nombreEvento.setText(evento.getTitulo());
 
-        //todo buscar localidad con el JSON
-        localidadEvento.setText(evento.getUbicacion());
+            //todo buscar localidad con el JSON
+            localidadEvento.setText(evento.getUbicacion());
 
-        fechaEvento.setText(DateConverter.toString(evento.getFecha()));
-        descripcionEvento.setText(evento.getDescripcion());
+            fechaEvento.setText(DateConverter.toString(evento.getFecha()));
+            descripcionEvento.setText(evento.getDescripcion());
 
-        botonModificar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ModificarEvento modificarEvento = new ModificarEvento();
-                Bundle bundle = new Bundle();
-                bundle.putInt("idEvento", idEvento);
-                /*bundle.putString("nombreEvento", evento.getTitulo());
+            botonModificar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ModificarEvento modificarEvento = new ModificarEvento();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("idEvento", idEvento);
+                    /*bundle.putString("nombreEvento", evento.getTitulo());
 
-                //todo obtener localidad con el JSON
-                bundle.putString("localidadEvento", evento.getUbicacionCode());
+                    //todo obtener localidad con el JSON
+                    bundle.putString("localidadEvento", evento.getUbicacionCode());
 
-                bundle.putString("descripcionEvento", evento.getDescripcion());
-                bundle.putBoolean("esMunicipio", evento.getEsMunicipio());
-                bundle.putString("fechaEvento", DateConverter.toString(evento.getFecha()));*/
+                    bundle.putString("descripcionEvento", evento.getDescripcion());
+                    bundle.putBoolean("esMunicipio", evento.getEsMunicipio());
+                    bundle.putString("fechaEvento", DateConverter.toString(evento.getFecha()));
 
-                modificarEvento.setArguments(bundle);
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, modificarEvento).commit();
+                    modificarEvento.setArguments(bundle);
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, modificarEvento).commit();
 
-                //Navigation.findNavController(main, R.id.nav_host_fragment_content_main).navigate();
-            }
-        });
+                    //Navigation.findNavController(main, R.id.nav_host_fragment_content_main).navigate();
+                }
+            });
 
-        botonBorrar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int ide = idEvento;
-                DeleteEventDialog deleteDialogFragment = new DeleteEventDialog();
+            botonBorrar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int ide = idEvento;
+                    DeleteEventDialog deleteDialogFragment = new DeleteEventDialog();
 
-                Bundle bundle = new Bundle();
-                bundle.putInt("idEvento", ide);
-                deleteDialogFragment.setArguments(bundle);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("idEvento", ide);
+                    deleteDialogFragment.setArguments(bundle);
 
-                deleteDialogFragment.show(getChildFragmentManager(), "DeleteDialogFragment");
-            }
-        });
-    }
+                    deleteDialogFragment.show(getChildFragmentManager(), "DeleteDialogFragment");
+                }
+            });
+        }
+        */
     @Override
     public void onAttach(@NonNull Context context) {
         main = (MainActivity) context;
+        mContext = context;
         super.onAttach(context);
     }
 }

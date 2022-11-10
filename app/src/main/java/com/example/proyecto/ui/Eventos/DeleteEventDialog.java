@@ -47,8 +47,11 @@ public class DeleteEventDialog extends androidx.fragment.app.DialogFragment {
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                Evento e = new Evento("alabama", "petaceta", "lols", new Date(), false);
+                                int ide = getArguments().getInt("idEvento", 0);
+                                Evento e;
                                 EventoDAO eventoDao = AppDatabase.getInstance(mContext).eventoDAO();
+                                e = eventoDao.getEvent(ide).get(0);
+
                                 eventoDao.deleteEvent(e);
 
                                 startActivity(new Intent(mContext, MainActivity.class));

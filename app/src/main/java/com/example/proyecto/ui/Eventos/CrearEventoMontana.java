@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -156,7 +157,7 @@ public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSe
                 } else {
                     ubicacion = JsonSingleton.getInstance().buscarMontana(localidad).getCodigo();
 
-                    evento = new Evento(nombre, localidad, descripcion, fecha, false);
+                    evento = new Evento(0, nombre, localidad, descripcion, fecha, false);
                     EventoDAO eventoDAO = AppDatabase.getInstance(getContext()).eventoDAO();
                     try {
                         new Thread(new Runnable() {
@@ -164,16 +165,19 @@ public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSe
                             public void run() {
                                 eventoDAO.insertEvent(evento);
                                 evento = eventoDAO.getEvent(evento.getTitulo()).get(0);
+
+                                DetallesEvento detallesEvento = new DetallesEvento();
+                                Bundle bundle = new Bundle();
+
+                                Log.d("eeeeeee", evento.getIde()+"jejejej");
+                                bundle.putInt("idEvento", evento.getIde());
+                                detallesEvento.setArguments(bundle);
+
+                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, detallesEvento).commit();
                             }
                         }).start();
 
-                        DetallesEvento detallesEvento = new DetallesEvento();
-                        Bundle bundle = new Bundle();
-                        bundle.putInt("idEvento", evento.getIde());
-                        detallesEvento.setArguments(bundle);
-
-                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                        fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, detallesEvento).commit();
                     } catch (Exception exception) {
                         exception.printStackTrace();
                     }
@@ -266,7 +270,7 @@ public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSe
                 } else {
                     ubicacion = JsonSingleton.getInstance().buscarMontana(localidad).getCodigo();
 
-                    evento = new Evento(nombre, localidad, descripcion, fecha, false);
+                    evento = new Evento(0, nombre, localidad, descripcion, fecha, false);
                     EventoDAO eventoDAO = AppDatabase.getInstance(getContext()).eventoDAO();
                     try {
                         new Thread(new Runnable() {

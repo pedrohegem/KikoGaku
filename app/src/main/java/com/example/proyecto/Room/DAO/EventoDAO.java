@@ -13,7 +13,7 @@ import java.util.List;
 @Dao
 public interface EventoDAO {
     @Insert
-    void insertEvent(Evento evento);
+    long insertEvent(Evento evento);
 
     @Query("SELECT * FROM evento")
     List<Evento> getAll();

@@ -160,7 +160,7 @@ public class ModificarEvento extends Fragment implements AdapterView.OnItemSelec
                         }
                         else {
                             //ubicacion = JsonSingleton.getInstance().buscarMunicipio(localidad).getCodigo();
-                            Evento e = new Evento(nombre, localidad, descripcion, fecha, true);
+                            Evento e = new Evento(0, nombre, localidad, descripcion, fecha, true);
                             e.setIde(evento.getIde());
                             EventoDAO eventoDAO = AppDatabase.getInstance(getContext()).eventoDAO();
                             try {
@@ -182,7 +182,7 @@ public class ModificarEvento extends Fragment implements AdapterView.OnItemSelec
                         }
                         else {
                             //ubicacion = JsonSingleton.getInstance().buscarMontana(localidad).getCodigo();
-                            Evento e = new Evento(nombre, localidad, descripcion, fecha, false);
+                            Evento e = new Evento(0, nombre, localidad, descripcion, fecha, false);
                             e.setIde(evento.getIde());
                             EventoDAO eventoDAO = AppDatabase.getInstance(getContext()).eventoDAO();
                             try {

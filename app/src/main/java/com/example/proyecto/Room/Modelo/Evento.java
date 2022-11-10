@@ -39,7 +39,8 @@ public class Evento {
     /*@Ignore
     private Weather weather;*/
 
-    public Evento(String titulo, String ubicacion, String descripcion, Date fecha, boolean esMunicipio) {
+    public Evento(int ide, String titulo, String ubicacion, String descripcion, Date fecha, boolean esMunicipio) {
+        this.ide = ide;
         this.titulo = titulo;
         this.ubicacion = ubicacion;
         this.descripcion = descripcion;
