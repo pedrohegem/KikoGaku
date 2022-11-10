@@ -1,41 +1,21 @@
 package com.example.proyecto.ui.Eventos;
 
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.Spinner;
 
-import com.example.proyecto.Json.JsonSingleton;
 import com.example.proyecto.MainActivity;
 import com.example.proyecto.R;
-import com.example.proyecto.Room.AppDatabase;
-import com.example.proyecto.Room.DAO.EventoDAO;
-import com.example.proyecto.Room.Modelo.Evento;
-import com.example.proyecto.Room.javadb.DateConverter;
 import com.example.proyecto.databinding.FragmentCrearEventoBinding;
-import com.example.proyecto.databinding.FragmentCrearEventoMontanaBinding;
-import com.example.proyecto.databinding.FragmentCrearEventoMunicipioBinding;
-import com.example.proyecto.ui.DatePickerFragment;
-import com.google.android.material.snackbar.Snackbar;
-
-import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,7 +25,7 @@ import java.util.Date;
 public class CrearEvento extends Fragment{
 
     private Context mContext;
-    private MainActivity main;
+    private CrearEventoActivity main;
 
     private FragmentCrearEventoBinding binding;
 
@@ -73,34 +53,9 @@ public class CrearEvento extends Fragment{
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        /*binding = FragmentCrearEventoBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
-
-        Button BotonCrearMunicipio = binding.CrearMunicipio;
-        Button BotonCrearMontana = binding.CrearMontana;
-
-
-        BotonCrearMunicipio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CrearEventoMunicipio fragmentoCrearMunicipio = new CrearEventoMunicipio();
-                FragmentManager fragmentManager = main.getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, fragmentoCrearMunicipio).commit();
-            }
-        });
-
-        BotonCrearMontana.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CrearEventoMunicipio fragmentoCrearMunicipio = new CrearEventoMunicipio();
-                FragmentManager fragmentManager = main.getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, fragmentoCrearMunicipio).commit();
-            }
-        });
-        return root*/
-        return inflater.inflate(R.layout.fragment_crear_evento, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentCrearEventoBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
@@ -112,27 +67,21 @@ public class CrearEvento extends Fragment{
         BotonCrearMunicipio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*CrearEventoMunicipio fragmentoCrearMunicipio = new CrearEventoMunicipio();
-                FragmentManager fragmentManager = main.getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, fragmentoCrearMunicipio).commit();
-                */
-                Navigation.findNavController(v).navigate(R.id.nav_crear_municipio);
+                    NavHostFragment.findNavController(CrearEvento.this).navigate(R.id.action_crearEvento_to_crearEventoMunicipio2);
             }
         });
 
         BotonCrearMontana.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CrearEventoMontana fragmentoCrearMontana = new CrearEventoMontana();
-                FragmentManager fragmentManager = main.getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, fragmentoCrearMontana).commit();
+                    NavHostFragment.findNavController(CrearEvento.this).navigate(R.id.action_crearEvento_to_crearEventoMontana2);
             }
         });
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
-        main = (MainActivity) context;
+        main = (CrearEventoActivity) context;
         super.onAttach(context);
     }
 

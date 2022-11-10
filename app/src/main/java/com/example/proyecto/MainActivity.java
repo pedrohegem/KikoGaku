@@ -1,10 +1,12 @@
 package com.example.proyecto;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.proyecto.Json.JsonSingleton;
 import com.example.proyecto.Json.Montana;
 import com.example.proyecto.Json.Municipio;
+import com.example.proyecto.ui.Eventos.CrearEventoActivity;
 import com.google.gson.stream.JsonReader;
 
 import android.util.Log;
@@ -71,7 +73,10 @@ public class MainActivity extends AppCompatActivity {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.add(R.id.nav_host_fragment_content_main, crearEvento).commit();*/
 
-                navController.navigate(R.id.nav_crear_evento);
+                //navController.navigate(R.id.nav_crear_evento);
+
+                Intent i = new Intent(getApplicationContext(), CrearEventoActivity.class);
+                startActivity(i);
             }
         });
     }

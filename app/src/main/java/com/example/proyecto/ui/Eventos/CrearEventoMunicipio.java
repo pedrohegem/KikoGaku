@@ -44,7 +44,7 @@ public class CrearEventoMunicipio extends Fragment{
 
     private Context mContext;
 
-    private MainActivity main;
+    private CrearEventoActivity main;
 
     private EditText nombreEvento, fechaEvento, descripcionEvento, localidadEvento;
     private Button botonCrear;
@@ -187,7 +187,7 @@ public class CrearEventoMunicipio extends Fragment{
 
     @Override
     public void onAttach(@NonNull Context context) {
-        main = (MainActivity) context;
+        main = (CrearEventoActivity) context;
         mContext = context;
         super.onAttach(context);
     }

@@ -40,7 +40,7 @@ import java.util.Date;
  * create an instance of this fragment.
  */
 public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSelectedListener{
-    private MainActivity main;
+    private CrearEventoActivity main;
 
     private EditText nombreEvento, fechaEvento, descripcionEvento;
     private Spinner localidadEvento;
@@ -169,7 +169,6 @@ public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSe
                                 DetallesEvento detallesEvento = new DetallesEvento();
                                 Bundle bundle = new Bundle();
 
-                                Log.d("eeeeeee", evento.getIde()+"jejejej");
                                 bundle.putInt("idEvento", evento.getIde());
                                 detallesEvento.setArguments(bundle);
 
@@ -307,7 +306,7 @@ public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSe
 
     @Override
     public void onAttach(@NonNull Context context) {
-        main = (MainActivity) context;
+        main = (CrearEventoActivity) context;
         super.onAttach(context);
     }
 
