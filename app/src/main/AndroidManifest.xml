@@ -13,7 +13,7 @@
         android:theme="@style/Theme.Proyecto"
         tools:targetApi="31">
         <activity
-            android:name=".ui.ListaEventos.Borrate"
+            android:name=".ui.ListaEventos.DetallesEventoActivity"
             android:exported="false"
             android:label="@string/title_activity_borrate"
             android:theme="@style/Theme.Proyecto.NoActionBar">

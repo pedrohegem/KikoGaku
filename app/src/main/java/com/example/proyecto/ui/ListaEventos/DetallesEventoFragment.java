@@ -10,12 +10,12 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.proyecto.R;
-import com.example.proyecto.databinding.FragmentFirstBinding;
+import com.example.proyecto.databinding.FragmentDetallesEventoBinding;
 
 
-public class FirstFragment extends Fragment {
+public class DetallesEventoFragment extends Fragment {
 
-    private FragmentFirstBinding binding;
+    private FragmentDetallesEventoBinding binding;
 
     @Override
     public View onCreateView(
@@ -23,7 +23,7 @@ public class FirstFragment extends Fragment {
             Bundle savedInstanceState
     ) {
 
-        binding = FragmentFirstBinding.inflate(inflater, container, false);
+        binding = FragmentDetallesEventoBinding.inflate(inflater, container, false);
         return binding.getRoot();
 
     }
@@ -34,8 +34,7 @@ public class FirstFragment extends Fragment {
         binding.buttonFirst.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavHostFragment.findNavController(FirstFragment.this)
-                        .navigate(R.id.action_FirstFragment_to_SecondFragment);
+                //Boton
             }
         });
     }

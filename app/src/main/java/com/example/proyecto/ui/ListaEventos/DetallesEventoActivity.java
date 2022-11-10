@@ -2,7 +2,7 @@ package com.example.proyecto.ui.ListaEventos;
 
 import android.os.Bundle;
 
-import com.example.proyecto.databinding.ActivityBorrateBinding;
+import com.example.proyecto.databinding.ActivityDetallesEventoBinding;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,16 +17,16 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.proyecto.R;
 
-public class Borrate extends AppCompatActivity {
+public class DetallesEventoActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
-    private ActivityBorrateBinding binding;
+    private ActivityDetallesEventoBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityBorrateBinding.inflate(getLayoutInflater());
+        binding = ActivityDetallesEventoBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.toolbar);

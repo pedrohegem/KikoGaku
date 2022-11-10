@@ -1,10 +1,7 @@
 package com.example.proyecto.ui.ListaEventos;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -26,10 +23,7 @@ import com.example.proyecto.Room.Modelo.EventoMontana;
 import com.example.proyecto.databinding.EventoListaBinding;
 import com.example.proyecto.ui.ListaEventos.placeholder.PlaceholderItem;
 
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -148,7 +142,7 @@ public class EventoFragment extends Fragment {
 
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(mContext,Borrate.class);
+                    Intent intent = new Intent(mContext, DetallesEventoActivity.class);
                     intent.putExtra("EventoId",holder.mItem.id);
                     intent.putExtra("Evento?",holder.mItem.evento);
                     intent.putExtra("Fecha",holder.mItem.fecha);
