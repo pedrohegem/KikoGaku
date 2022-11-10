@@ -32,22 +32,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/EtiquetaCrearEvento">
 
-                    <Spinner
-                        android:id="@+id/Spinner"
-                        android:layout_width="210dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="40dp"
-                        android:background="@color/white"
-                        android:ems="10"
-                        android:hint="@string/n_localidad_evento"
-                        android:inputType="textPersonName"
-                        android:minHeight="48dp"
-                        android:textColor="@color/black"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.505"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/InputNombreEvento" />
-
                     <EditText
                         android:id="@+id/InputNombreEvento"
                         android:layout_width="wrap_content"
@@ -61,6 +45,22 @@
                         android:textColor="@color/black"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.505"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/inputLocalidad"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="128dp"
+                        android:background="@color/white"
+                        android:ems="10"
+                        android:hint="@string/n_nombre_evento"
+                        android:inputType="textPersonName"
+                        android:minHeight="48dp"
+                        android:textColor="@color/black"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.507"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -82,7 +82,6 @@
                         android:id="@+id/InputFechaEvento"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="40dp"
                         android:background="@color/white"
                         android:clickable="true"
                         android:ems="10"
@@ -94,7 +93,7 @@
 
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/Spinner" />
+                        tools:layout_editor_absoluteY="216dp" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

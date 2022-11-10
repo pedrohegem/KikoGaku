@@ -81,7 +81,6 @@ public class CrearEventoMunicipio extends Fragment implements AdapterView.OnItem
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            Log.d("Lols", "EEEEEEEEEEEEEEEEEEEE");
             nombreM = getArguments().getString("NombreEvento");
             descripcionM = getArguments().getString("DescripcionEvento");
         }
@@ -99,13 +98,13 @@ public class CrearEventoMunicipio extends Fragment implements AdapterView.OnItem
         localidadEvento = binding.Spinner;
         localidadEvento.setOnItemSelectedListener(this);
 
-        ArrayList<String> ubicaciones = new ArrayList<String>();
+        ArrayList<String> ubicaciones = new ArrayList<String>(JsonSingleton.getInstance().municipioMap.keySet());
+        String[] listaUbicaciones =  new String[ubicaciones.size()];
+        listaUbicaciones = ubicaciones.toArray(listaUbicaciones);
 
-        //todo obtener en ubicaciones todos los nombres de municipios
-
-        /* ubicaciones.addAll();*/
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, ubicaciones);
-        localidadEvento.setAdapter(adapter);
+        ArrayAdapter ad = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, listaUbicaciones);
+        ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        localidadEvento.setAdapter(ad);
 
         fechaEvento = binding.InputFechaEvento;
 
@@ -199,105 +198,6 @@ public class CrearEventoMunicipio extends Fragment implements AdapterView.OnItem
         });
 
         newFragment.show(getActivity().getSupportFragmentManager(), "datePicker");
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        nombreEvento = view.findViewById(R.id.InputNombreEvento);
-        localidadEvento = view.findViewById(R.id.Spinner);
-        localidadEvento.setOnItemSelectedListener(this);
-
-        ArrayList<String> ubicaciones = new ArrayList<String>();
-
-        //todo obtener en ubicaciones todos los nombres de municipios
-
-        /* ubicaciones.addAll();*/
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, ubicaciones);
-
-                /*ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.planets_array, android.R.layout.simple_spinner_item);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);*/
-        localidadEvento.setAdapter(adapter);
-
-        fechaEvento = view.findViewById(R.id.InputFechaEvento);
-
-        fechaEvento.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switch (view.getId()) {
-                    case R.id.InputFechaEvento:
-                        showDatePickerDialog();
-                        break;
-                }
-            }
-        });
-
-        descripcionEvento = view.findViewById(R.id.InputDescripcionEvento);
-        botonCrear = binding.BotonModificar;
-        botonCrear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String nombre = nombreEvento.getText().toString();
-                String ubicacion;
-                Snackbar snackbar;
-
-                //todo obtener la ubicacion
-                String localidad = localidadEvento.toString();
-                Date fecha = DateConverter.toDate(fechaEvento.getText().toString());
-                String descripcion = descripcionEvento.getText().toString();
-
-                String textoError = "";
-                boolean error = false;
-                if (nombre == null) {
-                    error = true;
-                    textoError = "Debes introducir un nombre de evento";
-                }
-                if (localidad == null) {
-                    error = true;
-                    textoError = "Debes introducir una localidad";
-                }
-                if (descripcion == null) {
-                    descripcion = "Sin descripción";
-                }
-
-                //todo hacer que las localidades provengan del json
-                if (JsonSingleton.getInstance().buscarMunicipio(localidad) == null) {
-                    textoError = "No se encuentra el municipio";
-                    error = true;
-                }
-
-                if (error == true) {
-                    snackbar = Snackbar.make(view, textoError, Snackbar.LENGTH_LONG);
-                    snackbar.show();
-                } else {
-                    ubicacion = JsonSingleton.getInstance().buscarMunicipio(localidad).getCodigo();
-
-                    evento = new Evento(nombre, localidad, descripcion, fecha, true);
-                    EventoDAO eventoDAO = AppDatabase.getInstance(getContext()).eventoDAO();
-                    try {
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                eventoDAO.insertEvent(evento);
-                                evento = eventoDAO.getEvent(evento.getTitulo()).get(0);
-                            }
-                        }).start();
-
-                        DetallesEvento detallesEvento = new DetallesEvento();
-                        Bundle bundle = new Bundle();
-                        bundle.putInt("idEvento", evento.getIde());
-                        detallesEvento.setArguments(bundle);
-
-                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                        fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, detallesEvento).commit();
-
-                    } catch (Exception exception) {
-                        exception.printStackTrace();
-                    }
-                }
-            }
-        });
     }
 
     @Override
