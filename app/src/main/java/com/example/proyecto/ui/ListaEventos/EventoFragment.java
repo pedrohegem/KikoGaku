@@ -19,11 +19,11 @@ import android.widget.TextView;
 import com.example.proyecto.R;
 import com.example.proyecto.Room.AppDatabase;
 import com.example.proyecto.Room.Modelo.Evento;
-import com.example.proyecto.Room.Modelo.EventoMontana;
 import com.example.proyecto.databinding.EventoListaBinding;
 import com.example.proyecto.ui.ListaEventos.placeholder.PlaceholderItem;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -72,22 +72,24 @@ public class EventoFragment extends Fragment {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    /*for (int i=0; i<5;i++){
+                    for (int i=0; i<5;i++){
                         AppDatabase.getInstance(getContext()).eventoDAO().insertEvent(new Evento("Evento",i,"Descripcion", Calendar.getInstance().getTime()));
-                        AppDatabase.getInstance(getContext()).eventoMontanaDAO().insertMontana(new EventoMontana("Evento","Madrid","Descripcion", Calendar.getInstance().getTime()));
-                    }*/
+                    }
                     List<Evento> eventos = AppDatabase.getInstance(getContext()).eventoDAO().getAll();
-                    List<EventoMontana> eventosMontana = AppDatabase.getInstance(getContext()).eventoMontanaDAO().getAll();
+                    // TODO ARREGLAR PARA EL NUEVO MODELO EVENTO
+                    //List<EventoMontana> eventosMontana = AppDatabase.getInstance(getContext()).eventoMontanaDAO().getAll();
                     Log.i("Recoleccion", "eventos: "+eventos.size());
-                    Log.i("Recoleccion", "eventosMontana: "+eventosMontana.size());
                     int i=0;
                     for (i=0; i<eventos.size() ;i++){
                         ITEMS.add(new PlaceholderItem(String.valueOf(i),eventos.get(i).getTitulo(),eventos.get(i).getFecha().toString(), true));
                     }
-
-                    for (int a = i;i-a<eventosMontana.size();i++){
+                    //TODO ARREGLAR PARA EL NUEVO MODELO EVENTO
+                    /*
+                     for (int a = i;i-a<eventosMontana.size();i++){
                         ITEMS.add(new PlaceholderItem(String.valueOf(i),eventosMontana.get(i-a).getTitulo(),eventosMontana.get(i-a).getFecha().toString(), false));
                     }
+                     */
+
                     requireActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());
                 }
             }).start();
