@@ -1,34 +1,57 @@
 package com.example.proyecto;
 
 import android.content.Intent;
+import static java.lang.Thread.sleep;
+
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 
 import com.example.proyecto.Json.JsonSingleton;
 import com.example.proyecto.Json.Montana;
 import com.example.proyecto.Json.Municipio;
 import com.example.proyecto.ui.Eventos.CrearEventoActivity;
+import com.example.proyecto.Room.Modelo.Weather;
+import com.example.proyecto.ui.ListaEventos.EventoFragment;
+import com.example.proyecto.utils.APIManager;
 import com.google.gson.stream.JsonReader;
 
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
+import android.widget.Toast;
 
+import com.example.proyecto.Room.AppDatabase;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
 
 import com.example.proyecto.databinding.ActivityMainBinding;
 import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -36,6 +59,11 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
+    public String locality;
+
+    // Código para gestionar el callback
+
+    // Array con todos los permisos necesarios por la app
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,4 +152,21 @@ public class MainActivity extends AppCompatActivity {
         Log.d("PITO2",timestamp2.toString());
     }
 
+    public void replaceFragment(boolean detalles){
+        Fragment fragment = null;
+        try {
+            if(detalles){
+                fragment = (Fragment) EventoFragment.newInstance(1);
+            }else{
+                fragment = (Fragment) EventoFragment.newInstance(1);
+            }
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment)
+                .commit();
+    }
 }

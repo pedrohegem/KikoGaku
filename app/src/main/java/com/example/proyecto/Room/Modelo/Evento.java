@@ -44,6 +44,7 @@ public class Evento {
         this.titulo = titulo;
         this.ubicacion = ubicacion;
         this.descripcion = descripcion;
+
         this.fecha = fecha;
         this.esMunicipio = esMunicipio;
     }

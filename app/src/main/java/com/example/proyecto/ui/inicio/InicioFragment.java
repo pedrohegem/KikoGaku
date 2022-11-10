@@ -1,55 +1,115 @@
 package com.example.proyecto.ui.inicio;
 
+
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.example.proyecto.utils.APIManagerDelegate;
 import com.example.proyecto.R;
-import com.example.proyecto.Json.Montana;
+import com.example.proyecto.Room.Modelo.Weather;
 import com.example.proyecto.databinding.FragmentInicioBinding;
-import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
+import com.example.proyecto.ui.ListaEventos.EventoFragment;
+import com.example.proyecto.utils.APIManager;
 
-import java.io.InputStreamReader;
-import java.util.Arrays;
+import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
-public class InicioFragment extends Fragment {
+public class InicioFragment extends Fragment implements APIManagerDelegate {
+
+    private TextView textViewCiudad;
+    private TextView textViewTemp;
+    private TextView textViewTempMin;
+    private TextView textViewTempMax;
+    private TextView textViewTempDesc;
+
+    private Double latitud;
+    private Double longitud;
+
 
     private FragmentInicioBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        InicioViewModel inicioViewModel =
-                new ViewModelProvider(this).get(InicioViewModel.class);
 
         binding = FragmentInicioBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textInicio;
-        inicioViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-
-        // -- CÓDIGO ENCARGADO DE CARGAR EL JSON CON LOS CÓDIGOS DE LAS MONTAÑAS
-        JsonReader reader = new JsonReader(new InputStreamReader(getResources().openRawResource(R.raw.codmontanas)));
-        List<Montana> montanaList = Arrays.asList(new Gson().fromJson(reader, Montana[].class));
-
-        //for(RepoMontana a: montanaList){
-        //    binding.textView2.append(a.getCodigo() + " - " + a.getNombre());
-        //}
-
+        APIManager apiManager = new APIManager(this);
+        getLocationCoords();
+        apiManager.getEventWeather(latitud, longitud);
 
         return root;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        Fragment childFragment = new EventoFragment();
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.replace(R.id.child_ListaEventos, childFragment).commit();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+
+    public void getLocationCoords() {
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+            LocationManager lm = (LocationManager) getActivity().getSystemService(getContext().LOCATION_SERVICE);
+            Location location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+            if(location == null) { // Network provider no funciona. Se establecen las coordenadas de Madrid por defecto
+                String noPerms = "No se ha podido acceder a tu localización. Se ha establecido Madrid por defecto. Compruebe el estado del GPS.";
+                Toast.makeText(getContext(), noPerms, Toast.LENGTH_LONG).show();
+                latitud = 40.4165;
+                longitud = -3.7026;
+            } else {
+                latitud = location.getLatitude();
+                longitud = location.getLongitude();
+            }
+        }
+    }
+
+    @Override
+    public void onGetWeatherSuccess(Weather weather) {
+        textViewCiudad = binding.textViewCiudad;
+        textViewTemp = binding.textViewTemp;
+        textViewTempMin = binding.textViewTempMin;
+        textViewTempMax = binding.textViewTempMax;
+        textViewTempDesc = binding.textViewDesc;
+
+        textViewCiudad.setText(weather.ciudad);
+        textViewTemp.setText(weather.temperatura + "º");
+        textViewTempMin.setText(weather.tempMinima + "º /");
+        textViewTempMax.setText(weather.tempMaxima + "º");
+        textViewTempDesc.setText(weather.descEstadoTiempo);
+    }
+
+    @Override
+    public void onGetWeatherFailure() {
+        String noPerms = "No se ha podido acceder al tiempo de la localización actual. Comprueba tu conexión a Internet";
+        Toast.makeText(getContext(), noPerms, Toast.LENGTH_LONG).show();
     }
 }
