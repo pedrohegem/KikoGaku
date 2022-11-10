@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -98,7 +97,7 @@ public class DetallesEvento extends Fragment {
         nombreEvento.setText(evento.getTitulo());
 
         //todo buscar localidad con el JSON
-        localidadEvento.setText(evento.getUbicacionCode());
+        localidadEvento.setText(evento.getUbicacion());
 
         fechaEvento.setText(DateConverter.toString(evento.getFecha()));
         descripcionEvento.setText(evento.getDescripcion());
@@ -158,7 +157,7 @@ public class DetallesEvento extends Fragment {
         nombreEvento.setText(evento.getTitulo());
 
         //todo buscar localidad con el JSON
-        localidadEvento.setText(evento.getUbicacionCode());
+        localidadEvento.setText(evento.getUbicacion());
 
         fechaEvento.setText(DateConverter.toString(evento.getFecha()));
         descripcionEvento.setText(evento.getDescripcion());

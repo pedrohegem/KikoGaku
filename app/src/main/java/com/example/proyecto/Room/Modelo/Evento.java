@@ -1,7 +1,6 @@
 package com.example.proyecto.Room.Modelo;
 
 import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -27,7 +26,7 @@ public class Evento {
 
     private String titulo;
 
-    private String ubicacionCode;
+    private String ubicacion;
 
     private String descripcion;
 
@@ -40,18 +39,18 @@ public class Evento {
     /*@Ignore
     private Weather weather;*/
 
-    public Evento(String titulo, String ubicacionCode, String descripcion, Date fecha, boolean esMunicipio) {
+    public Evento(String titulo, String ubicacion, String descripcion, Date fecha, boolean esMunicipio) {
         this.titulo = titulo;
-        this.ubicacionCode = ubicacionCode;
+        this.ubicacion = ubicacion;
         this.descripcion = descripcion;
         this.fecha = fecha;
         this.esMunicipio = esMunicipio;
     }
     @Ignore
-    public Evento(int ide, String titulo, String ubicacionCode, String descripcion, String fecha/*,  Weather weather*/, boolean esMunicipio) {
+    public Evento(int ide, String titulo, String ubicacion, String descripcion, String fecha/*,  Weather weather*/, boolean esMunicipio) {
         this.ide = ide;
         this.titulo = titulo;
-        this.ubicacionCode = ubicacionCode;
+        this.ubicacion = ubicacion;
         this.descripcion = descripcion;
         try {
             this.fecha = Evento.FORMAT.parse(fecha);
@@ -78,12 +77,12 @@ public class Evento {
         this.titulo = titulo;
     }
 
-    public String getUbicacionCode() {
-        return ubicacionCode;
+    public String getUbicacion() {
+        return ubicacion;
     }
 
-    public void setUbicacionCode(String ubicacionCode) {
-        this.ubicacionCode = ubicacionCode;
+    public void setUbicacion(String ubicacion) {
+        this.ubicacion = ubicacion;
     }
 
     public String getDescripcion() {

@@ -40,12 +40,11 @@ import java.util.Date;
  * Use the {@link CrearEventoMunicipio#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CrearEventoMunicipio extends Fragment implements AdapterView.OnItemSelectedListener{
+public class CrearEventoMunicipio extends Fragment{
 
     private MainActivity main;
 
-    private EditText nombreEvento, fechaEvento, descripcionEvento;
-    private Spinner localidadEvento;
+    private EditText nombreEvento, fechaEvento, descripcionEvento, localidadEvento;
     private Button botonCrear;
 
     private Evento evento;
@@ -95,16 +94,7 @@ public class CrearEventoMunicipio extends Fragment implements AdapterView.OnItem
         View root = binding.getRoot();
 
         nombreEvento = binding.InputNombreEvento;
-        localidadEvento = binding.Spinner;
-        localidadEvento.setOnItemSelectedListener(this);
-
-        ArrayList<String> ubicaciones = new ArrayList<String>(JsonSingleton.getInstance().municipioMap.keySet());
-        String[] listaUbicaciones =  new String[ubicaciones.size()];
-        listaUbicaciones = ubicaciones.toArray(listaUbicaciones);
-
-        ArrayAdapter ad = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, listaUbicaciones);
-        ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        localidadEvento.setAdapter(ad);
+        localidadEvento = binding.inputLocalidad;
 
         fechaEvento = binding.InputFechaEvento;
 
@@ -125,11 +115,8 @@ public class CrearEventoMunicipio extends Fragment implements AdapterView.OnItem
             @Override
             public void onClick(View view) {
                 String nombre = nombreEvento.getText().toString();
-                String ubicacion;
                 Snackbar snackbar;
-
-                //todo obtener la ubicacion
-                String localidad = localidadEvento.toString();
+                String localidad = localidadEvento.getText().toString();
                 Date fecha = DateConverter.toDate(fechaEvento.getText().toString());
                 String descripcion = descripcionEvento.getText().toString();
 
@@ -147,8 +134,7 @@ public class CrearEventoMunicipio extends Fragment implements AdapterView.OnItem
                     descripcion = "Sin descripción";
                 }
 
-                //todo hacer que las localidades provengan del json
-                if (JsonSingleton.getInstance().buscarMunicipio(localidad) == null) {
+                if (JsonSingleton.getInstance().buscarMunicipio(localidad)) {
                     textoError = "No se encuentra el municipio";
                     error = true;
                 }
@@ -157,8 +143,7 @@ public class CrearEventoMunicipio extends Fragment implements AdapterView.OnItem
                     snackbar = Snackbar.make(view, textoError, Snackbar.LENGTH_LONG);
                     snackbar.show();
                 } else {
-                    ubicacion = JsonSingleton.getInstance().buscarMunicipio(localidad).getCodigo();
-
+                    Log.d("LOCALIDAD", "Localidad es" + localidad);
                     evento = new Evento(nombre, localidad, descripcion, fecha, true);
                     EventoDAO eventoDAO = AppDatabase.getInstance(getContext()).eventoDAO();
                     try {
@@ -198,15 +183,6 @@ public class CrearEventoMunicipio extends Fragment implements AdapterView.OnItem
         });
 
         newFragment.show(getActivity().getSupportFragmentManager(), "datePicker");
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View v, int pos, long id) {
-        localidad = parent.getItemAtPosition(pos).toString();
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> arg0) {
     }
 
     @Override

@@ -21,12 +21,12 @@ public class JsonSingleton {
         return instance;
     }
 
-    public Municipio buscarMunicipio(String nombreMunicipio){
+    public boolean buscarMunicipio(String nombreMunicipio){
         Municipio m = null;
         if(municipioMap.containsKey(nombreMunicipio)){
-            m = municipioMap.get(nombreMunicipio);
-        }
-        return m;
+            return true;
+        } else return false;
+
     }
 
     public Montana buscarMontana(String nombreMontana){

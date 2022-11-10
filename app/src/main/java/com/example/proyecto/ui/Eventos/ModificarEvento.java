@@ -11,9 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentResultListener;
 
 import com.example.proyecto.Json.JsonSingleton;
 import com.example.proyecto.R;
@@ -156,7 +154,7 @@ public class ModificarEvento extends Fragment implements AdapterView.OnItemSelec
                 }
                 else{
                     if(evento.getEsMunicipio()) {
-                        if (JsonSingleton.getInstance().buscarMunicipio(localidad) == null) {
+                        if (JsonSingleton.getInstance().buscarMunicipio(localidad)) {
                             textoError = "No se encuentra el municipio";
                             error = true;
                         }
@@ -217,14 +215,14 @@ public class ModificarEvento extends Fragment implements AdapterView.OnItemSelec
         public void onItemSelected(AdapterView<?> parent, View v, int pos, long id)
         {
             String item = parent.getItemAtPosition(pos).toString();
-            evento.setUbicacionCode(item);
+            evento.setUbicacion(item);
         }
 
         @Override
         public void onNothingSelected(AdapterView<?> arg0)
         {
             //todo obtener la localidad con el JSON
-            localidad = evento.getUbicacionCode();
+            localidad = evento.getUbicacion();
         }
     @Override
     public void onDestroyView() {
