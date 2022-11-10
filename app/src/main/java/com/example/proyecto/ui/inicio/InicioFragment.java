@@ -24,7 +24,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.bumptech.glide.Glide;
 import com.example.proyecto.utils.APIManagerDelegate;
 import com.example.proyecto.R;
 import com.example.proyecto.Room.Modelo.Weather;
