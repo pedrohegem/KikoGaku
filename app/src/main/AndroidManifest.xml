@@ -16,6 +16,7 @@
             android:name=".ui.Eventos.CrearEventoActivity"
             android:exported="false"
             android:label="@string/title_activity_crear_evento"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.Proyecto.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
