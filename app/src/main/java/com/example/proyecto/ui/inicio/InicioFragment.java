@@ -1,6 +1,8 @@
 package com.example.proyecto.ui.inicio;
 
 
+import static androidx.core.view.ViewCompat.setTranslationZ;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
@@ -22,6 +24,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.bumptech.glide.Glide;
 import com.example.proyecto.utils.APIManagerDelegate;
 import com.example.proyecto.R;
 import com.example.proyecto.Room.Modelo.Weather;
@@ -35,7 +38,8 @@ import java.util.Locale;
 
 public class InicioFragment extends Fragment implements APIManagerDelegate {
 
-    private TextView textViewCiudad, textViewTemp, textViewTempMaxMin, textViewDesc;
+    public TextView textViewCiudad, textViewTemp, textViewTempMaxMin, textViewDesc;
+    ImageView background;
 
     private Double latitud;
     private Double longitud;
@@ -52,6 +56,8 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
         APIManager apiManager = new APIManager(this);
         getLocationCoords();
         apiManager.getEventWeather(latitud, longitud);
+
+
 
         return root;
     }
@@ -96,10 +102,13 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
         textViewDesc = binding.textViewDesc;
         textViewTempMaxMin = binding.textViewTempMaxMin;
 
+
         textViewCiudad.setText(weather.ciudad);
-        textViewTemp.setText(weather.temperatura);
+        Log.d("TEMP", Integer.toString(weather.temperatura));
+        textViewTemp.setText(Integer.toString(weather.temperatura));
         textViewDesc.setText(weather.descEstadoTiempo);
         textViewTempMaxMin.setText(weather.tempMinima + "º / " + weather.tempMaxima + "º");
+
     }
 
     @Override

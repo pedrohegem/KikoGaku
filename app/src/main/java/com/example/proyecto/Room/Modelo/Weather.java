@@ -32,7 +32,7 @@ public class Weather {
         weather.velocidadViento = object.getJSONObject("wind").getDouble("speed");
         weather.estadoTiempo = object.getJSONArray("weather").getJSONObject(0).getString("main");
         weather.descEstadoTiempo = object.getJSONArray("weather").getJSONObject(0).getString("description");
-        //weather.gifResource = getGifResource(object.getJSONArray("weather").getJSONObject(0).getInt("id"));
+        weather.gifResource = getGifResource(object.getJSONArray("weather").getJSONObject(0).getInt("id"));
 
         return weather;
     }
@@ -51,7 +51,7 @@ public class Weather {
         weather.velocidadViento = object.getJSONArray("list").getJSONObject(index).getJSONObject("wind").getDouble("speed");
         weather.estadoTiempo = object.getJSONArray("list").getJSONObject(index).getJSONArray("weather").getJSONObject(0).getString("main");
         weather.descEstadoTiempo = object.getJSONArray("list").getJSONObject(index).getJSONArray("weather").getJSONObject(0).getString("description");
-        //weather.gifResource = getGifResource(object.getJSONArray("list").getJSONObject(index).getJSONArray("weather").getJSONObject(0).getInt("id"));
+        weather.gifResource = getGifResource(object.getJSONArray("list").getJSONObject(index).getJSONArray("weather").getJSONObject(0).getInt("id"));
 
         return weather;
     }

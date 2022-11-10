@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.inicio.InicioFragment">
@@ -10,6 +11,7 @@
         android:id="@+id/textViewTemp"
         android:layout_width="142dp"
         android:layout_height="83dp"
+        android:layout_marginTop="4dp"
         android:fontFamily="sans-serif-light"
         android:text="14"
         android:textAlignment="center"
@@ -17,6 +19,7 @@
         android:textSize="72sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/textViewCiudad"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="@+id/textViewCiudad"
         app:layout_constraintTop_toBottomOf="@+id/textViewCiudad" />
 
@@ -24,6 +27,7 @@
         android:id="@+id/textViewTempMaxMin"
         android:layout_width="132dp"
         android:layout_height="21dp"
+        android:layout_marginTop="4dp"
         android:hint="12º / 21º"
         android:textAlignment="center"
         android:textColor="#0E0D0D"
@@ -31,8 +35,25 @@
         android:textSize="16sp"
         android:textStyle="normal"
         app:layout_constraintEnd_toEndOf="@+id/textViewDesc"
+        app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="@+id/textViewDesc"
         app:layout_constraintTop_toBottomOf="@+id/textViewDesc" />
+
+    <TextView
+        android:id="@+id/textViewCiudad"
+        android:layout_width="243dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="32dp"
+        android:hint="Sevilla"
+        android:textAlignment="center"
+        android:textColor="#0E0D0D"
+        android:textColorHint="#050404"
+        android:textSize="24sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewDesc"
@@ -46,36 +67,23 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/textViewTemp"
-        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="@+id/textViewTemp"
         app:layout_constraintTop_toBottomOf="@+id/textViewTemp" />
-
-    <TextView
-        android:id="@+id/textViewCiudad"
-        android:layout_width="243dp"
-        android:layout_height="28dp"
-        android:layout_marginTop="60dp"
-        android:hint="Sevilla"
-        android:textAlignment="center"
-        android:textColor="#0E0D0D"
-        android:textColorHint="#050404"
-        android:textSize="24sp"
-        android:textStyle="normal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout
         android:id="@+id/child_ListaEventos"
         android:name="androidx.navigation.fragment.child_ListaEventos"
-        android:layout_width="412dp"
-        android:layout_height="509dp"
-        android:layout_marginTop="12dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="15dp"
         app:defaultNavHost="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewTempMaxMin"
         app:navGraph="@navigation/mobile_navigation" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
