@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,11 +35,7 @@ import java.util.Locale;
 
 public class InicioFragment extends Fragment implements APIManagerDelegate {
 
-    private TextView textViewCiudad;
-    private TextView textViewTemp;
-    private TextView textViewTempMin;
-    private TextView textViewTempMax;
-    private TextView textViewTempDesc;
+    private TextView textViewCiudad, textViewTemp, textViewTempMaxMin, textViewDesc;
 
     private Double latitud;
     private Double longitud;
@@ -96,15 +93,13 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
     public void onGetWeatherSuccess(Weather weather) {
         textViewCiudad = binding.textViewCiudad;
         textViewTemp = binding.textViewTemp;
-        textViewTempMin = binding.textViewTempMin;
-        textViewTempMax = binding.textViewTempMax;
-        textViewTempDesc = binding.textViewDesc;
+        textViewDesc = binding.textViewDesc;
+        textViewTempMaxMin = binding.textViewTempMaxMin;
 
         textViewCiudad.setText(weather.ciudad);
-        textViewTemp.setText(weather.temperatura + "º");
-        textViewTempMin.setText(weather.tempMinima + "º /");
-        textViewTempMax.setText(weather.tempMaxima + "º");
-        textViewTempDesc.setText(weather.descEstadoTiempo);
+        textViewTemp.setText(weather.temperatura);
+        textViewDesc.setText(weather.descEstadoTiempo);
+        textViewTempMaxMin.setText(weather.tempMinima + "º / " + weather.tempMaxima + "º");
     }
 
     @Override

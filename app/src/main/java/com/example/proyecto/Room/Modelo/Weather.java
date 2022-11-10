@@ -15,7 +15,7 @@ public class Weather {
     public double velocidadViento;
     public String estadoTiempo;
     public String descEstadoTiempo;
-    public String nombreIcono;
+    public int gifResource;
 
     public Weather() {
     }
@@ -32,7 +32,7 @@ public class Weather {
         weather.velocidadViento = object.getJSONObject("wind").getDouble("speed");
         weather.estadoTiempo = object.getJSONArray("weather").getJSONObject(0).getString("main");
         weather.descEstadoTiempo = object.getJSONArray("weather").getJSONObject(0).getString("description");
-        // TODO Set Nombre Icono based on range
+        //weather.gifResource = getGifResource(object.getJSONArray("weather").getJSONObject(0).getInt("id"));
 
         return weather;
     }
@@ -51,9 +51,27 @@ public class Weather {
         weather.velocidadViento = object.getJSONArray("list").getJSONObject(index).getJSONObject("wind").getDouble("speed");
         weather.estadoTiempo = object.getJSONArray("list").getJSONObject(index).getJSONArray("weather").getJSONObject(0).getString("main");
         weather.descEstadoTiempo = object.getJSONArray("list").getJSONObject(index).getJSONArray("weather").getJSONObject(0).getString("description");
-        // TODO Set Nombre Icono based on range
+        //weather.gifResource = getGifResource(object.getJSONArray("list").getJSONObject(index).getJSONArray("weather").getJSONObject(0).getInt("id"));
 
         return weather;
     }
 
+    public static int getGifResource(int condition) {
+        if (condition >= 0 && condition < 300) { // Tormenta
+            return 1;
+        } else if (condition >= 300 && condition < 500) { // Llovizna
+            return 2;
+        } else if (condition >= 500 && condition < 600) { // Lluvia
+            return 3;
+        } else if (condition >= 600 && condition <= 700) { // Nieve
+            return 4;
+        } else if (condition >= 701 && condition <= 771) { // Niebla
+            return 5;
+        } else if (condition == 800) { // Sol
+            return 6;
+        } else if (condition >= 801 && condition <= 804) { // Nubes
+            return 7;
+        }
+        return 0;
+    }
 }
