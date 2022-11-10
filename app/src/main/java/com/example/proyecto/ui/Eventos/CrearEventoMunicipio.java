@@ -153,18 +153,19 @@ public class CrearEventoMunicipio extends Fragment{
                             public void run() {
                                 idEvento = (int)eventoDAO.insertEvent(evento);
                                 Log.d("IdCreado", idEvento+"");
+
+                                DetallesEvento detallesEvento = new DetallesEvento();
+                                Bundle bundle = new Bundle();
+
+                                bundle.putInt("idEvento", idEvento);
+                                detallesEvento.setArguments(bundle);
+
+                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, detallesEvento).commit();
+
                             }
 
                         }).start();
-                        DetallesEvento detallesEvento = new DetallesEvento();
-                        Bundle bundle = new Bundle();
-
-                        bundle.putInt("idEvento", idEvento);
-                        detallesEvento.setArguments(bundle);
-
-                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                        fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, detallesEvento).commit();
-
                 }
             }
         });

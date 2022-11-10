@@ -25,11 +25,7 @@ import com.example.proyecto.databinding.FragmentDetallesEventoBinding;
 
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link DetallesEvento#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class DetallesEvento extends Fragment {
 
     private MainActivity main;
@@ -47,14 +43,6 @@ public class DetallesEvento extends Fragment {
 
     public DetallesEvento() {
         // Required empty public constructor
-    }
-
-    public static DetallesEvento newInstance(int IdEvento) {
-        DetallesEvento fragment = new DetallesEvento();
-        Bundle args = new Bundle();
-        args.putInt("idEvento", IdEvento);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -92,7 +80,6 @@ public class DetallesEvento extends Fragment {
                     List<Evento> eventos = eventoDao.getEvent(idEvento);
                     if (eventos.isEmpty() == true) {
                         //todo gestionar error
-                        Log.d("ERROR", "AAAAAAAAAAAAAAAAAAAA");
                     } else {
                         evento = eventos.get(0);
 
