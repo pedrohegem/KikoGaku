@@ -16,6 +16,7 @@ import com.example.proyecto.Json.JsonSingleton;
 import com.example.proyecto.Json.Montana;
 import com.example.proyecto.Json.Municipio;
 import com.example.proyecto.Room.Modelo.Weather;
+import com.example.proyecto.ui.ListaEventos.EventoFragment;
 import com.example.proyecto.utils.APIManager;
 import com.google.gson.stream.JsonReader;
 
@@ -30,6 +31,7 @@ import com.google.android.material.navigation.NavigationView;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -140,5 +142,23 @@ public class MainActivity extends AppCompatActivity{
         }
         Timestamp timestamp2 = new Timestamp(System.currentTimeMillis());
         Log.d("PITO2", timestamp2.toString());
+    }
+
+    public void replaceFragment(boolean detalles){
+        Fragment fragment = null;
+        try {
+            if(detalles){
+                fragment = (Fragment) EventoFragment.newInstance(1);
+            }else{
+                fragment = (Fragment) EventoFragment.newInstance(1);
+            }
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment)
+                .commit();
     }
 }
