@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * A fragment representing a list of Items.
  */
-public class EventoFragment extends Fragment {
+public class ListaEventosFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
 
     private Context mContext;
@@ -43,14 +43,14 @@ public class EventoFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public EventoFragment() {
+    public ListaEventosFragment() {
 
     }
 
     /*Crea una nueva fila*/
     @SuppressWarnings("unused")
-    public static EventoFragment newInstance(int columnCount,String nom, String fech) {
-        EventoFragment fragment = new EventoFragment();
+    public static ListaEventosFragment newInstance(int columnCount, String nom, String fech) {
+        ListaEventosFragment fragment = new ListaEventosFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
 
