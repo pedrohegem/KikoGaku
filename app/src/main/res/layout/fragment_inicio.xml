@@ -8,9 +8,9 @@
 
     <TextView
         android:id="@+id/textViewTemp"
-        android:layout_width="133dp"
-        android:layout_height="74dp"
-        android:fontFamily="@font/armata"
+        android:layout_width="142dp"
+        android:layout_height="83dp"
+        android:fontFamily="sans-serif-light"
         android:text="14"
         android:textAlignment="center"
         android:textColor="#1733CF"
