@@ -3,8 +3,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_inicio">
+    app:startDestination="@id/nav_inicio">
 
+    <action
+        android:id="@+id/action_crearEvento_to_crearEventoMunicipio2"
+        app:destination="@id/nav_crear_municipio" />
+    <fragment
+        android:id="@+id/nav_crear_evento"
+        android:name="com.example.proyecto.ui.Eventos.CrearEvento"
+        android:label="@string/menu_crear_evento"
+        tools:layout="@layout/fragment_crear_evento">
+        <action
+            android:id="@+id/action_crearEvento_to_crearEventoMunicipio2"
+            app:destination="@id/nav_crear_municipio" />
+        <action
+            android:id="@+id/action_crearEvento_to_crearEventoMontana2"
+            app:destination="@id/nav_crear_montana" />
+    </fragment>
+    <action
+        android:id="@+id/action_crearEvento_to_crearEventoMontana2"
+        app:destination="@id/nav_crear_montana" />
+    <fragment
+        android:id="@+id/nav_crear_municipio"
+        android:name="com.example.proyecto.ui.Eventos.CrearEventoMunicipio"
+        android:label="@string/menu_crear_evento"
+        tools:layout="@layout/fragment_crear_evento_municipio" />
+    <fragment
+        android:id="@+id/nav_crear_montana"
+        android:name="com.example.proyecto.ui.Eventos.CrearEventoMontana"
+        android:label="@string/menu_crear_evento"
+        tools:layout="@layout/fragment_crear_evento_montana" />
     <fragment
         android:id="@+id/nav_eventos"
         android:name="com.example.proyecto.ui.ListaEventos.EventoFragment"
@@ -37,4 +65,19 @@
         android:name="com.example.proyecto.ui.ajustes.AjustesFragment"
         android:label="@string/menu_ajustes"
         tools:layout="@layout/fragment_ajustes" />
+
+    <fragment
+        android:id="@+id/nav_modificar_evento"
+        android:name="com.example.proyecto.ui.Eventos.ModificarEvento"
+        android:label="ModificarEvento"
+        tools:layout="@layout/fragment_modificar_evento"  />
+    <fragment
+        android:id="@+id/nav_detalles_evento"
+        android:name="com.example.proyecto.ui.Eventos.DetallesEvento"
+        android:label="fragment_detalles_evento"
+        tools:layout="@layout/fragment_detalles_evento" >
+        <action
+            android:id="@+id/action_detallesEvento_to_nav_modificar_evento"
+            app:destination="@id/nav_modificar_evento" />
+    </fragment>
 </navigation>

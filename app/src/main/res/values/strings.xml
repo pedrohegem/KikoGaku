@@ -11,13 +11,60 @@
     <string name="menu_eventos">Eventos</string>
     <string name="menu_perfil">Perfil</string>
     <string name="menu_ajustes">Ajustes</string>
+    <string name="menu_crear_evento">Crear un evento</string>
 
     <string name="menu_inicio">Inicio</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="textview">TextView</string>
-    <string name="i">i -</string>
-    <string name="title_activity_borrate">Borrate</string>
+
+    <!-- STRINGS DE LUIS-->
+    <string name="n_iniciar_sesion">Iniciar sesión</string>
+    <string name="n_registrarse">Registrarse</string>
+    <string name="n_correo_electronico">Correo electrónico</string>
+    <string name="n_contrasena">Contraseña</string>
+    <string name="n_pregunta"><u>¿Aún no tienes una cuenta?</u></string>
+
+
+    <string name="title_activity_lista_eventos">Lista de eventos</string>
+    <string name="title_activity_registrarse">Inicio</string>
+    <string name="title_activity_modificar_evento">Modificar evento</string>
+
+    <!-- Eventos -->
+    <string name="n_crear_evento">Selecciona el tipo de evento a crear</string>
+    <string name="n_opcion_municipio">Evento de municipio</string>
+    <string name="n_opcion">ó</string>
+    <string name="n_opcion_montana">Evento de montaña</string>
+
+    <string name="n_crear_municipio">Crear un evento de municipio</string>
+    <string name="n_crear_montana">Crear un evento de montaña</string>
+    <string name="n_nombre_evento">Nombre del evento</string>
+    <string name="n_localidad_evento">Municipio</string>
+    <string name="n_montana_evento">Montaña</string>
+    <string name="n_latitud_evento">Latitud</string>
+    <string name="n_longitud_evento">Longitud</string>
+    <string name="n_fecha_inicio_evento">Fecha de inicio</string>
+    <string name="n_fecha_fin_evento">Fecha de fin</string>
+    <string name="n_descripcion_evento">Descripición del evento</string>
+    <string name="n_etiqueta_crear">Crear evento</string>
+
+    <string name="n_modificar">Modificar un evento</string>
+    <string name="n_etiqueta_modificar">Modificar evento</string>
+
+    <string name="n_eliminar_evento">Eliminar evento</string>
+
+    <string name="n_tipo_localidad">Tipo de evento:</string>
+    <string name="n_municipio">Municipio</string>
+    <string name="n_montana">Montaña</string>
+
+    <string name="n_detalles_localidad">Localidad:</string>
+    <string name="n_detalles_fecha_inicio">Fecha de inicio:</string>
+    <string name="n_detalles_fecha_fin">Fecha de fin:</string>
+    <string name="n_detalles_descripcion">Descripción:</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="title_activity_crear_evento">CrearEventoActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
