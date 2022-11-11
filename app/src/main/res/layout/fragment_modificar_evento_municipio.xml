@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/Azul_osc"
-    tools:context=".ui.Eventos.CrearEventoMontana">
+    tools:context=".ui.Eventos.ModificarEventoMunicipioFragment"
+    android:background="@color/Azul_osc">
 
     <ScrollView
-        android:id="@+id/ScrollCrear"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -20,7 +20,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/Azul_osc">
+                android:background="@color/Azul_osc"
+                tools:context=".ui.Eventos.ModificarEventoMunicipioFragment">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/LayoutModificar"
@@ -32,14 +33,14 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/EtiquetaCrearEvento">
 
-                    <Spinner
+                    <EditText
                         android:id="@+id/InputMunicipio"
                         android:layout_width="210dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="40dp"
                         android:background="@color/white"
                         android:ems="10"
-                        android:hint="@string/n_montana_evento"
+                        android:hint="@string/n_localidad_evento"
                         android:inputType="textPersonName"
                         android:minHeight="48dp"
                         android:textColor="@color/black"
@@ -84,14 +85,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="40dp"
                         android:background="@color/white"
-                        android:clickable="true"
                         android:ems="10"
-                        android:focusable="false"
                         android:hint="@string/n_fecha_inicio_evento"
                         android:inputType="date"
-                        android:maxLines="1"
                         android:minHeight="48dp"
-
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/InputMunicipio" />
@@ -104,7 +101,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="28dp"
                     android:backgroundTint="@color/teal_700"
-                    android:text="@string/n_etiqueta_crear"
+                    android:text="@string/n_etiqueta_modificar"
                     app:cornerRadius="10sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.498"
@@ -116,7 +113,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
-                    android:text="@string/n_crear_montana"
+                    android:text="@string/n_modificar"
                     android:textColor="@color/white"
                     android:textSize="24sp"
                     android:textStyle="bold"

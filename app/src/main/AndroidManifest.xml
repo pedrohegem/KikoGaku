@@ -22,25 +22,7 @@
             android:name=".ui.Eventos.CrearEventoActivity"
             android:exported="false"
             android:label="@string/title_activity_crear_evento"
-            android:theme="@style/Theme.Proyecto.NoActionBar">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".LaunchActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-        </activity>
-        <activity
-            android:name=".ui.ListaEventos.DetallesEventoActivity"
-            android:exported="false"
-            android:label="@string/title_activity_borrate"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.Proyecto.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
@@ -55,6 +37,26 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
 
+        </activity>
+        <activity
+            android:name=".LaunchActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+        <activity
+            android:name=".ui.Eventos.DetallesEventoActivity"
+            android:exported="false"
+            android:label="@string/title_activity_borrate"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.Proyecto.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
         </activity>
     </application>
 

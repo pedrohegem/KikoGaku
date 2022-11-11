@@ -9,7 +9,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.proyecto.Json.JsonSingleton;
-import com.example.proyecto.MainActivity;
 import com.example.proyecto.R;
 import com.example.proyecto.Room.AppDatabase;
 import com.example.proyecto.Room.DAO.EventoDAO;
@@ -93,7 +91,7 @@ public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSe
         View root = binding.getRoot();
 
         nombreEvento = binding.InputNombreEvento;
-        localidadEvento = binding.Spinner;
+        localidadEvento = binding.InputMunicipio;
         localidadEvento.setOnItemSelectedListener(this);
 
         ArrayList<String> ubicaciones = new ArrayList<String>();
@@ -133,15 +131,15 @@ public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSe
 
                 String textoError = "";
                 boolean error = false;
-                if (nombre == null) {
+                if (nombre.isEmpty()) {
                     error = true;
                     textoError = "Debes introducir un nombre de evento";
                 }
-                if (localidad == null) {
+                if (localidad.isEmpty()) {
                     error = true;
                     textoError = "Debes introducir una localidad";
                 }
-                if (descripcion == null) {
+                if (descripcion.isEmpty()) {
                     descripcion = "Sin descripción";
                 }
 
@@ -151,13 +149,18 @@ public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSe
                     error = true;
                 }
 
+                if(fecha.before(new Date(System.currentTimeMillis()))){
+                    textoError = "Debe ser una fecha poserior a hoy";
+                    error = true;
+                }
+
                 if (error == true) {
                     snackbar = Snackbar.make(view, textoError, Snackbar.LENGTH_LONG);
                     snackbar.show();
                 } else {
                     ubicacion = JsonSingleton.getInstance().buscarMontana(localidad).getCodigo();
 
-                    evento = new Evento(0, nombre, localidad, descripcion, fecha, false);
+                    evento = new Evento(nombre, localidad, descripcion, fecha, false);
                     EventoDAO eventoDAO = AppDatabase.getInstance(getContext()).eventoDAO();
                     try {
                         new Thread(new Runnable() {
@@ -166,7 +169,7 @@ public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSe
                                 eventoDAO.insertEvent(evento);
                                 evento = eventoDAO.getEvent(evento.getTitulo()).get(0);
 
-                                DetallesEvento detallesEvento = new DetallesEvento();
+                                DetallesEventoFragment detallesEvento = new DetallesEventoFragment();
                                 Bundle bundle = new Bundle();
 
                                 bundle.putInt("idEvento", evento.getIde());
@@ -204,7 +207,7 @@ public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSe
         super.onViewCreated(view, savedInstanceState);
 
         nombreEvento = view.findViewById(R.id.InputNombreEvento);
-        localidadEvento = view.findViewById(R.id.Spinner);
+        localidadEvento = view.findViewById(R.id.InputMunicipio);
         localidadEvento.setOnItemSelectedListener(this);
 
         ArrayList<String> ubicaciones = new ArrayList<String>();
@@ -269,7 +272,7 @@ public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSe
                 } else {
                     ubicacion = JsonSingleton.getInstance().buscarMontana(localidad).getCodigo();
 
-                    evento = new Evento(0, nombre, localidad, descripcion, fecha, false);
+                    evento = new Evento(nombre, localidad, descripcion, fecha, false);
                     EventoDAO eventoDAO = AppDatabase.getInstance(getContext()).eventoDAO();
                     try {
                         new Thread(new Runnable() {
@@ -280,7 +283,7 @@ public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSe
                             }
                         }).start();
 
-                        DetallesEvento detallesEvento = new DetallesEvento();
+                        DetallesEventoFragment detallesEvento = new DetallesEventoFragment();
                         Bundle bundle = new Bundle();
                         bundle.putInt("idEvento", evento.getIde());
                         detallesEvento.setArguments(bundle);

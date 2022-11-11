@@ -39,8 +39,7 @@ public class Evento {
     /*@Ignore
     private Weather weather;*/
 
-    public Evento(int ide, String titulo, String ubicacion, String descripcion, Date fecha, boolean esMunicipio) {
-        this.ide = ide;
+    public Evento(String titulo, String ubicacion, String descripcion, Date fecha, boolean esMunicipio) {
         this.titulo = titulo;
         this.ubicacion = ubicacion;
         this.descripcion = descripcion;
@@ -49,8 +48,7 @@ public class Evento {
         this.esMunicipio = esMunicipio;
     }
     @Ignore
-    public Evento(int ide, String titulo, String ubicacion, String descripcion, String fecha/*,  Weather weather*/, boolean esMunicipio) {
-        this.ide = ide;
+    public Evento(String titulo, String ubicacion, String descripcion, String fecha/*,  Weather weather*/, boolean esMunicipio) {
         this.titulo = titulo;
         this.ubicacion = ubicacion;
         this.descripcion = descripcion;

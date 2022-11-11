@@ -4,9 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.proyecto.MainActivity;
 import com.example.proyecto.R;
 import com.example.proyecto.Room.AppDatabase;
 import com.example.proyecto.Room.DAO.EventoDAO;
@@ -26,9 +24,9 @@ import com.example.proyecto.databinding.FragmentDetallesEventoBinding;
 import java.util.List;
 
 
-public class DetallesEvento extends Fragment {
+public class DetallesEventoFragment extends Fragment {
 
-    private MainActivity main;
+    private DetallesEventoActivity main;
 
     private Context mContext;
 
@@ -37,23 +35,21 @@ public class DetallesEvento extends Fragment {
 
     private FragmentDetallesEventoBinding binding;
 
-    private int idEvento;
-
     private Evento evento;
 
-    public DetallesEvento() {
+    public DetallesEventoFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(getArguments() != null){
+        /*if(getArguments() != null){
             idEvento = getArguments().getInt("idEvento");
         }
         else{
             Log.d("No", "Tristeza");
-        }
+        }*/
     }
 
     @Override
@@ -70,6 +66,8 @@ public class DetallesEvento extends Fragment {
 
         botonModificar = binding.BotonModificar;
         botonBorrar = binding.BotonEliminar;
+
+        int idEvento = main.getIdEvento();
 
         Log.d("IdEvento", idEvento+"");
 
@@ -93,13 +91,22 @@ public class DetallesEvento extends Fragment {
                         botonModificar.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                ModificarEvento modificarEvento = new ModificarEvento();
+                                /*ModificarEventoMunicipioFragment modificarEvento = new ModificarEventoMunicipioFragment();
                                 Bundle bundle = new Bundle();
                                 bundle.putInt("idEvento", idEvento);
 
                                 modificarEvento.setArguments(bundle);
                                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, modificarEvento).commit();
+                                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, modificarEvento).commit();*/
+
+                                if(evento.getEsMunicipio() == true) {
+                                    Bundle bundle = new Bundle();
+                                    bundle.putInt("idEvento",idEvento);
+                                    NavHostFragment.findNavController(DetallesEventoFragment.this).navigate(R.id.action_detallesEvento_to_nav_modificar_evento,bundle);
+                                }
+                                else{
+                                    NavHostFragment.findNavController(DetallesEventoFragment.this).navigate(R.id.action_nav_detalles_evento_to_nav_modificar_evento_montana);
+                                }
 
                                 //Navigation.findNavController(main, R.id.nav_host_fragment_content_main).navigate();
                             }
@@ -149,7 +156,7 @@ public class DetallesEvento extends Fragment {
             botonModificar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ModificarEvento modificarEvento = new ModificarEvento();
+                    ModificarEventoMunicipioFragment modificarEvento = new ModificarEventoMunicipioFragment();
                     Bundle bundle = new Bundle();
                     bundle.putInt("idEvento", idEvento);
                     /*bundle.putString("nombreEvento", evento.getTitulo());
@@ -186,7 +193,7 @@ public class DetallesEvento extends Fragment {
         */
     @Override
     public void onAttach(@NonNull Context context) {
-        main = (MainActivity) context;
+        main = (DetallesEventoActivity) context;
         mContext = context;
         super.onAttach(context);
     }

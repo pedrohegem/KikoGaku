@@ -19,7 +19,8 @@ import com.example.proyecto.Room.AppDatabase;
 import com.example.proyecto.Room.DAO.EventoDAO;
 import com.example.proyecto.Room.Modelo.Evento;
 import com.example.proyecto.Room.javadb.DateConverter;
-import com.example.proyecto.databinding.FragmentModificarEventoBinding;
+
+import com.example.proyecto.databinding.FragmentModificarEventoMontanaBinding;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Date;
@@ -27,23 +28,25 @@ import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ModificarEvento#newInstance} factory method to
+ * Use the {@link ModificarEventoMontanaFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ModificarEvento extends Fragment implements AdapterView.OnItemSelectedListener {
+public class ModificarEventoMontanaFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     private Context mContext;
+    private DetallesEventoActivity main;
 
     private EditText nombreEvento, fechaEvento, descripcionEvento;
     Spinner localidadEvento;
     private Button botonModificar;
+
     private Evento evento;
 
     private String localidad;
 
-    private FragmentModificarEventoBinding binding;
+    private FragmentModificarEventoMontanaBinding binding;
 
-    public ModificarEvento() {
+    public ModificarEventoMontanaFragment() {
         // Required empty public constructor
     }
 
@@ -51,11 +54,11 @@ public class ModificarEvento extends Fragment implements AdapterView.OnItemSelec
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return Una nueva instancia del fragment ModificarEvento.
+     * @return Una nueva instancia del fragment ModificarEventoMunicipioFragment.
      */
     //todo poner parametros para permitir destruccion de la activity
-    public static ModificarEvento newInstance(Evento event) {
-        ModificarEvento fragment = new ModificarEvento();
+    public static ModificarEventoMontanaFragment newInstance(Evento event) {
+        ModificarEventoMontanaFragment fragment = new ModificarEventoMontanaFragment();
         Bundle args = new Bundle();
         //args.put;
         fragment.setArguments(args);
@@ -73,9 +76,28 @@ public class ModificarEvento extends Fragment implements AdapterView.OnItemSelec
             }
         });*/
 
-        int idEvento = getArguments().getInt("idEvento", 0);
+        //int idEvento = getArguments().getInt("idEvento", 0);
+    }
 
-        EventoDAO eventoDao = AppDatabase.getInstance(getContext()).eventoDAO();
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+
+        binding = FragmentModificarEventoMontanaBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
+
+        nombreEvento = binding.InputNombreEvento;
+        localidadEvento = binding.InputMunicipio;
+        localidadEvento.setOnItemSelectedListener(this);
+        fechaEvento = binding.InputFechaEvento;
+        descripcionEvento = binding.InputDescripcionEvento;
+
+        botonModificar = binding.BotonModificar;
+
+        int idEvento = main.getIdEvento();
+
+        EventoDAO eventoDao = AppDatabase.getInstance(mContext).eventoDAO();
         try {
             new Thread(new Runnable() {
                 @Override
@@ -87,37 +109,19 @@ public class ModificarEvento extends Fragment implements AdapterView.OnItemSelec
                     }
                     else{
                         evento = eventos.get(0);
+                        nombreEvento.setText(evento.getTitulo());
+                        fechaEvento.setText(DateConverter.toString(evento.getFecha()));
+                        descripcionEvento.setText(evento.getDescripcion());
                     }
                 }
             }).start();
         } catch (Exception exception){
             exception.printStackTrace();
         }
-    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-
-        binding = FragmentModificarEventoBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
-
-        nombreEvento = binding.InputNombreEvento;
-        localidadEvento = binding.Spinner;
-        localidadEvento.setOnItemSelectedListener(this);
-        fechaEvento = binding.InputFechaEvento;
-        descripcionEvento = binding.InputDescripcionEvento;
-
-        botonModificar = binding.BotonModificar;
-
-        nombreEvento.setText(evento.getTitulo());
 
         //todo buscar localidad con el JSON
         //localidadEvento.setText(evento.getUbicacionCode());
-
-        fechaEvento.setText(DateConverter.toString(evento.getFecha()));
-        descripcionEvento.setText(evento.getDescripcion());
 
         /*nombreEvento.setText(getArguments().getString("nombreEvento", "Nombre del evento"));
 
@@ -160,7 +164,7 @@ public class ModificarEvento extends Fragment implements AdapterView.OnItemSelec
                         }
                         else {
                             //ubicacion = JsonSingleton.getInstance().buscarMunicipio(localidad).getCodigo();
-                            Evento e = new Evento(0, nombre, localidad, descripcion, fecha, true);
+                            Evento e = new Evento(nombre, localidad, descripcion, fecha, true);
                             e.setIde(evento.getIde());
                             EventoDAO eventoDAO = AppDatabase.getInstance(getContext()).eventoDAO();
                             try {
@@ -182,7 +186,7 @@ public class ModificarEvento extends Fragment implements AdapterView.OnItemSelec
                         }
                         else {
                             //ubicacion = JsonSingleton.getInstance().buscarMontana(localidad).getCodigo();
-                            Evento e = new Evento(0, nombre, localidad, descripcion, fecha, false);
+                            Evento e = new Evento(nombre, localidad, descripcion, fecha, false);
                             e.setIde(evento.getIde());
                             EventoDAO eventoDAO = AppDatabase.getInstance(getContext()).eventoDAO();
                             try {
@@ -232,6 +236,7 @@ public class ModificarEvento extends Fragment implements AdapterView.OnItemSelec
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        main = (DetallesEventoActivity) main;
         mContext = context;
     }
 }

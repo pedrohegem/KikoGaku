@@ -20,21 +20,22 @@ import com.example.proyecto.R;
 import com.example.proyecto.Room.AppDatabase;
 import com.example.proyecto.Room.Modelo.Evento;
 import com.example.proyecto.databinding.EventoListaBinding;
+import com.example.proyecto.ui.Eventos.DetallesEventoActivity;
 import com.example.proyecto.ui.ListaEventos.placeholder.PlaceholderItem;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * A fragment representing a list of Items.
  */
-public class EventoFragment extends Fragment {
+public class ListaEventosFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
 
     private Context mContext;
     private int mColumnCount = 1;
-    private String nombre;
-    private String fecha;
 
     public static final List<PlaceholderItem> ITEMS = new ArrayList<>();
     public ListaEventosAdapter adapter = new ListaEventosAdapter(ITEMS);
@@ -42,14 +43,14 @@ public class EventoFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public EventoFragment() {
+    public ListaEventosFragment() {
 
     }
 
     /*Crea una nueva fila*/
     @SuppressWarnings("unused")
-    public static EventoFragment newInstance(int columnCount,String nom, String fech) {
-        EventoFragment fragment = new EventoFragment();
+    public static ListaEventosFragment newInstance(int columnCount, String nom, String fech) {
+        ListaEventosFragment fragment = new ListaEventosFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
 
@@ -72,14 +73,17 @@ public class EventoFragment extends Fragment {
                 @Override
                 public void run() {
                     /*for (int i=0; i<5;i++){
-                        AppDatabase.getInstance(getContext()).eventoDAO().insertEvent(new Evento("Evento",i,"Descripcion", Calendar.getInstance().getTime()));
+                        AppDatabase.getInstance(getContext()).eventoDAO().insertEvent(new Evento("Evento","Caceres","Descripcion", new Date(System.currentTimeMillis()),true));
                     }*/
                     List<Evento> eventos = AppDatabase.getInstance(getContext()).eventoDAO().getAll();
                     Log.i("Recoleccion", "eventos: "+eventos.size());
                     int i=0;
-                    for (i=0; i<eventos.size() ;i++){
-                        ITEMS.add(new PlaceholderItem(String.valueOf(i),eventos.get(i).getTitulo(),eventos.get(i).getFecha().toString(), true));
+                    ITEMS.clear();
+                    for (ListIterator<Evento> iter = eventos.listIterator(); iter.hasNext(); i++){
+                        Evento event = iter.next();
+                        ITEMS.add(new PlaceholderItem(event.getIde(), String.valueOf(i),event.getTitulo(),event.getFecha().toString(), true));
                     }
+
                     requireActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());
                 }
             }).start();
@@ -113,7 +117,6 @@ public class EventoFragment extends Fragment {
 
     @Override
     public void onAttach(Context context) {
-        Log.i("TAG", "onCreate: Pruebaaaaaaaaaaa1");
         super.onAttach(context);
         this.mContext = context;
     }
@@ -124,7 +127,6 @@ public class EventoFragment extends Fragment {
 
         public ListaEventosAdapter(List<PlaceholderItem> items) {
             mValues = items;
-            Log.i("TAG", "onCreate: Pruebaaaaaaaaaaa2");
         }
 
         @Override
@@ -135,10 +137,7 @@ public class EventoFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, DetallesEventoActivity.class);
-                    intent.putExtra("EventoId",holder.mItem.id);
-                    intent.putExtra("Evento?",holder.mItem.evento);
-                    intent.putExtra("Fecha",holder.mItem.fecha);
-                    intent.putExtra("nombre",holder.mItem.nombre);
+                    intent.putExtra("idEvento",holder.mItem.ide);
                     mContext.startActivity(intent);
                 }
             });
