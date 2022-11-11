@@ -11,12 +11,11 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/LayoutCrear"
-        android:layout_width="325dp"
-        android:layout_height="179dp"
-        android:layout_marginTop="200dp"
+        android:layout_width="328dp"
+        android:layout_height="551dp"
+        android:layout_marginTop="52dp"
         android:background="@color/Azul"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/EtiquetaDetalles">
 
@@ -24,13 +23,13 @@
             android:id="@+id/EtiquetaLocalidad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="72dp"
             android:text="@string/n_detalles_localidad"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.061"
+            app:layout_constraintHorizontal_bias="0.068"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,43 +37,42 @@
             android:id="@+id/DetallesLocalidad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginStart="84dp"
             android:text="Mondongo"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="normal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.872"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/EtiquetaLocalidad"
+            app:layout_constraintTop_toTopOf="@+id/EtiquetaLocalidad" />
 
         <TextView
             android:id="@+id/DetallesFechaDeInicio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="84dp"
+            android:layout_marginStart="36dp"
             android:text="15/06/2022"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="normal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.866"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/EtiquetaFechaInicio"
+            app:layout_constraintTop_toTopOf="@+id/EtiquetaFechaInicio" />
 
         <TextView
             android:id="@+id/DetallesDescripcion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="144dp"
+            android:layout_width="297dp"
+            android:layout_height="303dp"
+            android:layout_marginTop="32dp"
+            android:isScrollContainer="true"
+            android:scrollbars="vertical"
             android:text="Descripción del evento"
             android:textColor="@color/white"
-            android:textSize="12sp"
+            android:textSize="16sp"
             android:textStyle="normal"
+            android:verticalScrollbarPosition="right"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.85"
+            app:layout_constraintHorizontal_bias="0.516"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/EtiquetaDescripcion" />
 
         <TextView
             android:id="@+id/EtiquetaFechaInicio"
@@ -104,38 +102,41 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/EtiquetaFechaInicio" />
 
+        <ImageButton
+            android:id="@+id/BotonModificar"
+            android:layout_width="52dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="32dp"
+            android:background="@drawable/backgroundboton"
+            android:backgroundTint="#018685"
+            android:contentDescription="@string/action_settings"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_edit_foreground"
+            app:layout_constraintEnd_toStartOf="@+id/BotonEliminar"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/BotonEliminar"
+            android:layout_width="55dp"
+            android:layout_height="51dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="28dp"
+            android:background="@drawable/backgroundboton"
+            android:backgroundTint="#860101"
+            android:contentDescription="@string/action_settings"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_delete_foreground"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <Button
-        android:id="@+id/BotonModificar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:backgroundTint="@color/teal_700"
-        android:text="@string/title_activity_modificar_evento"
-        app:cornerRadius="10sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LayoutCrear" />
-
-    <Button
-        android:id="@+id/BotonEliminar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:backgroundTint="@color/teal_700"
-        android:text="@string/n_eliminar_evento"
-        app:cornerRadius="10sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.619"
-        app:layout_constraintStart_toEndOf="@+id/BotonModificar"
-        app:layout_constraintTop_toBottomOf="@+id/LayoutCrear" />
 
     <TextView
         android:id="@+id/EtiquetaDetalles"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:text="Nombre del evento"
         android:textColor="@color/white"
         android:textSize="24sp"
@@ -144,4 +145,5 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

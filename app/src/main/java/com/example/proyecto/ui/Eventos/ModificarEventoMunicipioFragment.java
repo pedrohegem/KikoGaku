@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.proyecto.Json.JsonSingleton;
@@ -181,9 +182,7 @@ public class ModificarEventoMunicipioFragment extends Fragment{
                                         eventoDAO.updateEvent(e);
                                         Bundle bundle = new Bundle();
                                         bundle.putInt("idEvento",idEvento);
-                                        Fragment detalles= new DetallesEventoFragment();
-                                        detalles.setArguments(bundle);
-                                        getActivity().getSupportFragmentManager().popBackStack();
+                                        requireActivity().runOnUiThread(() -> NavHostFragment.findNavController(ModificarEventoMunicipioFragment.this).navigate(R.id.action_nav_modificar_evento_municipio_to_nav_detalles_evento,bundle));
                                     }
                                 }).start();
                             } catch (Exception exception){

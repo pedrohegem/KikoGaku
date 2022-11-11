@@ -1,5 +1,6 @@
 package com.example.proyecto.ui.Eventos;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 
 import com.example.proyecto.databinding.ActivityDetallesEventoBinding;
@@ -29,7 +30,6 @@ public class DetallesEventoActivity extends AppCompatActivity {
 
         binding = ActivityDetallesEventoBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
         setSupportActionBar(binding.toolbar);
 
 

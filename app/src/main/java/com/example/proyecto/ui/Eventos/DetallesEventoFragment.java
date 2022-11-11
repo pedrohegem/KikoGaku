@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.proyecto.R;
@@ -31,7 +32,7 @@ public class DetallesEventoFragment extends Fragment {
     private Context mContext;
 
     TextView nombreEvento, localidadEvento, fechaEvento, descripcionEvento;
-    private Button botonModificar, botonBorrar;
+    private ImageButton botonModificar, botonBorrar;
 
     private FragmentDetallesEventoBinding binding;
 

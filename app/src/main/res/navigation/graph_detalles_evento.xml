@@ -25,6 +25,9 @@
             android:name="ideArg"
             app:argType="integer"
             android:defaultValue="0" />
+        <action
+            android:id="@+id/action_nav_modificar_evento_municipio_to_nav_detalles_evento"
+            app:destination="@id/nav_detalles_evento" />
     </fragment>
     <action
         android:id="@+id/action_detallesEvento_to_nav_modificar_evento"
