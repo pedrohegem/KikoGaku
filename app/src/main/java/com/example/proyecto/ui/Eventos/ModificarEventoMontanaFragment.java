@@ -88,7 +88,7 @@ public class ModificarEventoMontanaFragment extends Fragment implements AdapterV
         View root = binding.getRoot();
 
         nombreEvento = binding.InputNombreEvento;
-        localidadEvento = binding.InputMunicipio;
+        localidadEvento = binding.SpinnerMunicipio;
         localidadEvento.setOnItemSelectedListener(this);
         fechaEvento = binding.InputFechaEvento;
         descripcionEvento = binding.InputDescripcionEvento;
@@ -180,25 +180,19 @@ public class ModificarEventoMontanaFragment extends Fragment implements AdapterV
                         }
                     }
                     else{
-                        if (JsonSingleton.getInstance().buscarMontana(localidad) == null) {
-                            textoError = "No se encuentra la montaña";
-                            error = true;
-                        }
-                        else {
-                            //ubicacion = JsonSingleton.getInstance().buscarMontana(localidad).getCodigo();
-                            Evento e = new Evento(nombre, localidad, descripcion, fecha, false);
-                            e.setIde(evento.getIde());
-                            EventoDAO eventoDAO = AppDatabase.getInstance(getContext()).eventoDAO();
-                            try {
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        eventoDAO.updateEvent(e);
-                                    }
-                                }).start();
-                            } catch (Exception exception){
-                                exception.printStackTrace();
-                            }
+                    //ubicacion = JsonSingleton.getInstance().buscarMontana(localidad).getCodigo();
+                        Evento e = new Evento(nombre, localidad, descripcion, fecha, false);
+                        e.setIde(evento.getIde());
+                        EventoDAO eventoDAO = AppDatabase.getInstance(getContext()).eventoDAO();
+                        try {
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    eventoDAO.updateEvent(e);
+                                }
+                            }).start();
+                        } catch (Exception exception){
+                            exception.printStackTrace();
                         }
                     }
                     if(error = true){

@@ -2,6 +2,7 @@ package com.example.proyecto.ui.Eventos;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -43,9 +44,9 @@ public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSe
     private EditText nombreEvento, fechaEvento, descripcionEvento;
     private Spinner localidadEvento;
     private Button botonCrear;
-
+    private Context mContext;
     private Evento evento;
-
+    int idEvento;
     String localidad;
 
     // TODO: Rename and change types of parameters
@@ -91,20 +92,18 @@ public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSe
         View root = binding.getRoot();
 
         nombreEvento = binding.InputNombreEvento;
-        localidadEvento = binding.InputMunicipio;
+        localidadEvento = binding.SpinnerMunicipio;
         localidadEvento.setOnItemSelectedListener(this);
 
-        ArrayList<String> ubicaciones = new ArrayList<String>();
-        ubicaciones.add("Ninguna");
-        //todo obtener en ubicaciones todos los nombres de montañas
+        ArrayList<String> ubicaciones = new ArrayList<String>(JsonSingleton.getInstance().montanaMap.keySet());
 
-        /* ubicaciones.addAll();*/
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, ubicaciones);
-        localidadEvento.setAdapter(adapter);
+        ArrayAdapter ad = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,ubicaciones);
+        ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        localidadEvento.setAdapter(ad);
 
         fechaEvento = binding.InputFechaEvento;
-
         fechaEvento.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 switch (view.getId()) {
@@ -121,11 +120,9 @@ public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSe
             @Override
             public void onClick(View view) {
                 String nombre = nombreEvento.getText().toString();
-                String ubicacion;
                 Snackbar snackbar;
 
                 //todo obtener la ubicacion
-                String localidad = localidadEvento.toString();
                 Date fecha = DateConverter.toDate(fechaEvento.getText().toString());
                 String descripcion = descripcionEvento.getText().toString();
 
@@ -142,15 +139,8 @@ public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSe
                 if (descripcion.isEmpty()) {
                     descripcion = "Sin descripción";
                 }
-
-                //todo hacer que las localidades provengan del json
-                if (JsonSingleton.getInstance().buscarMontana(localidad) == null) {
-                    textoError = "No se encuentra la montaña";
-                    error = true;
-                }
-
-                if(fecha.before(new Date(System.currentTimeMillis()))){
-                    textoError = "Debe ser una fecha poserior a hoy";
+                if(fecha.before(new Date(System.currentTimeMillis()-86400000))){
+                    textoError = "Debe ser una fecha poserior";
                     error = true;
                 }
 
@@ -158,7 +148,6 @@ public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSe
                     snackbar = Snackbar.make(view, textoError, Snackbar.LENGTH_LONG);
                     snackbar.show();
                 } else {
-                    ubicacion = JsonSingleton.getInstance().buscarMontana(localidad).getCodigo();
 
                     evento = new Evento(nombre, localidad, descripcion, fecha, false);
                     EventoDAO eventoDAO = AppDatabase.getInstance(getContext()).eventoDAO();
@@ -166,17 +155,11 @@ public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSe
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                eventoDAO.insertEvent(evento);
-                                evento = eventoDAO.getEvent(evento.getTitulo()).get(0);
+                                idEvento = (int)eventoDAO.insertEvent(evento);
 
-                                DetallesEventoFragment detallesEvento = new DetallesEventoFragment();
-                                Bundle bundle = new Bundle();
-
-                                bundle.putInt("idEvento", evento.getIde());
-                                detallesEvento.setArguments(bundle);
-
-                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, detallesEvento).commit();
+                                Intent intent = new Intent(mContext, DetallesEventoActivity.class);
+                                intent.putExtra("idEvento", idEvento);
+                                startActivity(intent);
                             }
                         }).start();
 
@@ -206,101 +189,12 @@ public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSe
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        nombreEvento = view.findViewById(R.id.InputNombreEvento);
-        localidadEvento = view.findViewById(R.id.InputMunicipio);
-        localidadEvento.setOnItemSelectedListener(this);
-
-        ArrayList<String> ubicaciones = new ArrayList<String>();
-
-        //todo obtener en ubicaciones todos los nombres de montañas
-
-        /* ubicaciones.addAll();*/
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, ubicaciones);
-
-        localidadEvento.setAdapter(adapter);
-
-        fechaEvento = view.findViewById(R.id.InputFechaEvento);
-
-        fechaEvento.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switch (view.getId()) {
-                    case R.id.InputFechaEvento:
-                        showDatePickerDialog();
-                        break;
-                }
-            }
-        });
-
-        descripcionEvento = view.findViewById(R.id.InputDescripcionEvento);
-        botonCrear = binding.BotonModificar;
-        botonCrear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String nombre = nombreEvento.getText().toString();
-                String ubicacion;
-                Snackbar snackbar;
-
-                //todo obtener la ubicacion
-                String localidad = localidadEvento.toString();
-                Date fecha = DateConverter.toDate(fechaEvento.getText().toString());
-                String descripcion = descripcionEvento.getText().toString();
-
-                String textoError = "";
-                boolean error = false;
-                if (nombre == null) {
-                    error = true;
-                    textoError = "Debes introducir un nombre de evento";
-                }
-                if (localidad == null) {
-                    error = true;
-                    textoError = "Debes introducir una localidad";
-                }
-                if (descripcion == null) {
-                    descripcion = "Sin descripción";
-                }
-
-                //todo hacer que las localidades provengan del json
-                if (JsonSingleton.getInstance().buscarMontana(localidad) == null) {
-                    textoError = "No se encuentra la montaña";
-                    error = true;
-                }
-
-                if (error == true) {
-                    snackbar = Snackbar.make(view, textoError, Snackbar.LENGTH_LONG);
-                    snackbar.show();
-                } else {
-                    ubicacion = JsonSingleton.getInstance().buscarMontana(localidad).getCodigo();
-
-                    evento = new Evento(nombre, localidad, descripcion, fecha, false);
-                    EventoDAO eventoDAO = AppDatabase.getInstance(getContext()).eventoDAO();
-                    try {
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                eventoDAO.insertEvent(evento);
-                                evento = eventoDAO.getEvent(evento.getTitulo()).get(0);
-                            }
-                        }).start();
-
-                        DetallesEventoFragment detallesEvento = new DetallesEventoFragment();
-                        Bundle bundle = new Bundle();
-                        bundle.putInt("idEvento", evento.getIde());
-                        detallesEvento.setArguments(bundle);
-
-                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                        fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, detallesEvento).commit();
-                    } catch (Exception exception) {
-                        exception.printStackTrace();
-                    }
-                }
-            }
-        });
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View v, int pos, long id) {
-        localidad = parent.getItemAtPosition(pos).toString();
+        ArrayList<String> ubicaciones = new ArrayList<String>(JsonSingleton.getInstance().montanaMap.keySet());
+        localidad = ubicaciones.get(pos);
     }
 
     @Override
@@ -310,6 +204,7 @@ public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSe
     @Override
     public void onAttach(@NonNull Context context) {
         main = (CrearEventoActivity) context;
+        mContext = context;
         super.onAttach(context);
     }
 

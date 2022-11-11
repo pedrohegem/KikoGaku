@@ -34,7 +34,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/EtiquetaCrearEvento">
 
                     <Spinner
-                        android:id="@+id/InputMunicipio"
+                        android:id="@+id/SpinnerMunicipio"
                         android:layout_width="210dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="40dp"
@@ -91,7 +91,7 @@
                         android:minHeight="48dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/InputMunicipio" />
+                        app:layout_constraintTop_toBottomOf="@+id/SpinnerMunicipio" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

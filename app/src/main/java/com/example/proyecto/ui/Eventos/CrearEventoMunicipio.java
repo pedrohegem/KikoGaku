@@ -129,13 +129,13 @@ public class CrearEventoMunicipio extends Fragment{
                     descripcion = "Sin descripción";
                 }
 
-                if (JsonSingleton.getInstance().buscarMunicipio(localidad)) {
+                if (!JsonSingleton.getInstance().buscarMunicipio(localidad)) {
                     textoError = "No se encuentra el municipio";
                     error = true;
                 }
 
-                if(fecha.before(new Date(System.currentTimeMillis()))){
-                    textoError = "Debe ser una fecha poserior a hoy";
+                if(fecha.before(new Date(System.currentTimeMillis()-86400000))){
+                    textoError = "Debe ser una fecha poserior";
                     error = true;
                 }
 

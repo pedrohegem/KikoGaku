@@ -2,6 +2,7 @@ package com.example.proyecto.ui.Eventos;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.proyecto.Json.JsonSingleton;
+import com.example.proyecto.MainActivity;
 import com.example.proyecto.R;
 import com.example.proyecto.Room.AppDatabase;
 import com.example.proyecto.Room.DAO.EventoDAO;
@@ -90,7 +92,7 @@ public class ModificarEventoMunicipioFragment extends Fragment{
         View root = binding.getRoot();
 
         nombreEvento = binding.InputNombreEvento;
-        localidadEvento = binding.InputMunicipio;
+        localidadEvento = binding.SpinnerMunicipio;
 
         fechaEvento = binding.InputFechaEvento;
         descripcionEvento = binding.InputDescripcionEvento;
@@ -180,36 +182,9 @@ public class ModificarEventoMunicipioFragment extends Fragment{
                                     @Override
                                     public void run() {
                                         eventoDAO.updateEvent(e);
-                                        Bundle bundle = new Bundle();
-                                        bundle.putInt("idEvento",idEvento);
-                                        requireActivity().runOnUiThread(() -> NavHostFragment.findNavController(ModificarEventoMunicipioFragment.this).navigate(R.id.action_nav_modificar_evento_municipio_to_nav_detalles_evento,bundle));
-                                    }
-                                }).start();
-                            } catch (Exception exception){
-                                exception.printStackTrace();
-                            }
-                        }
-                    }
-                    else{
-                        if (JsonSingleton.getInstance().buscarMontana(localidad) == null) {
-                            textoError = "No se encuentra la montaña";
-                            error = true;
-                        }
-                        else {
-                            //ubicacion = JsonSingleton.getInstance().buscarMontana(localidad).getCodigo();
-                            Evento e = new Evento(nombre, localidad, descripcion, fecha, false);
-                            e.setIde(evento.getIde());
-                            EventoDAO eventoDAO = AppDatabase.getInstance(getContext()).eventoDAO();
-                            try {
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        eventoDAO.updateEvent(e);
-                                        Bundle bundle = new Bundle();
-                                        bundle.putInt("idEvento",idEvento);
-                                        Fragment detalles= new DetallesEventoFragment();
-                                        detalles.setArguments(bundle);
-                                        getActivity().getSupportFragmentManager().popBackStack();
+                                        Intent intent = new Intent(mContext, MainActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        mContext.startActivity(intent);
                                     }
                                 }).start();
                             } catch (Exception exception){

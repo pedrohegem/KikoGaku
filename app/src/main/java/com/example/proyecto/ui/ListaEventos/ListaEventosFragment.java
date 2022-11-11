@@ -81,7 +81,7 @@ public class ListaEventosFragment extends Fragment {
                     ITEMS.clear();
                     for (ListIterator<Evento> iter = eventos.listIterator(); iter.hasNext(); i++){
                         Evento event = iter.next();
-                        ITEMS.add(new PlaceholderItem(event.getIde(), String.valueOf(i),event.getTitulo(),event.getFecha().toString(), true));
+                        ITEMS.add(new PlaceholderItem(event.getIde(), String.valueOf(i),event.getTitulo(),event.getFecha().toString(), event.getEsMunicipio()));
                     }
 
                     requireActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());

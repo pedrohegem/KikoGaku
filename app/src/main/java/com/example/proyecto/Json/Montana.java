@@ -1,42 +1,41 @@
 
 package com.example.proyecto.Json;
 
-
-import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-
-@Entity
 public class Montana {
 
-    @SerializedName("Codigo")
+    @SerializedName("Latitud")
     @Expose
-    @PrimaryKey
-    @NonNull
-    @ColumnInfo
-    private String codigo;
-
+    private Double latitud;
+    @SerializedName("Longitud")
+    @Expose
+    private Double longitud;
     @SerializedName("Nombre")
     @Expose
-    @ColumnInfo
     private String nombre;
 
-    public Montana(@NonNull String codigo, String nombre) {
-        this.codigo = codigo;
+    public Montana(Double latitud, Double longitud, String nombre) {
+        this.latitud = latitud;
+        this.longitud = longitud;
         this.nombre = nombre;
     }
 
-    public String getCodigo() {
-        return codigo;
+    public Double getLatitud() {
+        return latitud;
     }
 
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
+    public void setLatitud(Double latitud) {
+        this.latitud = latitud;
+    }
+
+    public Double getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(Double longitud) {
+        this.longitud = longitud;
     }
 
     public String getNombre() {
