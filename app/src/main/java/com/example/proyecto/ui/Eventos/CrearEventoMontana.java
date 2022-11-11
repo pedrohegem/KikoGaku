@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ import com.example.proyecto.ui.DatePickerFragment;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -177,6 +179,9 @@ public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSe
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 // +1 because January is zero
+                Log.i("Fecha", "day: "+day);
+                Log.i("Fecha", "month: "+month);
+                Log.i("Fecha", "year: "+year);
                 final String selectedDate = day + "/" + (month + 1) + "/" + year;
                 fechaEvento.setText(selectedDate);
             }

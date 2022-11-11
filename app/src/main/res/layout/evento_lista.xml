@@ -5,10 +5,11 @@
     android:id="@+id/list_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".MainActivity"
+    android:baselineAligned="false"
     android:clickable="true"
+    android:focusable="true"
     android:orientation="horizontal"
-    android:focusable="true">
+    tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/item_number"
@@ -19,33 +20,35 @@
         android:text="@string/i"
         android:textAppearance="?attr/textAppearanceListItem" />
 
-    <TextView
-        android:id="@+id/Nombre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="@dimen/text_margin"
-        android:hapticFeedbackEnabled="false"
-        android:textAlignment="center"
-        android:textAppearance="?attr/textAppearanceListItem"
-        tools:text="Nombre Evento" />
-
     <ImageView
         android:id="@+id/iconoEvento"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:layout_gravity="start"
         android:layout_weight="1"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:textAlignment="textStart"
         app:srcCompat="@drawable/ic_evento" />
 
     <TextView
-        android:id="@+id/Fecha"
-        android:layout_width="89dp"
+        android:id="@+id/Nombre"
+        android:layout_width="169dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center|right"
-        android:layout_margin="@dimen/text_margin"
-        android:gravity="right"
+        android:layout_gravity="center|start"
+        android:gravity="start"
+        android:hapticFeedbackEnabled="false"
+        android:paddingStart="10dp"
         android:textAppearance="?attr/textAppearanceListItem"
-        tools:text="Fecha" />
+        tools:text="Nombre Evento" />
+
+    <TextView
+        android:id="@+id/Fecha"
+        android:layout_width="99dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|end"
+        android:layout_margin="@dimen/text_margin"
+        android:gravity="end"
+        android:textAppearance="?attr/textAppearanceListItem"
+        tools:text="11/Nov/2022" />
 </LinearLayout>

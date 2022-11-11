@@ -86,30 +86,19 @@ public class DetallesEventoFragment extends Fragment {
 
                         //todo buscar localidad con el JSON
                         localidadEvento.setText(evento.getUbicacion());
-
+                        Log.i("Fecha", "year: "+evento.getFecha());
                         fechaEvento.setText(DateConverter.toString(evento.getFecha()));
                         descripcionEvento.setText(evento.getDescripcion());
                         botonModificar.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                /*ModificarEventoMunicipioFragment modificarEvento = new ModificarEventoMunicipioFragment();
                                 Bundle bundle = new Bundle();
-                                bundle.putInt("idEvento", idEvento);
-
-                                modificarEvento.setArguments(bundle);
-                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, modificarEvento).commit();*/
-
+                                bundle.putInt("idEvento",idEvento);
                                 if(evento.getEsMunicipio() == true) {
-                                    Bundle bundle = new Bundle();
-                                    bundle.putInt("idEvento",idEvento);
                                     NavHostFragment.findNavController(DetallesEventoFragment.this).navigate(R.id.action_detallesEvento_to_nav_modificar_evento,bundle);
+                                }else{
+                                    NavHostFragment.findNavController(DetallesEventoFragment.this).navigate(R.id.action_nav_detalles_evento_to_nav_modificar_evento_montana,bundle);
                                 }
-                                else{
-                                    NavHostFragment.findNavController(DetallesEventoFragment.this).navigate(R.id.action_nav_detalles_evento_to_nav_modificar_evento_montana);
-                                }
-
-                                //Navigation.findNavController(main, R.id.nav_host_fragment_content_main).navigate();
                             }
                         });
                     }
@@ -132,66 +121,6 @@ public class DetallesEventoFragment extends Fragment {
 
         return root;
     }
-
-    /*
-        @Override
-        public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-            super.onViewCreated(view, savedInstanceState);
-
-            nombreEvento = binding.EtiquetaDetalles;
-            localidadEvento = binding.DetallesLocalidad;
-            fechaEvento = binding.DetallesFechaDeInicio;
-            descripcionEvento = binding.DetallesDescripcion;
-
-            botonModificar = binding.BotonModificar;
-            botonBorrar = binding.BotonEliminar;
-
-            nombreEvento.setText(evento.getTitulo());
-
-            //todo buscar localidad con el JSON
-            localidadEvento.setText(evento.getUbicacion());
-
-            fechaEvento.setText(DateConverter.toString(evento.getFecha()));
-            descripcionEvento.setText(evento.getDescripcion());
-
-            botonModificar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ModificarEventoMunicipioFragment modificarEvento = new ModificarEventoMunicipioFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("idEvento", idEvento);
-                    /*bundle.putString("nombreEvento", evento.getTitulo());
-
-                    //todo obtener localidad con el JSON
-                    bundle.putString("localidadEvento", evento.getUbicacionCode());
-
-                    bundle.putString("descripcionEvento", evento.getDescripcion());
-                    bundle.putBoolean("esMunicipio", evento.getEsMunicipio());
-                    bundle.putString("fechaEvento", DateConverter.toString(evento.getFecha()));
-
-                    modificarEvento.setArguments(bundle);
-                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, modificarEvento).commit();
-
-                    //Navigation.findNavController(main, R.id.nav_host_fragment_content_main).navigate();
-                }
-            });
-
-            botonBorrar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int ide = idEvento;
-                    DeleteEventDialog deleteDialogFragment = new DeleteEventDialog();
-
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("idEvento", ide);
-                    deleteDialogFragment.setArguments(bundle);
-
-                    deleteDialogFragment.show(getChildFragmentManager(), "DeleteDialogFragment");
-                }
-            });
-        }
-        */
     @Override
     public void onAttach(@NonNull Context context) {
         main = (DetallesEventoActivity) context;

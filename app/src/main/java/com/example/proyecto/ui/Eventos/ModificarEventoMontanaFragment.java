@@ -1,12 +1,14 @@
 package com.example.proyecto.ui.Eventos;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -14,6 +16,7 @@ import android.widget.Spinner;
 import androidx.fragment.app.Fragment;
 
 import com.example.proyecto.Json.JsonSingleton;
+import com.example.proyecto.MainActivity;
 import com.example.proyecto.R;
 import com.example.proyecto.Room.AppDatabase;
 import com.example.proyecto.Room.DAO.EventoDAO;
@@ -23,6 +26,7 @@ import com.example.proyecto.Room.javadb.DateConverter;
 import com.example.proyecto.databinding.FragmentModificarEventoMontanaBinding;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -39,10 +43,10 @@ public class ModificarEventoMontanaFragment extends Fragment implements AdapterV
     private EditText nombreEvento, fechaEvento, descripcionEvento;
     Spinner localidadEvento;
     private Button botonModificar;
-
     private Evento evento;
-
     private String localidad;
+    private int idEvento;
+
 
     private FragmentModificarEventoMontanaBinding binding;
 
@@ -68,15 +72,8 @@ public class ModificarEventoMontanaFragment extends Fragment implements AdapterV
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*getParentFragmentManager().setFragmentResultListener("key", this, new FragmentResultListener() {
-            @Override
-            public void onFragmentResult(@NonNull String key, @NonNull Bundle bundle) {
-                // We use a String here, but any type that can be put in a Bundle is supported
-                String result = bundle.getString("NombreEvento");
-            }
-        });*/
 
-        //int idEvento = getArguments().getInt("idEvento", 0);
+
     }
 
     @Override
@@ -92,10 +89,18 @@ public class ModificarEventoMontanaFragment extends Fragment implements AdapterV
         localidadEvento.setOnItemSelectedListener(this);
         fechaEvento = binding.InputFechaEvento;
         descripcionEvento = binding.InputDescripcionEvento;
-
         botonModificar = binding.BotonModificar;
 
-        int idEvento = main.getIdEvento();
+        ArrayList<String> ubicaciones = new ArrayList<String>(JsonSingleton.getInstance().montanaMap.keySet());
+
+        ArrayAdapter ad = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,ubicaciones);
+        ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        localidadEvento.setAdapter(ad);
+
+        idEvento = 0;
+        if (getArguments() != null) {
+            idEvento = getArguments().getInt("idEvento");
+        }
 
         EventoDAO eventoDao = AppDatabase.getInstance(mContext).eventoDAO();
         try {
@@ -105,12 +110,13 @@ public class ModificarEventoMontanaFragment extends Fragment implements AdapterV
                     List<Evento> eventos = eventoDao.getEvent(idEvento);
                     if(eventos.isEmpty() == true){
                         //todo gestionar error
-                        Log.d("ERROR", "AAAAAAAAAAAAAAAAAAAA");
+                        Log.d("ERROR", "Fallo en el evento");
                     }
                     else{
                         evento = eventos.get(0);
                         nombreEvento.setText(evento.getTitulo());
                         fechaEvento.setText(DateConverter.toString(evento.getFecha()));
+                        localidadEvento.setSelection(ubicaciones.indexOf(evento.getUbicacion()));
                         descripcionEvento.setText(evento.getDescripcion());
                     }
                 }
@@ -118,17 +124,6 @@ public class ModificarEventoMontanaFragment extends Fragment implements AdapterV
         } catch (Exception exception){
             exception.printStackTrace();
         }
-
-
-        //todo buscar localidad con el JSON
-        //localidadEvento.setText(evento.getUbicacionCode());
-
-        /*nombreEvento.setText(getArguments().getString("nombreEvento", "Nombre del evento"));
-
-        //localidadEvento.set(savedInstanceState.getString("localidadEvento"));
-        fechaEvento.setText(getArguments().getString("fechaEvento", "01/01/2000"));
-        descripcionEvento.setText(getArguments().getString("descripcionEvento", ""));*/
-
         botonModificar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -163,7 +158,6 @@ public class ModificarEventoMontanaFragment extends Fragment implements AdapterV
                             error = true;
                         }
                         else {
-                            //ubicacion = JsonSingleton.getInstance().buscarMunicipio(localidad).getCodigo();
                             Evento e = new Evento(nombre, localidad, descripcion, fecha, true);
                             e.setIde(evento.getIde());
                             EventoDAO eventoDAO = AppDatabase.getInstance(getContext()).eventoDAO();
@@ -172,6 +166,9 @@ public class ModificarEventoMontanaFragment extends Fragment implements AdapterV
                                     @Override
                                     public void run() {
                                         eventoDAO.updateEvent(e);
+                                        Intent intent = new Intent(mContext, MainActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        mContext.startActivity(intent);
                                     }
                                 }).start();
                             } catch (Exception exception){
@@ -180,7 +177,6 @@ public class ModificarEventoMontanaFragment extends Fragment implements AdapterV
                         }
                     }
                     else{
-                    //ubicacion = JsonSingleton.getInstance().buscarMontana(localidad).getCodigo();
                         Evento e = new Evento(nombre, localidad, descripcion, fecha, false);
                         e.setIde(evento.getIde());
                         EventoDAO eventoDAO = AppDatabase.getInstance(getContext()).eventoDAO();
@@ -209,24 +205,23 @@ public class ModificarEventoMontanaFragment extends Fragment implements AdapterV
 
         return root;
     }
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View v, int pos, long id)
-        {
-            String item = parent.getItemAtPosition(pos).toString();
-            evento.setUbicacion(item);
-        }
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View v, int pos, long id) {
+        ArrayList<String> ubicaciones = new ArrayList<String>(JsonSingleton.getInstance().montanaMap.keySet());
+        localidad = ubicaciones.get(pos);
+    }
 
-        @Override
-        public void onNothingSelected(AdapterView<?> arg0)
-        {
-            //todo obtener la localidad con el JSON
-            localidad = evento.getUbicacion();
-        }
+    @Override
+    public void onNothingSelected(AdapterView<?> arg0)
+    {
+        localidad = evento.getUbicacion();
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
     }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

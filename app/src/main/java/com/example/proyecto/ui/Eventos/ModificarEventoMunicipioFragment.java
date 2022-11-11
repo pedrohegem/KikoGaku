@@ -1,6 +1,7 @@
 package com.example.proyecto.ui.Eventos;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 
 import androidx.fragment.app.Fragment;
@@ -25,6 +27,7 @@ import com.example.proyecto.Room.Modelo.Evento;
 import com.example.proyecto.Room.javadb.DateConverter;
 
 import com.example.proyecto.databinding.FragmentModificarEventoMunicipioBinding;
+import com.example.proyecto.ui.DatePickerFragment;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.security.cert.Certificate;
@@ -94,8 +97,20 @@ public class ModificarEventoMunicipioFragment extends Fragment{
         nombreEvento = binding.InputNombreEvento;
         localidadEvento = binding.SpinnerMunicipio;
 
-        fechaEvento = binding.InputFechaEvento;
         descripcionEvento = binding.InputDescripcionEvento;
+
+        fechaEvento = binding.InputFechaEvento;
+        fechaEvento.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                switch (view.getId()) {
+                    case R.id.InputFechaEvento:
+                        showDatePickerDialog();
+                        break;
+                }
+            }
+        });
 
         botonModificar = binding.BotonModificar;
 
@@ -112,13 +127,14 @@ public class ModificarEventoMunicipioFragment extends Fragment{
                 public void run() {
                     List<Evento> eventos = eventoDao.getEvent(finalIdEvento);
                     if(eventos.isEmpty() == true){
-                        //todo gestionar error
-                        Log.d("ERROR", "AAAAAAAAAAAAAAAAAAAA");
+                        Log.d("ERROR", "Fallo en el evento");
                     }
                     else{
                         evento = eventos.get(0);
                         nombreEvento.setText(evento.getTitulo());
-                        fechaEvento.setText(DateConverter.toString(evento.getFecha()));
+                        String[] fecha = evento.getFecha().toString().split(" ");
+                        //Todo: cambiar como se ve la fecha en motana tambien y en detalles:
+                        fechaEvento.setText(fecha[2]+"/"+fecha[1]+"/"+fecha[5]);
                         localidadEvento.setText(evento.getUbicacion());
                         descripcionEvento.setText(evento.getDescripcion());
                     }
@@ -127,16 +143,6 @@ public class ModificarEventoMunicipioFragment extends Fragment{
         } catch (Exception exception){
             exception.printStackTrace();
         }
-
-
-        //todo buscar localidad con el JSON
-        //localidadEvento.setText(evento.getUbicacionCode());
-
-        /*nombreEvento.setText(getArguments().getString("nombreEvento", "Nombre del evento"));
-
-        //localidadEvento.set(savedInstanceState.getString("localidadEvento"));
-        fechaEvento.setText(getArguments().getString("fechaEvento", "01/01/2000"));
-        descripcionEvento.setText(getArguments().getString("descripcionEvento", ""));*/
 
         botonModificar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,8 +177,7 @@ public class ModificarEventoMunicipioFragment extends Fragment{
                         if (JsonSingleton.getInstance().buscarMunicipio(localidad)) {
                             textoError = "No se encuentra el municipio";
                             error = true;
-                        }
-                        else {
+                        }else {
                             //ubicacion = JsonSingleton.getInstance().buscarMunicipio(localidad).getCodigo();
                             Evento e = new Evento(nombre, localidad, descripcion, fecha, true);
                             e.setIde(evento.getIde());
@@ -205,6 +210,22 @@ public class ModificarEventoMunicipioFragment extends Fragment{
         });
 
         return root;
+    }
+
+    private void showDatePickerDialog() {
+        DatePickerFragment newFragment = DatePickerFragment.newInstance(new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                // +1 because January is zero
+                Log.i("Fecha", "day: "+day);
+                Log.i("Fecha", "month: "+month);
+                Log.i("Fecha", "year: "+year);
+                final String selectedDate = day + "/" + (month + 1) + "/" + year;
+                fechaEvento.setText(selectedDate);
+            }
+        });
+
+        newFragment.show(getActivity().getSupportFragmentManager(), "datePicker");
     }
 
     @Override
