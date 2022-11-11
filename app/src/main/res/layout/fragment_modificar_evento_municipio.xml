@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".ui.ListaEventos.ModificarEventoMunicipioFragment"
     android:background="@color/Azul_osc">
 
     <ScrollView
@@ -20,7 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/Azul_osc"
-                tools:context=".ui.Eventos.ModificarEvento">
+                tools:context=".ui.ListaEventos.ModificarEventoMunicipioFragment">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/LayoutModificar"
@@ -32,8 +33,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/EtiquetaCrearEvento">
 
-                    <Spinner
-                        android:id="@+id/Spinner"
+                    <EditText
+                        android:id="@+id/InputMunicipio"
                         android:layout_width="210dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="40dp"
@@ -90,7 +91,7 @@
                         android:minHeight="48dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/Spinner" />
+                        app:layout_constraintTop_toBottomOf="@+id/InputMunicipio" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

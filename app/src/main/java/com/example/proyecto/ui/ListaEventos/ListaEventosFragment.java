@@ -19,7 +19,6 @@ import android.widget.TextView;
 import com.example.proyecto.R;
 import com.example.proyecto.Room.AppDatabase;
 import com.example.proyecto.Room.Modelo.Evento;
-import com.example.proyecto.Room.Modelo.EventoMontana;
 import com.example.proyecto.databinding.EventoListaBinding;
 import com.example.proyecto.ui.ListaEventos.placeholder.PlaceholderItem;
 
@@ -29,7 +28,7 @@ import java.util.List;
 /**
  * A fragment representing a list of Items.
  */
-public class EventoFragment extends Fragment {
+public class ListaEventosFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
 
     private Context mContext;
@@ -43,14 +42,14 @@ public class EventoFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public EventoFragment() {
+    public ListaEventosFragment() {
 
     }
 
     /*Crea una nueva fila*/
     @SuppressWarnings("unused")
-    public static EventoFragment newInstance(int columnCount,String nom, String fech) {
-        EventoFragment fragment = new EventoFragment();
+    public static ListaEventosFragment newInstance(int columnCount, String nom, String fech) {
+        ListaEventosFragment fragment = new ListaEventosFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
 
@@ -77,17 +76,13 @@ public class EventoFragment extends Fragment {
                         AppDatabase.getInstance(getContext()).eventoMontanaDAO().insertMontana(new EventoMontana("Evento","Madrid","Descripcion", Calendar.getInstance().getTime()));
                     }*/
                     List<Evento> eventos = AppDatabase.getInstance(getContext()).eventoDAO().getAll();
-                    List<EventoMontana> eventosMontana = AppDatabase.getInstance(getContext()).eventoMontanaDAO().getAll();
                     Log.i("Recoleccion", "eventos: "+eventos.size());
-                    Log.i("Recoleccion", "eventosMontana: "+eventosMontana.size());
+                    Log.i("Recoleccion", "eventosMontana: "+eventos.size());
                     int i=0;
                     for (i=0; i<eventos.size() ;i++){
                         ITEMS.add(new PlaceholderItem(String.valueOf(i),eventos.get(i).getTitulo(),eventos.get(i).getFecha().toString(), true));
                     }
 
-                    for (int a = i;i-a<eventosMontana.size();i++){
-                        ITEMS.add(new PlaceholderItem(String.valueOf(i),eventosMontana.get(i-a).getTitulo(),eventosMontana.get(i-a).getFecha().toString(), false));
-                    }
                     requireActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());
                 }
             }).start();

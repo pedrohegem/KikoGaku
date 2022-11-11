@@ -27,7 +27,9 @@
 
     <string name="title_activity_lista_eventos">Lista de eventos</string>
     <string name="title_activity_registrarse">Inicio</string>
+    <string name="title_activity_crear_evento">Crear un evento</string>
     <string name="title_activity_modificar_evento">Modificar evento</string>
+    <string name="title_activity_detalles_evento">Detalles de un evento</string>
 
     <!-- Eventos -->
     <string name="n_crear_evento">Selecciona el tipo de evento a crear</string>
@@ -63,12 +65,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <string name="title_activity_crear_evento">CrearEventoActivity</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
@@ -80,6 +77,4 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 </resources>

@@ -9,7 +9,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.proyecto.Json.JsonSingleton;
-import com.example.proyecto.MainActivity;
 import com.example.proyecto.R;
 import com.example.proyecto.Room.AppDatabase;
 import com.example.proyecto.Room.DAO.EventoDAO;
@@ -29,6 +27,7 @@ import com.example.proyecto.Room.Modelo.Evento;
 import com.example.proyecto.Room.javadb.DateConverter;
 import com.example.proyecto.databinding.FragmentCrearEventoMontanaBinding;
 import com.example.proyecto.ui.DatePickerFragment;
+import com.example.proyecto.ui.ListaEventos.DetallesEvento;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -93,7 +92,7 @@ public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSe
         View root = binding.getRoot();
 
         nombreEvento = binding.InputNombreEvento;
-        localidadEvento = binding.Spinner;
+        localidadEvento = binding.InputMunicipio;
         localidadEvento.setOnItemSelectedListener(this);
 
         ArrayList<String> ubicaciones = new ArrayList<String>();
@@ -133,21 +132,26 @@ public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSe
 
                 String textoError = "";
                 boolean error = false;
-                if (nombre == null) {
+                if (nombre.isEmpty()) {
                     error = true;
                     textoError = "Debes introducir un nombre de evento";
                 }
-                if (localidad == null) {
+                if (localidad.isEmpty()) {
                     error = true;
                     textoError = "Debes introducir una localidad";
                 }
-                if (descripcion == null) {
+                if (descripcion.isEmpty()) {
                     descripcion = "Sin descripción";
                 }
 
                 //todo hacer que las localidades provengan del json
                 if (JsonSingleton.getInstance().buscarMontana(localidad) == null) {
                     textoError = "No se encuentra la montaña";
+                    error = true;
+                }
+
+                if(fecha.before(new Date(System.currentTimeMillis()))){
+                    textoError = "Debe ser una fecha poserior a hoy";
                     error = true;
                 }
 
@@ -204,7 +208,7 @@ public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSe
         super.onViewCreated(view, savedInstanceState);
 
         nombreEvento = view.findViewById(R.id.InputNombreEvento);
-        localidadEvento = view.findViewById(R.id.Spinner);
+        localidadEvento = view.findViewById(R.id.InputMunicipio);
         localidadEvento.setOnItemSelectedListener(this);
 
         ArrayList<String> ubicaciones = new ArrayList<String>();

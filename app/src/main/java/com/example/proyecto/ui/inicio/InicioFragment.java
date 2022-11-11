@@ -2,14 +2,10 @@ package com.example.proyecto.ui.inicio;
 
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,16 +17,12 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.proyecto.databinding.FragmentInicioBinding;
 import com.example.proyecto.utils.APIManagerDelegate;
 import com.example.proyecto.R;
 import com.example.proyecto.Room.Modelo.Weather;
-import com.example.proyecto.databinding.FragmentInicioBinding;
-import com.example.proyecto.ui.ListaEventos.EventoFragment;
+import com.example.proyecto.ui.ListaEventos.ListaEventosFragment;
 import com.example.proyecto.utils.APIManager;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
 
 public class InicioFragment extends Fragment implements APIManagerDelegate {
 
@@ -61,7 +53,7 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        Fragment childFragment = new EventoFragment();
+        Fragment childFragment = new ListaEventosFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.child_ListaEventos, childFragment).commit();
     }
