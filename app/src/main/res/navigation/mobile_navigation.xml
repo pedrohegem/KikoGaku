@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_inicio">
+    app:startDestination="@id/nav_inicio">
 
     <fragment
         android:id="@+id/nav_eventos"
@@ -37,4 +37,5 @@
         android:name="com.example.proyecto.ui.ajustes.AjustesFragment"
         android:label="@string/menu_ajustes"
         tools:layout="@layout/fragment_ajustes" />
+
 </navigation>

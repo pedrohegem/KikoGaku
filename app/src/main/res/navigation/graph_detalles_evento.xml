@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/nav_detalles_evento">
+    <fragment
+        android:id="@+id/nav_detalles_evento"
+        android:name="com.example.proyecto.ui.Eventos.DetallesEventoFragment"
+        android:label="@string/title_activity_detalles_evento"
+        tools:layout="@layout/fragment_detalles_evento">
+        <action
+            android:id="@+id/action_detallesEvento_to_nav_modificar_evento"
+            app:destination="@id/nav_modificar_evento_municipio" />
+        <action
+            android:id="@+id/action_nav_detalles_evento_to_nav_modificar_evento_montana"
+            app:destination="@id/nav_modificar_evento_montana" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_modificar_evento_municipio"
+        android:name="com.example.proyecto.ui.Eventos.ModificarEventoMunicipioFragment"
+        android:label="@string/title_activity_modificar_evento"
+        tools:layout="@layout/fragment_modificar_evento_municipio">
+        <argument
+            android:name="ideArg"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <action
+            android:id="@+id/action_nav_modificar_evento_municipio_to_nav_detalles_evento"
+            app:destination="@id/nav_detalles_evento" />
+    </fragment>
+    <action
+        android:id="@+id/action_detallesEvento_to_nav_modificar_evento"
+        app:destination="@id/nav_modificar_evento_municipio" />
+    <fragment
+        android:id="@+id/nav_modificar_evento_montana"
+        android:name="com.example.proyecto.ui.Eventos.ModificarEventoMontanaFragment"
+        android:label="@string/title_activity_modificar_evento"
+        tools:layout="@layout/fragment_modificar_evento_montana" >
+        <action
+            android:id="@+id/action_nav_modificar_evento_montana_to_nav_detalles_evento"
+            app:destination="@id/nav_detalles_evento" />
+    </fragment>
+</navigation>

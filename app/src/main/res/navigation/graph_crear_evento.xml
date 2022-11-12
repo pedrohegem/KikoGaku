@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph2"
+    app:startDestination="@id/nav_crear_evento">
+    <fragment
+        android:id="@+id/nav_crear_municipio"
+        android:name="com.example.proyecto.ui.Eventos.CrearEventoMunicipio"
+        android:label="@string/title_activity_crear_evento"
+        tools:layout="@layout/fragment_crear_evento_municipio" />
+    <fragment
+        android:id="@+id/nav_crear_evento"
+        android:name="com.example.proyecto.ui.Eventos.CrearEvento"
+        android:label="@string/title_activity_crear_evento"
+        tools:layout="@layout/fragment_crear_evento">
+        <action
+            android:id="@+id/action_crearEvento_to_crearEventoMunicipio2"
+            app:destination="@id/nav_crear_municipio" />
+        <action
+            android:id="@+id/action_crearEvento_to_crearEventoMontana2"
+            app:destination="@id/nav_crear_montana" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_crear_montana"
+        android:name="com.example.proyecto.ui.Eventos.CrearEventoMontana"
+        android:label="@string/title_activity_crear_evento"
+        tools:layout="@layout/fragment_crear_evento_montana" />
+    <action
+        android:id="@+id/action_crearEvento_to_crearEventoMontana2"
+        app:destination="@id/nav_crear_montana" />
+    <action
+        android:id="@+id/action_crearEvento_to_crearEventoMunicipio2"
+        app:destination="@id/nav_crear_municipio" />
+    <action
+        android:id="@+id/action_crearEvento_to_crearEventoMunicipio"
+        app:destination="@id/nav_crear_municipio" />
+    <action
+        android:id="@+id/action_crearEvento_to_crearEventoMontana"
+        app:destination="@id/nav_crear_montana" />
+</navigation>

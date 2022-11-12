@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.example.proyecto.Room.Modelo.Evento;
 
@@ -12,11 +13,19 @@ import java.util.List;
 @Dao
 public interface EventoDAO {
     @Insert
-    void insertEvent(Evento evento);
+    long insertEvent(Evento evento);
 
-    @Query("Select * from evento")
+    @Query("SELECT * FROM evento")
     List<Evento> getAll();
 
+    @Query("SELECT * FROM evento WHERE ide = (:idEvento)")
+    List<Evento> getEvent(int idEvento);
+
+    @Query("SELECT * FROM evento WHERE titulo = (:tituloEvento)")
+    List<Evento> getEvent(String tituloEvento);
+
+    @Update
+    void updateEvent(Evento evento);
 
     @Delete
     void deleteEvent(Evento evento);

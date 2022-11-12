@@ -1,38 +1,47 @@
 [
  {
-  "Codigo": "peu1",
+  "Latitud": 43.1888023262286,
+  "Longitud": -4.31888023262286,
   "Nombre": "Picos de Europa"
  },
  {
-  "Codigo": "nav1",
+  "Latitud": 42.976582255027,
+  "Longitud": -1.17824968782755,
   "Nombre": "Pirineo Navarro"
  },
  {
-  "Codigo": "arn1",
+  "Latitud": 42.678642431656,
+  "Longitud": -0.0197685210185362,
   "Nombre": "Pirineo Aragones"
  },
  {
-  "Codigo": "cat1",
+  "Latitud": 42.3709916823131,
+  "Longitud": 2.10569680621312,
   "Nombre": "Pirineo Catalán"
  },
  {
-  "Codigo": "rio1",
+  "Latitud": 42.0056721042448,
+  "Longitud": -2.86429055016057,
   "Nombre": "Ibérica Riojana"
  },
  {
-  "Codigo": "arn2",
+  "Latitud": 42.6321583374294,
+  "Longitud": 0.638715388258535,
   "Nombre": "Ibérica Aragonesa"
  },
  {
-  "Codigo": "mad2",
+  "Latitud": 40.8486415787341,
+  "Longitud": -3.95541056609034,
   "Nombre": "Sierras de Guadarrama y Somosierra"
  },
  {
-  "Codigo": "gre1",
+  "Latitud": 40.2454658964477,
+  "Longitud": -5.29734245059712,
   "Nombre": "Sierra de Gredos"
  },
  {
-  "Codigo": "nev1",
+  "Latitud": 37.0531453001975,
+  "Longitud": -3.3115560106928,
   "Nombre": "Sierra Nevada"
  }
 ]

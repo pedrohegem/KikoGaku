@@ -17,8 +17,32 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Proyecto"
         tools:targetApi="31">
+
+        <activity
+            android:name=".ui.Eventos.CrearEventoActivity"
+            android:exported="false"
+            android:label="@string/title_activity_crear_evento"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.Proyecto.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Proyecto.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+
+        </activity>
         <activity
             android:name=".LaunchActivity"
+            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,22 +52,14 @@
 
         </activity>
         <activity
-            android:name=".ui.ListaEventos.DetallesEventoActivity"
+            android:name=".ui.Eventos.DetallesEventoActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.Proyecto.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
-        </activity>
-        <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Proyecto.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
-
         </activity>
     </application>
 

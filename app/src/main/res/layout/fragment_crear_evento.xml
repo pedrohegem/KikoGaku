@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LayoutCrearEvento"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Azul_osc"
+    tools:context=".ui.Eventos.CrearEvento">
+
+    <TextView
+        android:id="@+id/EtiquetaCrear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="220dp"
+        android:text="@string/n_crear_evento"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/CrearMunicipio"
+        android:layout_width="291dp"
+        android:layout_height="94dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/verde_Osc"
+        android:text="@string/n_opcion_municipio"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:cornerRadius="12dp"
+        app:layout_constraintEnd_toEndOf="@+id/EtiquetaCrear"
+        app:layout_constraintHorizontal_bias="0.457"
+        app:layout_constraintStart_toStartOf="@+id/EtiquetaCrear"
+        app:layout_constraintTop_toBottomOf="@+id/EtiquetaCrear" />
+
+    <Button
+        android:id="@+id/CrearMontana"
+        android:layout_width="290dp"
+        android:layout_height="89dp"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="@color/verde"
+        android:text="@string/n_opcion_montana"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:cornerRadius="12dp"
+        app:layout_constraintEnd_toEndOf="@+id/CrearMunicipio"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/CrearMunicipio"
+        app:layout_constraintTop_toBottomOf="@+id/CrearMunicipio" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

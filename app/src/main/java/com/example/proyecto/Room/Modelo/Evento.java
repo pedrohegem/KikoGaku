@@ -1,7 +1,6 @@
 package com.example.proyecto.Room.Modelo;
 
 import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -27,56 +26,34 @@ public class Evento {
 
     private String titulo;
 
-    private int ubicacionCode;
+    private String ubicacion;
 
     private String descripcion;
+
+    private boolean esMunicipio;
 
     @TypeConverters(DateConverter.class)
     private Date fecha;
 
-    // Campos que no forman parte de la tabla
-    @Ignore
-    private int probPrecipitacion;
-    @Ignore
-    private String estadoCielo;
-    @Ignore
-    private int velocidadViento;
-    @Ignore
-    private int tempMax;
-    @Ignore
-    private int tempMin;
-    @Ignore
-    private int sensacionTerminaMax;
-    @Ignore
-    private int getSensacionTerminaMin;
-
-    public Evento(String titulo, int ubicacionCode, String descripcion, Date fecha) {
+    public Evento(String titulo, String ubicacion, String descripcion, Date fecha, boolean esMunicipio) {
         this.titulo = titulo;
-        this.ubicacionCode = ubicacionCode;
+        this.ubicacion = ubicacion;
         this.descripcion = descripcion;
 
         this.fecha = fecha;
+        this.esMunicipio = esMunicipio;
     }
     @Ignore
-    public Evento(int ide, String titulo, int ubicacionCode, String descripcion, String fecha, int probPrecipitacion, String estadoCielo, int velocidadViento, int tempMax, int tempMin, int sensacionTerminaMax, int getSensacionTerminaMin) {
-        this.ide = ide;
+    public Evento(String titulo, String ubicacion, String descripcion, String fecha, boolean esMunicipio) {
         this.titulo = titulo;
-        this.ubicacionCode = ubicacionCode;
+        this.ubicacion = ubicacion;
         this.descripcion = descripcion;
-        this.probPrecipitacion = probPrecipitacion;
-        this.estadoCielo = estadoCielo;
-        this.velocidadViento = velocidadViento;
-        this.tempMax = tempMax;
-        this.tempMin = tempMin;
-        this.sensacionTerminaMax = sensacionTerminaMax;
-        this.getSensacionTerminaMin = getSensacionTerminaMin;
-
         try {
             this.fecha = Evento.FORMAT.parse(fecha);
         } catch (ParseException e) {
             this.fecha = new Date();
         }
-
+        this.esMunicipio = esMunicipio;
     }
 
     public int getIde() {
@@ -95,12 +72,12 @@ public class Evento {
         this.titulo = titulo;
     }
 
-    public int getUbicacionCode() {
-        return ubicacionCode;
+    public String getUbicacion() {
+        return ubicacion;
     }
 
-    public void setUbicacionCode(int ubicacionCode) {
-        this.ubicacionCode = ubicacionCode;
+    public void setUbicacion(String ubicacion) {
+        this.ubicacion = ubicacion;
     }
 
     public String getDescripcion() {
@@ -111,6 +88,14 @@ public class Evento {
         this.descripcion = descripcion;
     }
 
+    public boolean getEsMunicipio(){
+        return esMunicipio;
+    }
+
+    public void setEsMunicipio(boolean esMunicipio){
+        this.esMunicipio = esMunicipio;
+    }
+
     public Date getFecha() {
         return fecha;
     }
@@ -119,59 +104,4 @@ public class Evento {
         this.fecha = fecha;
     }
 
-    public int getProbPrecipitacion() {
-        return probPrecipitacion;
-    }
-
-    public void setProbPrecipitacion(int probPrecipitacion) {
-        this.probPrecipitacion = probPrecipitacion;
-    }
-
-    public String getEstadoCielo() {
-        return estadoCielo;
-    }
-
-    public void setEstadoCielo(String estadoCielo) {
-        this.estadoCielo = estadoCielo;
-    }
-
-    public int getVelocidadViento() {
-        return velocidadViento;
-    }
-
-    public void setVelocidadViento(int velocidadViento) {
-        this.velocidadViento = velocidadViento;
-    }
-
-    public int getTempMax() {
-        return tempMax;
-    }
-
-    public void setTempMax(int tempMax) {
-        this.tempMax = tempMax;
-    }
-
-    public int getTempMin() {
-        return tempMin;
-    }
-
-    public void setTempMin(int tempMin) {
-        this.tempMin = tempMin;
-    }
-
-    public int getSensacionTerminaMax() {
-        return sensacionTerminaMax;
-    }
-
-    public void setSensacionTerminaMax(int sensacionTerminaMax) {
-        this.sensacionTerminaMax = sensacionTerminaMax;
-    }
-
-    public int getGetSensacionTerminaMin() {
-        return getSensacionTerminaMin;
-    }
-
-    public void setGetSensacionTerminaMin(int getSensacionTerminaMin) {
-        this.getSensacionTerminaMin = getSensacionTerminaMin;
-    }
 }

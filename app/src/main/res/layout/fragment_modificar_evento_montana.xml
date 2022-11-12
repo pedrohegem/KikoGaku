@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.Eventos.ModificarEventoMontanaFragment"
+    android:background="@color/Azul_osc">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/Azul_osc"
+                tools:context=".ui.Eventos.ModificarEventoMunicipioFragment">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/LayoutModificar"
+                    android:layout_width="336dp"
+                    android:layout_height="413dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/Azul"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/EtiquetaCrearEvento">
+
+                    <Spinner
+                        android:id="@+id/SpinnerMunicipio"
+                        android:layout_width="210dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="40dp"
+                        android:background="@color/white"
+                        android:ems="10"
+                        android:hint="@string/n_localidad_evento"
+                        android:inputType="textPersonName"
+                        android:minHeight="48dp"
+                        android:textColor="@color/black"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.505"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/InputNombreEvento" />
+
+                    <EditText
+                        android:id="@+id/InputNombreEvento"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="40dp"
+                        android:background="@color/white"
+                        android:ems="10"
+                        android:hint="@string/n_nombre_evento"
+                        android:inputType="textPersonName"
+                        android:minHeight="48dp"
+                        android:textColor="@color/black"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.505"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/InputDescripcionEvento"
+                        android:layout_width="wrap_content"
+                        android:layout_height="65dp"
+                        android:layout_marginTop="44dp"
+                        android:background="@color/white"
+                        android:ems="10"
+                        android:gravity="start|top"
+                        android:hint="@string/n_descripcion_evento"
+                        android:inputType="textMultiLine"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/InputFechaEvento" />
+
+                    <EditText
+                        android:id="@+id/InputFechaEvento"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="40dp"
+                        android:background="@color/white"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:ems="10"
+                        android:hint="@string/n_fecha_inicio_evento"
+                        android:inputType="date"
+                        android:minHeight="48dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/SpinnerMunicipio" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <Button
+                    android:id="@+id/BotonModificar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="28dp"
+                    android:backgroundTint="@color/teal_700"
+                    android:text="@string/n_etiqueta_modificar"
+                    app:cornerRadius="10sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.498"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/LayoutModificar" />
+
+                <TextView
+                    android:id="@+id/EtiquetaCrearEvento"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:text="@string/n_modificar"
+                    android:textColor="@color/white"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.497"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

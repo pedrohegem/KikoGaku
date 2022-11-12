@@ -1,6 +1,9 @@
 package com.example.proyecto.Json;
 
-import java.util.List;
+import com.example.proyecto.Room.Modelo.Evento;
+
+import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 
 public class JsonSingleton {
@@ -20,4 +23,14 @@ public class JsonSingleton {
         }
         return instance;
     }
+
+    public boolean buscarMunicipio(String nombreMunicipio){
+        for (Map.Entry<String,Municipio> mun: municipioMap.entrySet()) {
+            if (Objects.equals(mun.getKey(),nombreMunicipio)){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
