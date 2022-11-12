@@ -26,6 +26,7 @@ import com.example.proyecto.databinding.FragmentCrearEventoMunicipioBinding;
 import com.example.proyecto.ui.DatePickerFragment;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -42,8 +43,7 @@ public class CrearEventoMunicipio extends Fragment{
     private EditText nombreEvento, fechaEvento, descripcionEvento, localidadEvento;
     private Button botonCrear;
 
-    int idEvento;
-
+    int idEvento, diaEvento;
     String localidad;
 
     // TODO: Rename and change types of parameters
@@ -149,20 +149,18 @@ public class CrearEventoMunicipio extends Fragment{
                             @Override
                             public void run() {
                                 idEvento = (int)eventoDAO.insertEvent(evento);
-
-                                /*DetallesEvento detallesEvento = new DetallesEvento();
-                                Bundle bundle = new Bundle();
-
-                                bundle.putInt("idEvento", idEvento);
-                                detallesEvento.setArguments(bundle);
-
-                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_main, detallesEvento).commit();
-                                */
+                                Calendar cal = Calendar.getInstance();
+                                int diaActual = cal.get(Calendar.DAY_OF_MONTH);
 
                                 Intent intent = new Intent(mContext, DetallesEventoActivity.class);
                                 intent.putExtra("idEvento", idEvento);
                                 intent.putExtra("ubicacionEvento", localidad);
+                                intent.putExtra("esMunicipio", true);
+                                if(diaActual == diaEvento) { // Si el evento es en el día actual....
+                                    intent.putExtra("diaEvento", -1);
+                                } else {
+                                    intent.putExtra("diaEvento", diaEvento - diaActual);
+                                }
                                 startActivity(intent);
                             }
 
@@ -179,6 +177,7 @@ public class CrearEventoMunicipio extends Fragment{
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 // +1 because January is zero
                 final String selectedDate = day + "/" + (month + 1) + "/" + year;
+                diaEvento = day;
                 fechaEvento.setText(selectedDate);
             }
         });

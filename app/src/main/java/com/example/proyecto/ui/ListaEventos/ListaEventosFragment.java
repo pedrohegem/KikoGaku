@@ -24,7 +24,7 @@ import com.example.proyecto.ui.Eventos.DetallesEventoActivity;
 import com.example.proyecto.ui.ListaEventos.placeholder.PlaceholderItem;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -82,7 +82,7 @@ public class ListaEventosFragment extends Fragment {
                     for (ListIterator<Evento> iter = eventos.listIterator(); iter.hasNext(); i++){
                         Evento event = iter.next();
                         String[] fecha = event.getFecha().toString().split(" ");
-                        ITEMS.add(new PlaceholderItem(event.getIde(), String.valueOf(i),event.getTitulo(),fecha[2]+"/"+fecha[1]+"/"+fecha[5], event.getEsMunicipio()));
+                        ITEMS.add(new PlaceholderItem(event.getIde(), String.valueOf(i),event.getTitulo(),fecha[2]+"/"+fecha[1]+"/"+fecha[5], event.getUbicacion(), event.getEsMunicipio()));
                     }
 
                     requireActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());
@@ -139,6 +139,18 @@ public class ListaEventosFragment extends Fragment {
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, DetallesEventoActivity.class);
                     intent.putExtra("idEvento",holder.mItem.ide);
+                    intent.putExtra("ubicacionEvento", holder.mItem.localizacion);
+                    String[] fechaEvento = holder.mItem.fecha.split("/");
+                    Calendar cal = Calendar.getInstance();
+                    int diaActual = cal.get(Calendar.DAY_OF_MONTH);
+
+                    if(diaActual == Integer.parseInt(fechaEvento[0])) { // Si el evento es en el día actual....
+                        intent.putExtra("diaEvento", -1);
+                    } else {
+                        intent.putExtra("diaEvento", Integer.parseInt(fechaEvento[0]) - diaActual);
+                    }
+
+                    intent.putExtra("esMunicipio", holder.mItem.evento);
                     mContext.startActivity(intent);
                 }
             });

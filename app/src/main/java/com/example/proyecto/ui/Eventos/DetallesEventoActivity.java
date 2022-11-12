@@ -61,4 +61,8 @@ public class DetallesEventoActivity extends AppCompatActivity {
 
     public String getUbicacion() {return getIntent().getStringExtra("ubicacionEvento");}
 
+    public boolean esMunicipio() {return  getIntent().getBooleanExtra("esMunicipio", true);}
+
+    public int getDiaEvento() {return getIntent().getIntExtra("diaEvento", -1);}
+
 }

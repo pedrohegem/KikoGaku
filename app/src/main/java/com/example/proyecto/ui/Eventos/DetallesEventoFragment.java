@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.proyecto.Json.JsonSingleton;
+import com.example.proyecto.Json.Montana;
 import com.example.proyecto.MainActivity;
 import com.example.proyecto.R;
 import com.example.proyecto.Room.AppDatabase;
@@ -53,8 +55,6 @@ public class DetallesEventoFragment extends Fragment implements APIManagerDelega
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -90,7 +90,27 @@ public class DetallesEventoFragment extends Fragment implements APIManagerDelega
         botonBorrar = binding.BotonEliminar;
 
         apiManager = new APIManager(this);
-        apiManager.getEventWeather(main.getUbicacion());
+
+        // Gestión de llamadas a la API
+        if(main.esMunicipio()) {
+            int diaEvento = main.getDiaEvento();
+            if(diaEvento < 1) {
+                apiManager.getEventWeather(main.getUbicacion());
+            } else if (diaEvento > 0 && diaEvento < 5) {
+                apiManager.getEventForecast(main.getUbicacion(), diaEvento);
+            }
+        } else { // Evento de Montaña
+            Montana m = JsonSingleton.getInstance().montanaMap.get(main.getUbicacion());
+            Log.d("MONT", "onCreateView: " + m.getLatitud() + " " + m.getLongitud());
+            int diaEvento = main.getDiaEvento();
+            if(diaEvento < 1) {
+                apiManager.getEventWeather(m.getLatitud(),m.getLongitud());
+            } else if (diaEvento > 0 && diaEvento < 5) {
+                apiManager.getEventForecast(m.getLatitud(),m.getLongitud(), diaEvento);
+            }
+
+        }
+
         int idEvento = main.getIdEvento();
 
 
@@ -102,14 +122,13 @@ public class DetallesEventoFragment extends Fragment implements APIManagerDelega
                 public void run() {
                     List<Evento> eventos = eventoDao.getEvent(idEvento);
                     if (eventos.isEmpty() == true) {
-                        //todo gestionar error
                     } else {
                         evento = eventos.get(0);
 
-
                         nombreEvento.setText(evento.getTitulo());
-
-                        //todo buscar localidad con el JSON
+                        if(!main.esMunicipio()){
+                            localidadTiempo.setText(evento.getUbicacion());
+                        }
                         localidadEvento.setText(evento.getUbicacion());
                         Log.i("Fecha", "year: "+evento.getFecha());
 
@@ -163,18 +182,20 @@ public class DetallesEventoFragment extends Fragment implements APIManagerDelega
 
     @Override
     public void onGetWeatherSuccess(Weather weather) {
-        textViewTemp.setText(weather.temperatura);
+        textViewTemp.setText(String.valueOf(weather.temperatura));
         temperaturaMaxMin.setText(weather.tempMinima +"º / "+ weather.tempMaxima);
-        localidadTiempo.setText(weather.ciudad);
+        if(main.esMunicipio()){
+            localidadTiempo.setText(weather.ciudad);
+        }
         descripcionTiempo.setText(weather.descEstadoTiempo);
         viento.setText(String.valueOf(weather.velocidadViento));
-        humedad.setText(weather.humedad);
-        sensTermica.setText(weather.sensTermica);
+        humedad.setText(String.valueOf(weather.humedad));
+        sensTermica.setText(weather.sensTermica + "º");
     }
 
     @Override
     public void onGetWeatherFailure() {
-        String noPerms = "No se ha podido acceder al tiempo de la localización. Comprueba tu conexión a Internet";
+        String noPerms = "No es posible consultar el tiempo a partir de los próximos 5 días. (FREE API SADGE)";
         Toast.makeText(getContext(), noPerms, Toast.LENGTH_LONG).show();
     }
 }

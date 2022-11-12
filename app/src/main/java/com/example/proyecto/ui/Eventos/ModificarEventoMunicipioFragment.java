@@ -32,6 +32,7 @@ import com.example.proyecto.ui.DatePickerFragment;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.security.cert.Certificate;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -50,7 +51,7 @@ public class ModificarEventoMunicipioFragment extends Fragment {
     private Button botonModificar;
 
     private Evento evento;
-    private int idEvento;
+    private int idEvento, diaEvento;
 
     private FragmentModificarEventoMunicipioBinding binding;
 
@@ -134,7 +135,6 @@ public class ModificarEventoMunicipioFragment extends Fragment {
                         evento = eventos.get(0);
                         nombreEvento.setText(evento.getTitulo());
                         String[] fecha = evento.getFecha().toString().split(" ");
-                        //Todo: cambiar como se ve la fecha en motana tambien y en detalles:
                         fechaEvento.setText(fecha[2] + "/" + fecha[1] + "/" + fecha[5]);
                         localidadEvento.setText(evento.getUbicacion());
                         descripcionEvento.setText(evento.getDescripcion());
@@ -185,7 +185,6 @@ public class ModificarEventoMunicipioFragment extends Fragment {
                     snackbar = Snackbar.make(view, textoError, Snackbar.LENGTH_LONG);
                     snackbar.show();
                 } else {
-                    //ubicacion = JsonSingleton.getInstance().buscarMunicipio(localidad).getCodigo();
                     Evento e = new Evento(nombre, localidad, descripcion, fecha, true);
                     e.setIde(evento.getIde());
                     EventoDAO eventoDAO = AppDatabase.getInstance(getContext()).eventoDAO();
@@ -194,11 +193,19 @@ public class ModificarEventoMunicipioFragment extends Fragment {
                             @Override
                             public void run() {
                                 eventoDAO.updateEvent(e);
+                                Calendar cal = Calendar.getInstance();
+                                int diaActual = cal.get(Calendar.DAY_OF_MONTH);
 
                                 //Intent intent = new Intent(mContext, MainActivity.class);
                                 Intent intent = new Intent(mContext, DetallesEventoActivity.class);
                                 intent.putExtra("idEvento", idEvento);
                                 intent.putExtra("ubicacionEvento", localidad);
+                                intent.putExtra("esMunicipio", true);
+                                if(diaActual == diaEvento) { // Si el evento es en el día actual....
+                                    intent.putExtra("diaEvento", -1);
+                                } else {
+                                    intent.putExtra("diaEvento", diaEvento - diaActual);
+                                }
 
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 mContext.startActivity(intent);
@@ -223,6 +230,7 @@ public class ModificarEventoMunicipioFragment extends Fragment {
                 Log.i("Fecha", "month: " + month);
                 Log.i("Fecha", "year: " + year);
                 final String selectedDate = day + "/" + (month + 1) + "/" + year;
+                diaEvento = day;
                 fechaEvento.setText(selectedDate);
             }
         });

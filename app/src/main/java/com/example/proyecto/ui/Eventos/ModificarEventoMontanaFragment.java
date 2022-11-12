@@ -1,5 +1,6 @@
 package com.example.proyecto.ui.Eventos;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -25,9 +27,11 @@ import com.example.proyecto.Room.Modelo.Evento;
 import com.example.proyecto.Room.javadb.DateConverter;
 
 import com.example.proyecto.databinding.FragmentModificarEventoMontanaBinding;
+import com.example.proyecto.ui.DatePickerFragment;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -46,7 +50,7 @@ public class ModificarEventoMontanaFragment extends Fragment implements AdapterV
     private Button botonModificar;
     private Evento evento;
     private String localidad;
-    private int idEvento;
+    private int idEvento, diaEvento;
 
 
     private FragmentModificarEventoMontanaBinding binding;
@@ -89,6 +93,18 @@ public class ModificarEventoMontanaFragment extends Fragment implements AdapterV
         localidadEvento = binding.SpinnerMunicipio;
         localidadEvento.setOnItemSelectedListener(this);
         fechaEvento = binding.InputFechaEvento;
+        fechaEvento.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                switch (view.getId()) {
+                    case R.id.InputFechaEvento:
+                        showDatePickerDialog();
+                        break;
+                }
+            }
+        });
+
         descripcionEvento = binding.InputDescripcionEvento;
         botonModificar = binding.BotonModificar;
 
@@ -112,7 +128,6 @@ public class ModificarEventoMontanaFragment extends Fragment implements AdapterV
                     Looper.prepare();
                     List<Evento> eventos = eventoDao.getEvent(idEvento);
                     if (eventos.isEmpty() == true) {
-                        //todo gestionar error
                         Log.d("ERROR", "Fallo en el evento");
                     } else {
                         evento = eventos.get(0);
@@ -133,6 +148,7 @@ public class ModificarEventoMontanaFragment extends Fragment implements AdapterV
                 Snackbar snackbar;
 
                 Date fecha = DateConverter.toDate(fechaEvento.getText().toString());
+                Log.d("FECHOTE", "onClick: " + fechaEvento.getText().toString());
                 String descripcion = descripcionEvento.getText().toString();
 
                 String textoError = "";
@@ -166,17 +182,25 @@ public class ModificarEventoMontanaFragment extends Fragment implements AdapterV
                             @Override
                             public void run() {
                                 eventoDAO.updateEvent(e);
+                                Calendar cal = Calendar.getInstance();
+                                int diaActual = cal.get(Calendar.DAY_OF_MONTH);
+
+                                Intent intent = new Intent(mContext, DetallesEventoActivity.class);
+                                intent.putExtra("idEvento", idEvento);
+                                intent.putExtra("ubicacionEvento", localidad);
+                                intent.putExtra("esMunicipio", false);
+                                if(diaActual == diaEvento) { // Si el evento es en el día actual....
+                                    intent.putExtra("diaEvento", -1);
+                                } else {
+                                    intent.putExtra("diaEvento", diaEvento - diaActual);
+                                }
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
                             }
                         }).start();
                     } catch (Exception exception) {
                         exception.printStackTrace();
                     }
-
-                    Intent intent = new Intent(mContext, DetallesEventoActivity.class);
-                    intent.putExtra("idEvento", idEvento);
-                    intent.putExtra("ubicacionEvento", localidad);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
                 }
             }
         });
@@ -193,6 +217,23 @@ public class ModificarEventoMontanaFragment extends Fragment implements AdapterV
     @Override
     public void onNothingSelected(AdapterView<?> arg0) {
         localidad = evento.getUbicacion();
+    }
+
+    private void showDatePickerDialog() {
+        DatePickerFragment newFragment = DatePickerFragment.newInstance(new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                // +1 because January is zero
+                Log.i("Fecha", "day: " + day);
+                Log.i("Fecha", "month: " + month);
+                Log.i("Fecha", "year: " + year);
+                final String selectedDate = day + "/" + (month + 1) + "/" + year;
+                diaEvento = day;
+                fechaEvento.setText(selectedDate);
+            }
+        });
+
+        newFragment.show(getActivity().getSupportFragmentManager(), "datePicker");
     }
 
     @Override

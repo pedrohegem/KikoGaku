@@ -56,6 +56,16 @@ public class APIManager {
         forecastNetworking(requestParams, dia);
     }
 
+    // Método que parametriza la llamada a la PREDICCIÓN del tiempo de X día en base a la LATITUD y LONGITUD
+    // X será un día de 0 (actual) a 4 de los 5 que devuelve la predicción de la API.
+    public void getEventForecast(double lat, double lon, int dia) {
+        RequestParams requestParams = new RequestParams();
+        requestParams.put("lat", lat);
+        requestParams.put("lon", lon);
+        requestParams.put("appid", API_KEY);
+        requestParams.put("lang", "es");
+        forecastNetworking(requestParams, dia);
+    }
 
     public void weatherNetworking(RequestParams requestParams) {
         AsyncHttpClient client = new AsyncHttpClient();

@@ -49,6 +49,7 @@ public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSe
     private Context mContext;
     private Evento evento;
     int idEvento;
+    int diaEvento;
     String localidad;
 
     // TODO: Rename and change types of parameters
@@ -162,10 +163,18 @@ public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSe
                             @Override
                             public void run() {
                                 idEvento = (int)eventoDAO.insertEvent(evento);
+                                Calendar cal = Calendar.getInstance();
+                                int diaActual = cal.get(Calendar.DAY_OF_MONTH);
 
                                 Intent intent = new Intent(mContext, DetallesEventoActivity.class);
                                 intent.putExtra("idEvento", idEvento);
                                 intent.putExtra("ubicacionEvento", localidad);
+                                intent.putExtra("esMunicipio", false);
+                                if(diaActual == diaEvento) { // Si el evento es en el día actual....
+                                    intent.putExtra("diaEvento", -1);
+                                } else {
+                                    intent.putExtra("diaEvento", diaEvento - diaActual);
+                                }
                                 startActivity(intent);
                             }
                         }).start();
@@ -188,6 +197,7 @@ public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSe
                 Log.i("Fecha", "month: "+month);
                 Log.i("Fecha", "year: "+year);
                 final String selectedDate = day + "/" + (month + 1) + "/" + year;
+                diaEvento = day;
                 fechaEvento.setText(selectedDate);
             }
         });
