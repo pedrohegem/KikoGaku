@@ -77,12 +77,11 @@ public class ListaEventosFragment extends Fragment {
                     }*/
                     List<Evento> eventos = AppDatabase.getInstance(getContext()).eventoDAO().getAll();
                     Log.i("Recoleccion", "eventos: "+eventos.size());
-                    int i=0;
                     ITEMS.clear();
-                    for (ListIterator<Evento> iter = eventos.listIterator(); iter.hasNext(); i++){
+                    for (ListIterator<Evento> iter = eventos.listIterator(); iter.hasNext();){
                         Evento event = iter.next();
                         String[] fecha = event.getFecha().toString().split(" ");
-                        ITEMS.add(new PlaceholderItem(event.getIde(), String.valueOf(i),event.getTitulo(),fecha[2]+"/"+fecha[1]+"/"+fecha[5], event.getUbicacion(), event.getEsMunicipio()));
+                        ITEMS.add(new PlaceholderItem(event.getIde(),event.getTitulo(),fecha[2]+"/"+fecha[1]+"/"+fecha[5], event.getUbicacion(), event.getEsMunicipio()));
                     }
 
                     requireActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());
@@ -160,7 +159,6 @@ public class ListaEventosFragment extends Fragment {
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mItem = mValues.get(position);
-            holder.mIdView.setText(mValues.get(position).id);
             holder.mNombreView.setText(mValues.get(position).nombre);
             holder.mFechaView.setText(mValues.get(position).fecha);
             if(mValues.get(position).evento){
@@ -177,7 +175,6 @@ public class ListaEventosFragment extends Fragment {
 
         /* Representa a la fila que se muestra */
         public class ViewHolder extends RecyclerView.ViewHolder {
-            public final TextView mIdView;
             public final TextView mNombreView;
             public final TextView mFechaView;
             public final ImageView mIcono;
@@ -185,7 +182,6 @@ public class ListaEventosFragment extends Fragment {
 
             public ViewHolder(EventoListaBinding binding) {
                 super(binding.getRoot());
-                mIdView = binding.itemNumber;
                 mNombreView = binding.Nombre;
                 mFechaView = binding.Fecha;
                 mIcono = binding.iconoEvento;
