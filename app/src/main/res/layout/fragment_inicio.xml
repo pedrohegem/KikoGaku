@@ -7,83 +7,107 @@
     android:layout_height="match_parent"
     tools:context=".ui.inicio.InicioFragment">
 
-    <TextView
-        android:id="@+id/textViewTemp"
-        android:layout_width="142dp"
-        android:layout_height="83dp"
-        android:layout_marginTop="4dp"
-        android:fontFamily="sans-serif-light"
-        android:text="14"
-        android:textAlignment="center"
-        android:textColor="#1733CF"
-        android:textSize="72sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/textViewCiudad"
-        app:layout_constraintHorizontal_bias="0.504"
-        app:layout_constraintStart_toStartOf="@+id/textViewCiudad"
-        app:layout_constraintTop_toBottomOf="@+id/textViewCiudad" />
-
-    <TextView
-        android:id="@+id/textViewTempMaxMin"
-        android:layout_width="132dp"
-        android:layout_height="21dp"
-        android:layout_marginTop="4dp"
-        android:hint="12º / 21º"
-        android:textAlignment="center"
-        android:textColor="#0E0D0D"
-        android:textColorHint="#050404"
-        android:textSize="16sp"
-        android:textStyle="normal"
-        app:layout_constraintEnd_toEndOf="@+id/textViewDesc"
-        app:layout_constraintHorizontal_bias="0.49"
-        app:layout_constraintStart_toStartOf="@+id/textViewDesc"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDesc" />
-
-    <TextView
-        android:id="@+id/textViewCiudad"
-        android:layout_width="243dp"
-        android:layout_height="28dp"
-        android:layout_marginTop="32dp"
-        android:hint="Sevilla"
-        android:textAlignment="center"
-        android:textColor="#0E0D0D"
-        android:textColorHint="#050404"
-        android:textSize="24sp"
-        android:textStyle="normal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textViewDesc"
-        android:layout_width="291dp"
-        android:layout_height="28dp"
-        android:layout_marginTop="4dp"
-        android:hint="Mayormente Nublado"
-        android:textAlignment="center"
-        android:textColor="#0E0D0D"
-        android:textColorHint="#050404"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/textViewTemp"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="@+id/textViewTemp"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTemp" />
-
     <FrameLayout
         android:id="@+id/child_ListaEventos"
         android:name="androidx.navigation.fragment.child_ListaEventos"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="15dp"
         app:defaultNavHost="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTempMaxMin"
-        app:navGraph="@navigation/mobile_navigation" />
+        app:layout_constraintTop_toBottomOf="@+id/gifImageView"
+        app:navGraph="@navigation/mobile_navigation">
 
+    </FrameLayout>
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/gifImageView"
+        android:layout_width="fill_parent"
+        android:layout_height="234dp"
+        android:src="@drawable/gif_tormenta"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewTempMaxMin"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.16000003" />
+
+    <TextView
+        android:id="@+id/textViewDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:hint="Mayormente Nublado"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.352"
+        app:layout_constraintStart_toEndOf="@+id/textViewTemp"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCiudad" />
+
+    <TextView
+        android:id="@+id/textViewCiudad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="Sevilla"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:textSize="24sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/bungee"
+        android:text="14º"
+        android:textAlignment="center"
+        android:textColor="#FFEB3B"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCiudad" />
+
+    <TextView
+        android:id="@+id/textViewTempMaxMin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="12º / 21º"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:textSize="16sp"
+        android:textStyle="normal"
+        app:layout_constraintBottom_toBottomOf="@+id/textView2"
+        app:layout_constraintEnd_toEndOf="@+id/textViewDesc"
+        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintTop_toTopOf="@+id/textView2" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="36dp"
+        android:hint="Min / Max"
+        android:text="Min / Max"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        app:layout_constraintStart_toEndOf="@+id/textViewTemp"
+        app:layout_constraintTop_toBottomOf="@+id/textViewDesc" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
