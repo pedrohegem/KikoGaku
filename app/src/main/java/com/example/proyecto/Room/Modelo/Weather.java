@@ -15,7 +15,7 @@ public class Weather {
     public double velocidadViento;
     public String estadoTiempo;
     public String descEstadoTiempo;
-    public String nombreIcono;
+    public int gifResource;
 
     public Weather() {
     }
@@ -32,7 +32,7 @@ public class Weather {
         weather.velocidadViento = object.getJSONObject("wind").getDouble("speed");
         weather.estadoTiempo = object.getJSONArray("weather").getJSONObject(0).getString("main");
         weather.descEstadoTiempo = object.getJSONArray("weather").getJSONObject(0).getString("description");
-        // TODO Set Nombre Icono based on range
+        weather.gifResource = getGifResource(object.getJSONArray("weather").getJSONObject(0).getInt("id"));
 
         return weather;
     }
@@ -51,9 +51,89 @@ public class Weather {
         weather.velocidadViento = object.getJSONArray("list").getJSONObject(index).getJSONObject("wind").getDouble("speed");
         weather.estadoTiempo = object.getJSONArray("list").getJSONObject(index).getJSONArray("weather").getJSONObject(0).getString("main");
         weather.descEstadoTiempo = object.getJSONArray("list").getJSONObject(index).getJSONArray("weather").getJSONObject(0).getString("description");
-        // TODO Set Nombre Icono based on range
+        weather.gifResource = getGifResource(object.getJSONArray("list").getJSONObject(index).getJSONArray("weather").getJSONObject(0).getInt("id"));
 
         return weather;
     }
 
+    /**
+     *
+     * @param  condition
+     *         0 Nada
+     *         1 Tormenta
+     *         2 Llovizna
+     *         3 Lluvia
+     *         4 Nieve
+     *         5 Niebla
+     *         6 Nubes
+     *         7 Sol
+     */
+    public static int getGifResource(int condition) {
+        if (condition >= 0 && condition < 300) { // Tormenta
+            return 1;
+        } else if (condition >= 300 && condition < 500) { // Llovizna
+            return 2;
+        } else if (condition >= 500 && condition < 600) { // Lluvia
+            return 3;
+        } else if (condition >= 600 && condition <= 700) { // Nieve
+            return 4;
+        } else if (condition >= 701 && condition <= 771) { // Niebla
+            return 5;
+        } else if (condition >= 801 && condition <= 804) { // Nubes
+            return 6;
+        } else if (condition == 800) {                     // Sol
+            return 7;
+        }
+        return 0;
+    }
+
+    //Método para obtener todas las palabras con la primera letra en Mayusculas
+    public String getEstadoTiempoMay (){
+        char[] charArray = estadoTiempo.toCharArray();
+        boolean foundSpace = true;
+
+        for(int i = 0; i < charArray.length; i++) {
+
+            // if the array element is a letter
+            if (Character.isLetter(charArray[i])) {
+
+                // check space is present before the letter
+                if (foundSpace) {
+
+                    // change the letter into uppercase
+                    charArray[i] = Character.toUpperCase(charArray[i]);
+                    foundSpace = false;
+                }
+            } else {
+                // if the new character is not character
+                foundSpace = true;
+            }
+        }
+        return String.valueOf(charArray);
+    }
+
+    //Método para obtener todas las palabras con la primera letra en Mayusculas
+    public String getDescEstadoTiempoMay (){
+        char[] charArray = descEstadoTiempo.toCharArray();
+        boolean foundSpace = true;
+
+        for(int i = 0; i < charArray.length; i++) {
+
+            // if the array element is a letter
+            if (Character.isLetter(charArray[i])) {
+
+                // check space is present before the letter
+                if (foundSpace) {
+
+                    // change the letter into uppercase
+                    charArray[i] = Character.toUpperCase(charArray[i]);
+                    foundSpace = false;
+                }
+            } else {
+                // if the new character is not character
+                foundSpace = true;
+            }
+        }
+        return String.valueOf(charArray);
+    }
 }

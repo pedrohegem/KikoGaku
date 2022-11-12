@@ -91,6 +91,8 @@ public class LaunchActivity extends AppCompatActivity {
     private void showMainActivity() {
         Log.d("LaunchActivity", "showMainActivity");
         Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+        finish();
     }
 }
