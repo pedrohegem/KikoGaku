@@ -6,4 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".ui.Localizaciones.LocalizacionesActivity">
 
+   <TextView
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:text="HOLAAAAA"></TextView>
 </androidx.constraintlayout.widget.ConstraintLayout>
