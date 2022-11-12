@@ -35,10 +35,6 @@ public class Evento {
     @TypeConverters(DateConverter.class)
     private Date fecha;
 
-    // Campos que no forman parte de la tabla
-    /*@Ignore
-    private Weather weather;*/
-
     public Evento(String titulo, String ubicacion, String descripcion, Date fecha, boolean esMunicipio) {
         this.titulo = titulo;
         this.ubicacion = ubicacion;
@@ -48,7 +44,7 @@ public class Evento {
         this.esMunicipio = esMunicipio;
     }
     @Ignore
-    public Evento(String titulo, String ubicacion, String descripcion, String fecha/*,  Weather weather*/, boolean esMunicipio) {
+    public Evento(String titulo, String ubicacion, String descripcion, String fecha, boolean esMunicipio) {
         this.titulo = titulo;
         this.ubicacion = ubicacion;
         this.descripcion = descripcion;
@@ -58,7 +54,6 @@ public class Evento {
             this.fecha = new Date();
         }
         this.esMunicipio = esMunicipio;
-        //this.weather = weather;
     }
 
     public int getIde() {
@@ -108,12 +103,5 @@ public class Evento {
     public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
-/*
-    public Weather getWeather(){
-        return this.weather;
-    }
 
-    public void setWeather(Weather weather){
-        this.weather = weather;
-    }*/
 }

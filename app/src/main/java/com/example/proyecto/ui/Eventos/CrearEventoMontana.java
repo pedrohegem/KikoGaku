@@ -35,11 +35,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CrearEventoMontana#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSelectedListener{
     private CrearEventoActivity main;
 
@@ -52,22 +47,13 @@ public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSe
     int diaEvento;
     String localidad;
 
-    // TODO: Rename and change types of parameters
     private String nombreM, localidadM, fechaM, descripcionM;
 
     FragmentCrearEventoMontanaBinding binding;
 
     public CrearEventoMontana() {
-        // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment CrearEventoMontana.
-     */
-    // TODO: Rename and change types and number of parameters
     public static CrearEventoMontana newInstance(String NombreEvento, String DescripcionEvento) {
         CrearEventoMontana fragment = new CrearEventoMontana();
         Bundle args = new Bundle();
@@ -89,7 +75,6 @@ public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         binding = FragmentCrearEventoMontanaBinding.inflate(inflater, container, false);
 
         View root = binding.getRoot();
@@ -126,7 +111,6 @@ public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSe
                 String nombre = nombreEvento.getText().toString();
                 Snackbar snackbar;
 
-                //todo obtener la ubicacion
                 Date fecha = DateConverter.toDate(fechaEvento.getText().toString());
                 String descripcion = descripcionEvento.getText().toString();
 

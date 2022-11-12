@@ -29,11 +29,6 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.Calendar;
 import java.util.Date;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CrearEventoMunicipio#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class CrearEventoMunicipio extends Fragment{
 
     private Context mContext;
@@ -46,22 +41,14 @@ public class CrearEventoMunicipio extends Fragment{
     int idEvento, diaEvento;
     String localidad;
 
-    // TODO: Rename and change types of parameters
     private String nombreM, localidadM, fechaM, descripcionM;
 
     FragmentCrearEventoMunicipioBinding binding;
 
     public CrearEventoMunicipio() {
-        // Required empty public constructor
+
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment CrearEventoMunicipio.
-     */
-    // TODO: Rename and change types and number of parameters
     public static CrearEventoMunicipio newInstance(String NombreEvento, String DescripcionEvento) {
         CrearEventoMunicipio fragment = new CrearEventoMunicipio();
         Bundle args = new Bundle();

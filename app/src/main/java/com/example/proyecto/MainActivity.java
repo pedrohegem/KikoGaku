@@ -51,9 +51,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // -- La primera comprobación antes de hacer nada es ver si un usuario está conectado a la aplicación --
-        Log.d("UNO", "----------- INICIO MAIN ACTIVITY---------------");
-
 
         super.onCreate(savedInstanceState);
 
@@ -71,8 +68,7 @@ public class MainActivity extends AppCompatActivity {
         binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                //        .setAction("Action", null).show();
+
             }
         });
         DrawerLayout drawer = binding.drawerLayout;
@@ -90,13 +86,6 @@ public class MainActivity extends AppCompatActivity {
         binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*CrearEvento crearEvento = new CrearEvento();
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.add(R.id.nav_host_fragment_content_main, crearEvento).commit();*/
-
-                //navController.navigate(R.id.nav_crear_evento);
-
                 Intent i = new Intent(getApplicationContext(), CrearEventoActivity.class);
                 startActivity(i);
             }

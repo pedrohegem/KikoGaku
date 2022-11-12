@@ -56,20 +56,12 @@ public class ModificarEventoMunicipioFragment extends Fragment {
     private FragmentModificarEventoMunicipioBinding binding;
 
     public ModificarEventoMunicipioFragment() {
-        // Required empty public constructor
+
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return Una nueva instancia del fragment ModificarEventoMunicipioFragment.
-     */
-    //todo poner parametros para permitir destruccion de la activity
     public static ModificarEventoMunicipioFragment newInstance(Evento event) {
         ModificarEventoMunicipioFragment fragment = new ModificarEventoMunicipioFragment();
         Bundle args = new Bundle();
-        //args.put;
         fragment.setArguments(args);
         return fragment;
     }
@@ -77,21 +69,11 @@ public class ModificarEventoMunicipioFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*getParentFragmentManager().setFragmentResultListener("key", this, new FragmentResultListener() {
-            @Override
-            public void onFragmentResult(@NonNull String key, @NonNull Bundle bundle) {
-                // We use a String here, but any type that can be put in a Bundle is supported
-                String result = bundle.getString("NombreEvento");
-            }
-        });*/
-
-        //int idEvento = getArguments().getInt("idEvento", 0);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
         binding = FragmentModificarEventoMunicipioBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -196,7 +178,6 @@ public class ModificarEventoMunicipioFragment extends Fragment {
                                 Calendar cal = Calendar.getInstance();
                                 int diaActual = cal.get(Calendar.DAY_OF_MONTH);
 
-                                //Intent intent = new Intent(mContext, MainActivity.class);
                                 Intent intent = new Intent(mContext, DetallesEventoActivity.class);
                                 intent.putExtra("idEvento", idEvento);
                                 intent.putExtra("ubicacionEvento", localidad);

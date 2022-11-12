@@ -22,6 +22,7 @@
             android:name=".ui.Eventos.CrearEventoActivity"
             android:exported="false"
             android:label="@string/title_activity_crear_evento"
+            android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.Proyecto.NoActionBar">
             <meta-data
@@ -31,6 +32,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:label="@string/app_name"
             android:theme="@style/Theme.Proyecto.NoActionBar">
             <intent-filter>
@@ -40,6 +42,7 @@
         </activity>
         <activity
             android:name=".LaunchActivity"
+            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -51,7 +54,7 @@
         <activity
             android:name=".ui.Eventos.DetallesEventoActivity"
             android:exported="false"
-            android:label="@string/title_activity_borrate"
+            android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.Proyecto.NoActionBar">
             <meta-data

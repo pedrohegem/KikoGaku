@@ -8,8 +8,8 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
-import android.widget.Toolbar;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -21,6 +21,7 @@ public class CrearEventoActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityCrearEventoBinding binding;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,12 +29,18 @@ public class CrearEventoActivity extends AppCompatActivity {
 
         binding = ActivityCrearEventoBinding.inflate(getLayoutInflater());
 
-        setSupportActionBar(binding.toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("Evento");
-
         setContentView(binding.getRoot());
+
+        toolbar = binding.toolbar;
+        setSupportActionBar(toolbar);
+
+        toolbar.setNavigationIcon(R.drawable.ic_backarrow_foreground);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed(); // Implemented by activity
+            }
+        });
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_crear_evento);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
@@ -46,4 +53,5 @@ public class CrearEventoActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+    
 }

@@ -17,7 +17,6 @@ public class DateConverter {
         Date myDate = new Date();
         try {
             myDate = df.parse(timestamp);
-            //String myText = myDate.getDate() + "-" + (myDate.getMonth() + 1) + "-" + (1900 + myDate.getYear());
         } catch (ParseException e) {
             e.printStackTrace();
         }

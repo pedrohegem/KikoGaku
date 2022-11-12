@@ -183,7 +183,7 @@ public class DetallesEventoFragment extends Fragment implements APIManagerDelega
     @Override
     public void onGetWeatherSuccess(Weather weather) {
         textViewTemp.setText(String.valueOf(weather.temperatura));
-        temperaturaMaxMin.setText(weather.tempMinima +"º / "+ weather.tempMaxima);
+        temperaturaMaxMin.setText(weather.tempMinima +"º / "+ weather.tempMaxima +"º");
         if(main.esMunicipio()){
             localidadTiempo.setText(weather.ciudad);
         }

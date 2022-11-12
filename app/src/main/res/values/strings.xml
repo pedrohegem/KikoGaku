@@ -32,7 +32,7 @@
     <string name="title_activity_detalles_evento">Detalles de un evento</string>
 
     <!-- Eventos -->
-    <string name="n_crear_evento">Selecciona el tipo de evento a crear</string>
+    <string name="n_crear_evento">Selecciona el tipo de evento</string>
     <string name="n_opcion_municipio">Evento de municipio</string>
     <string name="n_opcion">ó</string>
     <string name="n_opcion_montana">Evento de montaña</string>

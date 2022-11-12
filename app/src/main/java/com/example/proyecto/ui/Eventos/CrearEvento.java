@@ -17,11 +17,6 @@ import com.example.proyecto.MainActivity;
 import com.example.proyecto.R;
 import com.example.proyecto.databinding.FragmentCrearEventoBinding;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CrearEvento#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class CrearEvento extends Fragment{
 
     private Context mContext;
@@ -30,16 +25,9 @@ public class CrearEvento extends Fragment{
     private FragmentCrearEventoBinding binding;
 
     public CrearEvento() {
-        // Required empty public constructor
+
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return Una nueva instancia del fragment CrearEvento.
-     */
-    //todo poner parametros para permitir destruccion de la activity
     public static CrearEvento newInstance() {
         CrearEvento fragment = new CrearEvento();
         Bundle args = new Bundle();
@@ -90,24 +78,5 @@ public class CrearEvento extends Fragment{
         super.onDestroyView();
         binding = null;
     }
-    /*new AsyncTask<Void, Void, String>(){
-         @Override
-         protected String doInBackground(Void... voids){
-             return null;
-         }
 
-         @Override
-         protected void onPostExecute(String result){
-
-         }
-    }.execute();*/
-                }
-/*EventoDAO eventoDAO = AppDatabase.getInstance(getContext()).eventoDAO();
-new Thread(new Runnable() {
-@Override
-public void run() {
-        for (Evento e : eventoDAO.getAll()) {
-        Log.d("AVISO:", e.getTitulo() + "-" + e.getDescripcion());
-        }
-        }
-        }).start();*/
+}
