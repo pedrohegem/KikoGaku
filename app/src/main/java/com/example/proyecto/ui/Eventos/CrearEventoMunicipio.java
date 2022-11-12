@@ -126,7 +126,7 @@ public class CrearEventoMunicipio extends Fragment{
                     textoError = "Debes introducir una localidad";
                 }
                 if (descripcion.isEmpty()) {
-                    descripcion = "Sin descripción";
+                    descripcion = "";
                 }
 
                 if (!JsonSingleton.getInstance().buscarMunicipio(localidad)) {
@@ -143,7 +143,6 @@ public class CrearEventoMunicipio extends Fragment{
                     snackbar = Snackbar.make(view, textoError, Snackbar.LENGTH_LONG);
                     snackbar.show();
                 } else {
-                    Log.d("LOCALIDAD", "Localidad es" + localidad);
                     Evento evento = new Evento(nombre, localidad, descripcion, fecha, true);
                     EventoDAO eventoDAO = AppDatabase.getInstance(mContext).eventoDAO();
                         new Thread(new Runnable() {

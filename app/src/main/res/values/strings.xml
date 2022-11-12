@@ -49,10 +49,10 @@
     <string name="n_descripcion_evento">Descripición del evento</string>
     <string name="n_etiqueta_crear">Crear evento</string>
 
-    <string name="n_modificar">Modificar un evento</string>
+    <string name="n_modificar">Modificar</string>
     <string name="n_etiqueta_modificar">Modificar evento</string>
 
-    <string name="n_eliminar_evento">Eliminar evento</string>
+    <string name="n_eliminar_evento">Eliminar</string>
 
     <string name="n_tipo_localidad">Tipo de evento:</string>
     <string name="n_municipio">Municipio</string>

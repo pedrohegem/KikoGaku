@@ -32,7 +32,7 @@ public class DetallesEventoFragment extends Fragment {
     private Context mContext;
 
     TextView nombreEvento, localidadEvento, fechaEvento, descripcionEvento;
-    private ImageButton botonModificar, botonBorrar;
+    private Button botonModificar, botonBorrar;
 
     private FragmentDetallesEventoBinding binding;
 
@@ -87,8 +87,16 @@ public class DetallesEventoFragment extends Fragment {
                         //todo buscar localidad con el JSON
                         localidadEvento.setText(evento.getUbicacion());
                         Log.i("Fecha", "year: "+evento.getFecha());
+
                         fechaEvento.setText(DateConverter.toString(evento.getFecha()));
-                        descripcionEvento.setText(evento.getDescripcion());
+
+                        if(evento.getDescripcion().isEmpty()){
+                            descripcionEvento.setText("Sin descripción");
+                        }
+                        else {
+                            descripcionEvento.setText(evento.getDescripcion());
+                        }
+
                         botonModificar.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {

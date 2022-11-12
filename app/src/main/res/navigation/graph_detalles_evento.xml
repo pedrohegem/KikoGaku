@@ -36,5 +36,9 @@
         android:id="@+id/nav_modificar_evento_montana"
         android:name="com.example.proyecto.ui.Eventos.ModificarEventoMontanaFragment"
         android:label="@string/title_activity_modificar_evento"
-        tools:layout="@layout/fragment_modificar_evento_montana" />
+        tools:layout="@layout/fragment_modificar_evento_montana" >
+        <action
+            android:id="@+id/action_nav_modificar_evento_montana_to_nav_detalles_evento"
+            app:destination="@id/nav_detalles_evento" />
+    </fragment>
 </navigation>

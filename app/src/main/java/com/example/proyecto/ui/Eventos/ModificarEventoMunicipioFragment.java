@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,7 +40,7 @@ import java.util.List;
  * Use the {@link ModificarEventoMunicipioFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ModificarEventoMunicipioFragment extends Fragment{
+public class ModificarEventoMunicipioFragment extends Fragment {
 
     private Context mContext;
     private DetallesEventoActivity main;
@@ -125,22 +126,22 @@ public class ModificarEventoMunicipioFragment extends Fragment{
             new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    Looper.prepare();
                     List<Evento> eventos = eventoDao.getEvent(finalIdEvento);
-                    if(eventos.isEmpty() == true){
+                    if (eventos.isEmpty() == true) {
                         Log.d("ERROR", "Fallo en el evento");
-                    }
-                    else{
+                    } else {
                         evento = eventos.get(0);
                         nombreEvento.setText(evento.getTitulo());
                         String[] fecha = evento.getFecha().toString().split(" ");
                         //Todo: cambiar como se ve la fecha en motana tambien y en detalles:
-                        fechaEvento.setText(fecha[2]+"/"+fecha[1]+"/"+fecha[5]);
+                        fechaEvento.setText(fecha[2] + "/" + fecha[1] + "/" + fecha[5]);
                         localidadEvento.setText(evento.getUbicacion());
                         descripcionEvento.setText(evento.getDescripcion());
                     }
                 }
             }).start();
-        } catch (Exception exception){
+        } catch (Exception exception) {
             exception.printStackTrace();
         }
 
@@ -156,54 +157,54 @@ public class ModificarEventoMunicipioFragment extends Fragment{
 
                 String textoError = "";
                 boolean error = false;
-                if(nombre == null) {
+                if (nombre.isEmpty()) {
                     error = true;
                     textoError = "Debes introducir un nombre de evento";
                 }
-                if(localidad == null){
+
+                if (localidad.isEmpty()) {
                     error = true;
                     textoError = "Debes introducir una localidad";
                 }
-                if(descripcion == null){
-                    descripcion = "Sin descripción";
+
+                if(fecha.before(new Date(System.currentTimeMillis()-86400000))){
+                    textoError = "Debe ser una fecha poserior";
+                    error = true;
                 }
 
-                if(error == true) {
+                if (descripcion.isEmpty()) {
+                    descripcion = "";
+                }
+
+                if (!JsonSingleton.getInstance().buscarMunicipio(localidad)) {
+                    textoError = "No se encuentra el municipio";
+                    error = true;
+                }
+
+                if (error == true) {
                     snackbar = Snackbar.make(view, textoError, Snackbar.LENGTH_LONG);
                     snackbar.show();
-                }
-                else{
-                    if(evento.getEsMunicipio()) {
-                        if (JsonSingleton.getInstance().buscarMunicipio(localidad)) {
-                            textoError = "No se encuentra el municipio";
-                            error = true;
-                        }else {
-                            //ubicacion = JsonSingleton.getInstance().buscarMunicipio(localidad).getCodigo();
-                            Evento e = new Evento(nombre, localidad, descripcion, fecha, true);
-                            e.setIde(evento.getIde());
-                            EventoDAO eventoDAO = AppDatabase.getInstance(getContext()).eventoDAO();
-                            try {
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        eventoDAO.updateEvent(e);
-                                        Intent intent = new Intent(mContext, MainActivity.class);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                        mContext.startActivity(intent);
-                                    }
-                                }).start();
-                            } catch (Exception exception){
-                                exception.printStackTrace();
+                } else {
+                    //ubicacion = JsonSingleton.getInstance().buscarMunicipio(localidad).getCodigo();
+                    Evento e = new Evento(nombre, localidad, descripcion, fecha, true);
+                    e.setIde(evento.getIde());
+                    EventoDAO eventoDAO = AppDatabase.getInstance(getContext()).eventoDAO();
+                    try {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                eventoDAO.updateEvent(e);
+
+                                //Intent intent = new Intent(mContext, MainActivity.class);
+                                Intent intent = new Intent(mContext, DetallesEventoActivity.class);
+                                intent.putExtra("idEvento", idEvento);
+
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                mContext.startActivity(intent);
                             }
-                        }
-                    }
-                    if(error = true){
-                        snackbar = Snackbar.make(view, textoError, Snackbar.LENGTH_LONG);
-                        snackbar.show();
-                    }
-                    else{
-                        //Intent i = new Intent();
-                        inflater.inflate(R.layout.fragment_crear_evento_municipio, container, false);
+                        }).start();
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
                     }
                 }
             }
@@ -217,9 +218,9 @@ public class ModificarEventoMunicipioFragment extends Fragment{
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 // +1 because January is zero
-                Log.i("Fecha", "day: "+day);
-                Log.i("Fecha", "month: "+month);
-                Log.i("Fecha", "year: "+year);
+                Log.i("Fecha", "day: " + day);
+                Log.i("Fecha", "month: " + month);
+                Log.i("Fecha", "year: " + year);
                 final String selectedDate = day + "/" + (month + 1) + "/" + year;
                 fechaEvento.setText(selectedDate);
             }
@@ -233,6 +234,7 @@ public class ModificarEventoMunicipioFragment extends Fragment{
         super.onDestroyView();
         binding = null;
     }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

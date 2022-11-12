@@ -3,6 +3,7 @@ package com.example.proyecto.ui.Eventos;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -95,6 +96,7 @@ public class ModificarEventoMontanaFragment extends Fragment implements AdapterV
 
         ArrayAdapter ad = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,ubicaciones);
         ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         localidadEvento.setAdapter(ad);
 
         idEvento = 0;
@@ -107,12 +109,12 @@ public class ModificarEventoMontanaFragment extends Fragment implements AdapterV
             new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    Looper.prepare();
                     List<Evento> eventos = eventoDao.getEvent(idEvento);
-                    if(eventos.isEmpty() == true){
+                    if (eventos.isEmpty() == true) {
                         //todo gestionar error
                         Log.d("ERROR", "Fallo en el evento");
-                    }
-                    else{
+                    } else {
                         evento = eventos.get(0);
                         nombreEvento.setText(evento.getTitulo());
                         fechaEvento.setText(DateConverter.toString(evento.getFecha()));
@@ -121,7 +123,7 @@ public class ModificarEventoMontanaFragment extends Fragment implements AdapterV
                     }
                 }
             }).start();
-        } catch (Exception exception){
+        } catch (Exception exception) {
             exception.printStackTrace();
         }
         botonModificar.setOnClickListener(new View.OnClickListener() {
@@ -135,76 +137,53 @@ public class ModificarEventoMontanaFragment extends Fragment implements AdapterV
 
                 String textoError = "";
                 boolean error = false;
-                if(nombre == null) {
+                if (nombre.isEmpty()) {
                     error = true;
                     textoError = "Debes introducir un nombre de evento";
                 }
-                if(localidad == null){
+                if (localidad.isEmpty()) {
                     error = true;
                     textoError = "Debes introducir una localidad";
                 }
-                if(descripcion == null){
-                    descripcion = "Sin descripción";
+                if (descripcion.isEmpty()) {
+                    descripcion = "";
                 }
 
-                if(error == true) {
+                if(fecha.before(new Date(System.currentTimeMillis()-86400000))){
+                    textoError = "Debe ser una fecha poserior";
+                    error = true;
+                }
+
+                if (error == true) {
                     snackbar = Snackbar.make(view, textoError, Snackbar.LENGTH_LONG);
                     snackbar.show();
-                }
-                else{
-                    if(evento.getEsMunicipio()) {
-                        if (JsonSingleton.getInstance().buscarMunicipio(localidad)) {
-                            textoError = "No se encuentra el municipio";
-                            error = true;
-                        }
-                        else {
-                            Evento e = new Evento(nombre, localidad, descripcion, fecha, true);
-                            e.setIde(evento.getIde());
-                            EventoDAO eventoDAO = AppDatabase.getInstance(getContext()).eventoDAO();
-                            try {
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        eventoDAO.updateEvent(e);
-                                        Intent intent = new Intent(mContext, MainActivity.class);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                        mContext.startActivity(intent);
-                                    }
-                                }).start();
-                            } catch (Exception exception){
-                                exception.printStackTrace();
+                } else {
+                    Evento e = new Evento(nombre, localidad, descripcion, fecha, false);
+                    e.setIde(evento.getIde());
+                    EventoDAO eventoDAO = AppDatabase.getInstance(getContext()).eventoDAO();
+                    try {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                eventoDAO.updateEvent(e);
                             }
-                        }
+                        }).start();
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
                     }
-                    else{
-                        Evento e = new Evento(nombre, localidad, descripcion, fecha, false);
-                        e.setIde(evento.getIde());
-                        EventoDAO eventoDAO = AppDatabase.getInstance(getContext()).eventoDAO();
-                        try {
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    eventoDAO.updateEvent(e);
-                                }
-                            }).start();
-                        } catch (Exception exception){
-                            exception.printStackTrace();
-                        }
-                    }
-                    if(error = true){
-                        snackbar = Snackbar.make(view, textoError, Snackbar.LENGTH_LONG);
-                        snackbar.show();
-                    }
-                    else{
-                        //Intent i = new Intent();
-                        inflater.inflate(R.layout.fragment_crear_evento_municipio, container, false);
-                    }
+
+                    Intent intent = new Intent(mContext, DetallesEventoActivity.class);
+                    intent.putExtra("idEvento", idEvento);
+
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                 }
             }
         });
 
         return root;
     }
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View v, int pos, long id) {
         ArrayList<String> ubicaciones = new ArrayList<String>(JsonSingleton.getInstance().montanaMap.keySet());
@@ -212,10 +191,10 @@ public class ModificarEventoMontanaFragment extends Fragment implements AdapterV
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> arg0)
-    {
+    public void onNothingSelected(AdapterView<?> arg0) {
         localidad = evento.getUbicacion();
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();

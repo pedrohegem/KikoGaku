@@ -100,6 +100,7 @@ public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSe
         ArrayList<String> ubicaciones = new ArrayList<String>(JsonSingleton.getInstance().montanaMap.keySet());
 
         ArrayAdapter ad = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,ubicaciones);
+
         ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         localidadEvento.setAdapter(ad);
 
@@ -134,13 +135,16 @@ public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSe
                     error = true;
                     textoError = "Debes introducir un nombre de evento";
                 }
+
                 if (localidad.isEmpty()) {
                     error = true;
                     textoError = "Debes introducir una localidad";
                 }
+
                 if (descripcion.isEmpty()) {
-                    descripcion = "Sin descripción";
+                    descripcion = "";
                 }
+
                 if(fecha.before(new Date(System.currentTimeMillis()-86400000))){
                     textoError = "Debe ser una fecha poserior";
                     error = true;

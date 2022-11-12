@@ -29,7 +29,7 @@ public class DateConverter {
     }
     @TypeConverter
     public static String toString(Date date){
-        String cadena= date.getDay() + "/" + date.getMonth() + "/" + date;
+        String cadena = date.getDate() + "/" + (date.getMonth() + 1) + "/" + (1900 + date.getYear());
         return cadena;
     }
 }
