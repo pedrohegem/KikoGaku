@@ -101,6 +101,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        
+        Button localizaciones = binding.
     }
 
 
