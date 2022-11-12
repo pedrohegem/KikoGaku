@@ -162,6 +162,7 @@ public class CrearEventoMunicipio extends Fragment{
 
                                 Intent intent = new Intent(mContext, DetallesEventoActivity.class);
                                 intent.putExtra("idEvento", idEvento);
+                                intent.putExtra("ubicacionEvento", localidad);
                                 startActivity(intent);
                             }
 

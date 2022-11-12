@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -23,6 +24,7 @@ public class DetallesEventoActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityDetallesEventoBinding binding;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +32,16 @@ public class DetallesEventoActivity extends AppCompatActivity {
 
         binding = ActivityDetallesEventoBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        setSupportActionBar(binding.toolbar);
+        toolbar = binding.toolbar;
+        setSupportActionBar(toolbar);
 
+        toolbar.setNavigationIcon(R.drawable.ic_backarrow_foreground);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed(); // Implemented by activity
+            }
+        });
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_borrate);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
@@ -48,5 +58,7 @@ public class DetallesEventoActivity extends AppCompatActivity {
     public int getIdEvento(){
         return getIntent().getIntExtra("idEvento", 0);
     }
+
+    public String getUbicacion() {return getIntent().getStringExtra("ubicacionEvento");}
 
 }

@@ -14,27 +14,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.proyecto.MainActivity;
 import com.example.proyecto.R;
 import com.example.proyecto.Room.AppDatabase;
 import com.example.proyecto.Room.DAO.EventoDAO;
 import com.example.proyecto.Room.Modelo.Evento;
+import com.example.proyecto.Room.Modelo.Weather;
 import com.example.proyecto.Room.javadb.DateConverter;
 import com.example.proyecto.databinding.FragmentDetallesEventoBinding;
+import com.example.proyecto.utils.APIManager;
+import com.example.proyecto.utils.APIManagerDelegate;
 
 import java.util.List;
 
 
-public class DetallesEventoFragment extends Fragment {
+public class DetallesEventoFragment extends Fragment implements APIManagerDelegate {
 
     private DetallesEventoActivity main;
-
+    private APIManager apiManager;
     private Context mContext;
 
-    TextView nombreEvento, localidadEvento, fechaEvento, descripcionEvento;
+    private TextView nombreEvento, localidadEvento, fechaEvento, descripcionEvento;
+    private TextView textViewTemp, temperaturaMaxMin, localidadTiempo, descripcionTiempo, viento, humedad, sensTermica;
     private Button botonModificar, botonBorrar;
 
     private FragmentDetallesEventoBinding binding;
@@ -48,6 +52,8 @@ public class DetallesEventoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
@@ -72,10 +78,21 @@ public class DetallesEventoFragment extends Fragment {
         fechaEvento = binding.DetallesFechaDeInicio;
         descripcionEvento = binding.DetallesDescripcion;
 
+        textViewTemp = binding.textViewTemperatura;
+        temperaturaMaxMin = binding.textViewTemperaturas;
+        localidadTiempo = binding.textViewUbicacion;
+        descripcionTiempo = binding.textViewDescD;
+        viento = binding.textViewVientoP;
+        humedad = binding.textViewHumedadP;
+        sensTermica = binding.textViewSensTermP;
+
         botonModificar = binding.BotonModificar;
         botonBorrar = binding.BotonEliminar;
 
+        apiManager = new APIManager(this);
+        apiManager.getEventWeather(main.getUbicacion());
         int idEvento = main.getIdEvento();
+
 
         Log.d("IdEvento", idEvento+"");
 
@@ -88,6 +105,7 @@ public class DetallesEventoFragment extends Fragment {
                         //todo gestionar error
                     } else {
                         evento = eventos.get(0);
+
 
                         nombreEvento.setText(evento.getTitulo());
 
@@ -143,5 +161,20 @@ public class DetallesEventoFragment extends Fragment {
         super.onAttach(context);
     }
 
+    @Override
+    public void onGetWeatherSuccess(Weather weather) {
+        textViewTemp.setText(weather.temperatura);
+        temperaturaMaxMin.setText(weather.tempMinima +"º / "+ weather.tempMaxima);
+        localidadTiempo.setText(weather.ciudad);
+        descripcionTiempo.setText(weather.descEstadoTiempo);
+        viento.setText(String.valueOf(weather.velocidadViento));
+        humedad.setText(weather.humedad);
+        sensTermica.setText(weather.sensTermica);
+    }
 
+    @Override
+    public void onGetWeatherFailure() {
+        String noPerms = "No se ha podido acceder al tiempo de la localización. Comprueba tu conexión a Internet";
+        Toast.makeText(getContext(), noPerms, Toast.LENGTH_LONG).show();
+    }
 }

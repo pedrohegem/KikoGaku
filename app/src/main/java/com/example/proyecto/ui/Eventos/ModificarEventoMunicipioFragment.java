@@ -198,6 +198,7 @@ public class ModificarEventoMunicipioFragment extends Fragment {
                                 //Intent intent = new Intent(mContext, MainActivity.class);
                                 Intent intent = new Intent(mContext, DetallesEventoActivity.class);
                                 intent.putExtra("idEvento", idEvento);
+                                intent.putExtra("ubicacionEvento", localidad);
 
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 mContext.startActivity(intent);

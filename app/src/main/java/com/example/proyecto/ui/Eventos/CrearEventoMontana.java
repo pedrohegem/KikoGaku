@@ -165,6 +165,7 @@ public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSe
 
                                 Intent intent = new Intent(mContext, DetallesEventoActivity.class);
                                 intent.putExtra("idEvento", idEvento);
+                                intent.putExtra("ubicacionEvento", localidad);
                                 startActivity(intent);
                             }
                         }).start();

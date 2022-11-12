@@ -174,7 +174,7 @@ public class ModificarEventoMontanaFragment extends Fragment implements AdapterV
 
                     Intent intent = new Intent(mContext, DetallesEventoActivity.class);
                     intent.putExtra("idEvento", idEvento);
-
+                    intent.putExtra("ubicacionEvento", localidad);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }
