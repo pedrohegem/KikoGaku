@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +48,11 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
         APIManager apiManager = new APIManager(this);
         getLocationCoords();
         apiManager.getEventWeather(latitud, longitud);
-
+        textViewCiudad = binding.textViewCiudad;
+        textViewTemp = binding.textViewTemp;
+        textViewTempMin = binding.textViewTempMin;
+        textViewTempMax = binding.textViewTempMax;
+        textViewTempDesc = binding.textViewDesc;
         return root;
     }
 
@@ -86,12 +91,8 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
 
     @Override
     public void onGetWeatherSuccess(Weather weather) {
-        textViewCiudad = binding.textViewCiudad;
-        textViewTemp = binding.textViewTemp;
-        textViewTempMin = binding.textViewTempMin;
-        textViewTempMax = binding.textViewTempMax;
-        textViewTempDesc = binding.textViewDesc;
 
+        Log.d("WEATHER", weather.ciudad);
         textViewCiudad.setText(weather.ciudad);
         textViewTemp.setText(weather.temperatura + "º");
         textViewTempMin.setText(weather.tempMinima + "º /");

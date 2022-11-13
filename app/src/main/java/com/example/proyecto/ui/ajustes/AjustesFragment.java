@@ -56,12 +56,12 @@ public class AjustesFragment extends PreferenceFragmentCompat {
 
                 if(swi.isChecked()){
                     // 0 es que se ha activado el checkbox para poner modo claro
-                    editor.putInt("Theme", 0);
+                    editor.putInt("Theme", 0).apply();
                 }
                 else{
-                    editor.putInt("Theme", 1);
+                    editor.putInt("Theme", 1).apply();
                 }
-                editor.commit();
+                //editor.commit();
                 // Se modifica el theme de la actividad
                 ma.setDayLight();
 
