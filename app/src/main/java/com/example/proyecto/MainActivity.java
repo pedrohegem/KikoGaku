@@ -6,6 +6,7 @@ import static java.lang.Thread.sleep;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -31,6 +32,7 @@ import android.widget.Toast;
 import com.example.proyecto.Room.AppDatabase;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -105,6 +107,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        // Se llama al comienzo de la actividad al setDayLight() para saber si el modo claro está activado
+        Log.d("CREATE_MAIN", "HOLA");
+        setDayLight();
     }
 
     @Override
@@ -150,6 +156,20 @@ public class MainActivity extends AppCompatActivity {
 
         for (Municipio m: municipioList) {
             JsonSingleton.getInstance().municipioMap.put(m.getMunicipio(), new Municipio(m.getCodigo(), m.getMunicipio(), m.getProvincia()));
+        }
+    }
+
+    public void setDayLight(){
+        // Para obtener la configuracion que el usuario ha introducido previamente en la app, se obtiene el objeto SharedPreferences
+        SharedPreferences sp = getSharedPreferences("preferences", this.MODE_PRIVATE);
+        int tema = sp.getInt("Theme", 1);
+        Log.d("NUMERO MODO", String.valueOf(tema));
+        if(tema == 0){ // Modo claro
+            Log.d("DENTRO CLARO", "AAAAAAAAAAAAAAAAAAAAAAA");
+            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO); // método que da error
+        }
+        else{ // Modo oscuro
+            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
     }
 }

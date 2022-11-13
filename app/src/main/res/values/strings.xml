@@ -78,5 +78,7 @@
     <string name="previous">Previous</string>
     <string name="menu_localizaciones">Localizaciones</string>
     <string name="Nombre_municipio">Nombre</string>
+    <string name="lightmode">Modo Claro</string>
+    <string name="lightmode_sum">Activa modo claro en la aplicación</string>
 
 </resources>
