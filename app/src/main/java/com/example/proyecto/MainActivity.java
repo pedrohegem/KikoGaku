@@ -107,10 +107,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
-        // Se llama al comienzo de la actividad al setDayLight() para saber si el modo claro está activado
-        Log.d("CREATE_MAIN", "HOLA");
-        setDayLight();
     }
 
     @Override
@@ -171,5 +167,12 @@ public class MainActivity extends AppCompatActivity {
         else{ // Modo oscuro
             getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Se llama al comienzo de la actividad al setDayLight() para saber si el modo claro está activado
+        setDayLight();
     }
 }

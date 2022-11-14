@@ -241,4 +241,11 @@ public class ModificarEventoMunicipioFragment extends Fragment {
         main = (DetallesEventoActivity) main;
         mContext = context;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        DetallesEventoActivity dea = (DetallesEventoActivity) getActivity();
+        dea.setDayLight();
+    }
 }

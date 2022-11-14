@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.proyecto.MainActivity;
 import com.example.proyecto.R;
 import com.example.proyecto.Room.AppDatabase;
 import com.example.proyecto.Room.Modelo.Evento;
@@ -184,5 +185,12 @@ public class ListaEventosFragment extends Fragment {
                 return super.toString() + " '" + mNombreView.getText() + "'";
             }
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MainActivity ma = (MainActivity) getActivity();
+        ma.setDayLight();
     }
 }

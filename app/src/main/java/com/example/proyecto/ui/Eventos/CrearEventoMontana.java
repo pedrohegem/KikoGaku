@@ -222,4 +222,11 @@ public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSe
         super.onDestroyView();
         binding = null;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        CrearEventoActivity cea = (CrearEventoActivity) getActivity();
+        cea.setDayLight();
+    }
 }

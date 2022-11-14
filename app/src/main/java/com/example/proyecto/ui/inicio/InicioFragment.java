@@ -18,7 +18,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.proyecto.MainActivity;
 import com.example.proyecto.databinding.FragmentInicioBinding;
+import com.example.proyecto.ui.Eventos.DetallesEventoActivity;
 import com.example.proyecto.utils.APIManagerDelegate;
 import com.example.proyecto.R;
 import com.example.proyecto.Room.Modelo.Weather;
@@ -104,5 +106,12 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
     public void onGetWeatherFailure() {
         String noPerms = "No se ha podido acceder al tiempo de la localización actual. Comprueba tu conexión a Internet";
         Toast.makeText(getContext(), noPerms, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MainActivity ma = (MainActivity) getActivity();
+        ma.setDayLight();
     }
 }

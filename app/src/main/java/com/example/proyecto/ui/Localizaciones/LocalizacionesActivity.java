@@ -228,4 +228,13 @@ public class LocalizacionesActivity extends AppCompatActivity {
         }
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Se llama al comienzo de la actividad al setDayLight() para saber si el modo claro está activado
+        setDayLight();
+    }
+
+
 }

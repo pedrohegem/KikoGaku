@@ -73,4 +73,11 @@ public class DeleteEventDialog extends androidx.fragment.app.DialogFragment {
         super.onAttach(context);
         mContext = context;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        DetallesEventoActivity dea = (DetallesEventoActivity) getActivity();
+        dea.setDayLight();
+    }
 }

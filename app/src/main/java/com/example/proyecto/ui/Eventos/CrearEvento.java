@@ -1,13 +1,19 @@
 package com.example.proyecto.ui.Eventos;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
-
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,24 +96,12 @@ public class CrearEvento extends Fragment{
         super.onDestroyView();
         binding = null;
     }
-    /*new AsyncTask<Void, Void, String>(){
-         @Override
-         protected String doInBackground(Void... voids){
-             return null;
-         }
 
-         @Override
-         protected void onPostExecute(String result){
+    @Override
+    public void onResume() {
+        super.onResume();
+        CrearEventoActivity cea = (CrearEventoActivity) getActivity();
+        cea.setDayLight();
+    }
+}
 
-         }
-    }.execute();*/
-                }
-/*EventoDAO eventoDAO = AppDatabase.getInstance(getContext()).eventoDAO();
-new Thread(new Runnable() {
-@Override
-public void run() {
-        for (Evento e : eventoDAO.getAll()) {
-        Log.d("AVISO:", e.getTitulo() + "-" + e.getDescripcion());
-        }
-        }
-        }).start();*/

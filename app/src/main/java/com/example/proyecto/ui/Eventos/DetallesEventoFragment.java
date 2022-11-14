@@ -135,4 +135,11 @@ public class DetallesEventoFragment extends Fragment {
         mContext = context;
         super.onAttach(context);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        DetallesEventoActivity dea = (DetallesEventoActivity) getActivity();
+        dea.setDayLight();
+    }
 }

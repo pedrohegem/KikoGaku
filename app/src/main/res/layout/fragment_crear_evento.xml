@@ -5,7 +5,6 @@
     android:id="@+id/LayoutCrearEvento"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/Azul_osc"
     tools:context=".ui.Eventos.CrearEvento">
 
     <TextView

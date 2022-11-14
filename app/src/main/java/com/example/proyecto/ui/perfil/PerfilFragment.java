@@ -10,7 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.proyecto.MainActivity;
 import com.example.proyecto.databinding.FragmentPerfilBinding;
+import com.example.proyecto.ui.Eventos.DetallesEventoActivity;
 
 public class PerfilFragment extends Fragment {
 
@@ -33,5 +35,12 @@ public class PerfilFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MainActivity ma = (MainActivity) getActivity();
+        ma.setDayLight();
     }
 }
