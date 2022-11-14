@@ -20,5 +20,9 @@
             android:id="@+id/nav_ajustes"
             android:icon="@drawable/ic_menu_ajustes"
             android:title="@string/menu_ajustes" />
+        <item
+            android:id="@+id/nav_localizaciones"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/menu_localizaciones" />
     </group>
 </menu>
