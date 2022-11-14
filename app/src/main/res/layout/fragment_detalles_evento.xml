@@ -27,12 +27,14 @@
         android:id="@+id/LayoutCrear"
         android:layout_width="326dp"
         android:layout_height="370dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginTop="28dp"
         android:background="@color/Azul"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.487"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/BotonModificar"
+        app:layout_constraintVertical_bias="0.0">
 
         <TextView
             android:id="@+id/EtiquetaLocalidad"
@@ -168,30 +170,31 @@
         android:id="@+id/BotonModificar"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="28dp"
         android:backgroundTint="#018685"
         android:scaleType="fitCenter"
         android:text="@string/n_modificar"
         app:icon="@drawable/ic_edit_foreground"
         app:iconPadding="0dp"
         app:iconSize="50dp"
-        app:layout_constraintBottom_toTopOf="@+id/LayoutCrear"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.135"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/BotonEliminar"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/LayoutCrear"
+        app:layout_constraintTop_toBottomOf="@+id/textViewViento" />
 
     <Button
         android:id="@+id/BotonEliminar"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_marginStart="16dp"
         android:backgroundTint="#860101"
         android:text="@string/n_eliminar_evento"
         app:icon="@drawable/ic_delete_foreground"
         app:iconPadding="0dp"
         app:iconSize="50dp"
         app:layout_constraintBottom_toBottomOf="@+id/BotonModificar"
-        app:layout_constraintStart_toEndOf="@+id/BotonModificar"
+        app:layout_constraintEnd_toEndOf="@+id/LayoutCrear"
+        app:layout_constraintHorizontal_bias="0.985"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/BotonModificar"
         app:layout_constraintVertical_bias="0.0" />
 
