@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,7 +33,6 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
 
     public TextView textViewCiudad, textViewTemp, textViewTempMaxMin, textViewDesc;
     GifImageView gifImage;
-
     private Double latitud;
     private Double longitud;
 
@@ -95,7 +95,7 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
         textViewTempMaxMin = binding.textViewTempMaxMin;
         gifImage = binding.gifImageView;
 
-//TODO: controlar cuando se hace de noche
+        //TODO: controlar cuando se hace de noche
         switch (weather.gifResource){
             case 0://Error
                 Log.e("Error Weather", "onGetWeatherSuccess: No se ha obtenido el estado del tiempo correctamente");
