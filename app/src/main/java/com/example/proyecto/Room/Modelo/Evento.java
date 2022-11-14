@@ -10,11 +10,12 @@ import com.example.proyecto.Room.javadb.DateConverter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
 
 @Entity
-public class Evento {
+public class Evento implements Comparator<Evento> {
 
     @Ignore
     public final static SimpleDateFormat FORMAT = new SimpleDateFormat(
@@ -104,4 +105,19 @@ public class Evento {
         this.fecha = fecha;
     }
 
+    @Override
+    public int compare(@NonNull Evento evento,@NonNull Evento t1) {
+        if(evento.getFecha().before(fecha)){
+            return 1;//TODO hacer compare
+        }
+        else{
+            if(e.getFecha().after(fecha)){
+                return -1;
+            }
+            else{
+                return 0;
+            }
+        }
+        return 0;
+    }
 }
