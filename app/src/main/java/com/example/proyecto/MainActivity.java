@@ -18,9 +18,11 @@ import com.example.proyecto.Json.Montana;
 import com.example.proyecto.Json.Municipio;
 import com.example.proyecto.databinding.ActivityMainBinding;
 import com.example.proyecto.ui.Eventos.CrearEventoActivity;
+import com.example.proyecto.ui.Localizaciones.LocalizacionesActivity;
 import com.google.gson.stream.JsonReader;
 
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 
@@ -92,6 +94,19 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.localizaciones) {
+            // Actividad de localizaciones
+            startActivity(new Intent(this, LocalizacionesActivity.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
