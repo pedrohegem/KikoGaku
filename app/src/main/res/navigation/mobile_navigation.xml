@@ -24,9 +24,6 @@
         <action
             android:id="@+id/action_nav_inicio_to_nav_perfil"
             app:destination="@id/nav_perfil" />
-        <action
-            android:id="@+id/action_nav_inicio_to_nav_localizaciones"
-            app:destination="@id/nav_localizaciones" />
     </fragment>
 
     <fragment
@@ -40,10 +37,5 @@
         android:name="com.example.proyecto.ui.ajustes.AjustesFragment"
         android:label="@string/menu_ajustes"
         tools:layout="@layout/fragment_ajustes" />
-    <fragment
-        android:id="@+id/nav_localizaciones"
-        android:name="com.example.proyecto.ui.Localizaciones.LocalizacionesFragment"
-        android:label="@string/menu_localizaciones"
-        tools:layout="@layout/fragment_localizaciones" />
 
 </navigation>
