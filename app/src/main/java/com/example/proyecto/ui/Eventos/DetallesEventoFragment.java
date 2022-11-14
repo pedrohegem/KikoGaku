@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ public class DetallesEventoFragment extends Fragment implements APIManagerDelega
     private TextView nombreEvento, localidadEvento, fechaEvento, descripcionEvento;
     private TextView textViewTemp, temperaturaMaxMin, localidadTiempo, descripcionTiempo, viento, humedad, sensTermica;
     private Button botonModificar, botonBorrar;
+    ImageView iconoTiempo;
 
     private FragmentDetallesEventoBinding binding;
 
@@ -85,7 +87,7 @@ public class DetallesEventoFragment extends Fragment implements APIManagerDelega
         viento = binding.textViewVientoP;
         humedad = binding.textViewHumedadP;
         sensTermica = binding.textViewSensTermP;
-
+        iconoTiempo = binding.image2;
         botonModificar = binding.BotonModificar;
         botonBorrar = binding.BotonEliminar;
 
@@ -182,6 +184,36 @@ public class DetallesEventoFragment extends Fragment implements APIManagerDelega
 
     @Override
     public void onGetWeatherSuccess(Weather weather) {
+
+        switch (weather.gifResource){
+            case 0://Error
+                Log.e("Error Weather", "onGetWeatherSuccess: No se ha obtenido el estado del tiempo correctamente");
+                break;
+            case 1://Tormenta
+                iconoTiempo.setImageResource(R.drawable.itormenta);
+                break;
+            case 2://Llovizna
+                iconoTiempo.setImageResource(R.drawable.illovizna);
+                break;
+            case 3://Lluvia
+                iconoTiempo.setImageResource(R.drawable.illuvia);
+                break;
+            case 4://Nieve
+                iconoTiempo.setImageResource(R.drawable.inieve);
+                break;
+            case 5://Niebla
+                iconoTiempo.setImageResource(R.drawable.iniebla);
+                break;
+            case 6://Nubes
+                iconoTiempo.setImageResource(R.drawable.inubes);
+                break;
+            case 7://Sol
+                iconoTiempo.setImageResource(R.drawable.isol);
+                break;
+            default:
+                iconoTiempo.setImageResource(R.drawable.isol);
+                break;
+        }
         textViewTemp.setText(String.valueOf(weather.temperatura));
         temperaturaMaxMin.setText(weather.tempMinima +"º / "+ weather.tempMaxima +"º");
         if(main.esMunicipio()){
