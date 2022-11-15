@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -106,14 +107,10 @@ public class ConsultaEventosFragment extends Fragment implements AdapterView.OnI
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                bundle.putInt("PosicionTab",tab.getPosition());
-                bundle.putInt("PosicionSpinner",spinnerFiltrado.getSelectedItemPosition());
-                Fragment childFragment = new ListaEventosFragment();
-                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-                transaction.replace(R.id.child_ConsultarEventos, childFragment).commit();
             }
         });
         bundle.putInt("PosicionTab", tabLayout.getSelectedTabPosition());
+        bundle.putInt("PosicionSpinner",spinnerFiltrado.getSelectedItemPosition());
         Fragment childFragment = new ListaEventosFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         childFragment.setArguments(bundle);
@@ -124,7 +121,6 @@ public class ConsultaEventosFragment extends Fragment implements AdapterView.OnI
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-
     }
 
     @Override
