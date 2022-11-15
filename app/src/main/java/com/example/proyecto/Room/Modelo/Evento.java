@@ -1,6 +1,7 @@
 package com.example.proyecto.Room.Modelo;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -15,7 +16,7 @@ import java.util.Date;
 import java.util.Locale;
 
 @Entity
-public class Evento implements Comparator<Evento> {
+public class Evento implements Comparable<Evento> {
 
     @Ignore
     public final static SimpleDateFormat FORMAT = new SimpleDateFormat(
@@ -105,17 +106,14 @@ public class Evento implements Comparator<Evento> {
         this.fecha = fecha;
     }
 
+
     @Override
-    public int compare(@NonNull Evento evento,@NonNull Evento t1) {
-        if(evento.getFecha().before(fecha)){
-            return 1;//TODO hacer compare
-        }
-        else{
-            if(e.getFecha().after(fecha)){
+    public int compareTo(Evento o) {
+        if (o.getFecha().compareTo(fecha)<0){
+            return 1;
+        }else{
+            if (o.getFecha().compareTo(fecha)>0){
                 return -1;
-            }
-            else{
-                return 0;
             }
         }
         return 0;

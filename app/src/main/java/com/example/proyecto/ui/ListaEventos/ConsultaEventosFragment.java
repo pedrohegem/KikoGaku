@@ -7,23 +7,21 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
-import androidx.viewpager2.widget.ViewPager2;
 
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-import com.example.proyecto.Json.JsonSingleton;
 import com.example.proyecto.R;
 import com.example.proyecto.databinding.FragmentConsultarEventosBinding;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,7 +32,7 @@ public class ConsultaEventosFragment extends Fragment implements AdapterView.OnI
 
     private TabLayout tabLayout;
     private MyViewPagerAdapter myViewPagerAdapter;
-    private Spinner tipoFiltrado;
+    private Spinner spinnerFiltrado;
     Bundle bundle;
 
     private FragmentConsultarEventosBinding binding;
@@ -60,22 +58,41 @@ public class ConsultaEventosFragment extends Fragment implements AdapterView.OnI
         binding = FragmentConsultarEventosBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        tipoFiltrado = binding.spinnerFiltrado;
+        spinnerFiltrado = binding.spinnerFiltrado;
         tabLayout = binding.tabEventos;
+
         myViewPagerAdapter= new MyViewPagerAdapter(requireActivity());
 
         ArrayList<String> opciones = new ArrayList<String>();
         opciones.add("Creación");
         opciones.add("Fecha");
 
-        ArrayAdapter ad = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,opciones);
+        ArrayAdapter ad = new ArrayAdapter(getContext(),R.layout.spinner_list,opciones);
 
         ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        tipoFiltrado.setAdapter(ad);
+        spinnerFiltrado.setAdapter(ad);
+        spinnerFiltrado.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                bundle.putInt("PosicionTab",tabLayout.getSelectedTabPosition());
+                bundle.putInt("PosicionSpinner",spinnerFiltrado.getSelectedItemPosition());
+                Fragment childFragment = new ListaEventosFragment();
+                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                childFragment.setArguments(bundle);
+                transaction.replace(R.id.child_ConsultarEventos, childFragment).commit();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 bundle.putInt("PosicionTab",tab.getPosition());
+                bundle.putInt("PosicionSpinner",spinnerFiltrado.getSelectedItemPosition());
                 Fragment childFragment = new ListaEventosFragment();
                 FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
                 childFragment.setArguments(bundle);
@@ -90,6 +107,7 @@ public class ConsultaEventosFragment extends Fragment implements AdapterView.OnI
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
                 bundle.putInt("PosicionTab",tab.getPosition());
+                bundle.putInt("PosicionSpinner",spinnerFiltrado.getSelectedItemPosition());
                 Fragment childFragment = new ListaEventosFragment();
                 FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
                 transaction.replace(R.id.child_ConsultarEventos, childFragment).commit();

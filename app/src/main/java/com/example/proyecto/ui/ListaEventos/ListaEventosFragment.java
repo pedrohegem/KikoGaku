@@ -1,5 +1,6 @@
 package com.example.proyecto.ui.ListaEventos;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +26,8 @@ import com.example.proyecto.ui.ListaEventos.placeholder.PlaceholderItem;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -76,6 +79,7 @@ public class ListaEventosFragment extends Fragment {
 
         try{
             new Thread(new Runnable() {
+                @SuppressLint("NotifyDataSetChanged")
                 @Override
                 public void run() {
                     List<Evento> eventos = new ArrayList<>();
@@ -90,17 +94,15 @@ public class ListaEventosFragment extends Fragment {
                             eventos = AppDatabase.getInstance(getContext()).eventoDAO().getMontanas();
                             break;
                     }
-
+                    if (filtroOrden==1){//Ordenado por fecha
+                        Collections.sort(eventos);
+                    }
                     Log.i("Recoleccion", "eventos: "+eventos.size());
                     ITEMS.clear();
                     for (ListIterator<Evento> iter = eventos.listIterator(); iter.hasNext();){
                         Evento event = iter.next();
                         String[] fecha = event.getFecha().toString().split(" ");
                         ITEMS.add(new PlaceholderItem(event.getIde(),event.getTitulo(),fecha[2]+"/"+fecha[1]+"/"+fecha[5], event.getUbicacion(), event.getEsMunicipio()));
-                    }
-                    if (filtroOrden==1){//Ordenado por fecha
-                            //TODO: Realizar la ordenacion
-                            //ITEMS.sort();
                     }
                     requireActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());
                 }
