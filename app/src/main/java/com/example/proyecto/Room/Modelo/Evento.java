@@ -1,6 +1,7 @@
 package com.example.proyecto.Room.Modelo;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -10,11 +11,12 @@ import com.example.proyecto.Room.javadb.DateConverter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
 
 @Entity
-public class Evento {
+public class Evento implements Comparable<Evento> {
 
     @Ignore
     public final static SimpleDateFormat FORMAT = new SimpleDateFormat(
@@ -104,4 +106,16 @@ public class Evento {
         this.fecha = fecha;
     }
 
+
+    @Override
+    public int compareTo(Evento o) {
+        if (o.getFecha().compareTo(fecha)<0){
+            return 1;
+        }else{
+            if (o.getFecha().compareTo(fecha)>0){
+                return -1;
+            }
+        }
+        return 0;
+    }
 }

@@ -18,6 +18,12 @@ public interface EventoDAO {
     @Query("SELECT * FROM evento")
     List<Evento> getAll();
 
+    @Query("SELECT * FROM evento WHERE esMunicipio <> 0")
+    List<Evento> getMunicipios();
+
+    @Query("SELECT * FROM evento WHERE esMunicipio = 0")
+    List<Evento> getMontanas();
+
     @Query("SELECT * FROM evento WHERE ide = (:idEvento)")
     List<Evento> getEvent(int idEvento);
 

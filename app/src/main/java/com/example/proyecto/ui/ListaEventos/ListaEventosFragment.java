@@ -1,5 +1,6 @@
 package com.example.proyecto.ui.ListaEventos;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +26,8 @@ import com.example.proyecto.ui.ListaEventos.placeholder.PlaceholderItem;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -33,9 +36,13 @@ import java.util.ListIterator;
  */
 public class ListaEventosFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
+    private static final String ARG_TIPO_FILTRO = "PosicionTab";
+    private static final String ARG_FILTRO_ORDEN = "PosicionSpinner";
 
     private Context mContext;
     private int mColumnCount = 1;
+    private int filtroRealizado = -1;
+    private int filtroOrden = -1;
 
     public static final List<PlaceholderItem> ITEMS = new ArrayList<>();
     public ListaEventosAdapter adapter = new ListaEventosAdapter(ITEMS);
@@ -51,10 +58,10 @@ public class ListaEventosFragment extends Fragment {
     @SuppressWarnings("unused")
     public static ListaEventosFragment newInstance(int columnCount, String nom, String fech) {
         ListaEventosFragment fragment = new ListaEventosFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
+        Bundle bundle = new Bundle();
+        bundle.putInt(ARG_COLUMN_COUNT, columnCount);
 
-        fragment.setArguments(args);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -65,17 +72,31 @@ public class ListaEventosFragment extends Fragment {
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            filtroRealizado = getArguments().getInt(ARG_TIPO_FILTRO, -1);
+            filtroOrden = getArguments().getInt(ARG_FILTRO_ORDEN, -1);
         }
 
 
         try{
             new Thread(new Runnable() {
+                @SuppressLint("NotifyDataSetChanged")
                 @Override
                 public void run() {
-                    /*for (int i=0; i<5;i++){
-                        AppDatabase.getInstance(getContext()).eventoDAO().insertEvent(new Evento("Evento","Caceres","Descripcion", new Date(System.currentTimeMillis()),true));
-                    }*/
-                    List<Evento> eventos = AppDatabase.getInstance(getContext()).eventoDAO().getAll();
+                    List<Evento> eventos = new ArrayList<>();
+                    switch (filtroRealizado){
+                        case -1:
+                            eventos = AppDatabase.getInstance(getContext()).eventoDAO().getAll();
+                            break;
+                        case 0:
+                            eventos = AppDatabase.getInstance(getContext()).eventoDAO().getMunicipios();
+                            break;
+                        case 1:
+                            eventos = AppDatabase.getInstance(getContext()).eventoDAO().getMontanas();
+                            break;
+                    }
+                    if (filtroOrden==1){//Ordenado por fecha
+                        Collections.sort(eventos);
+                    }
                     Log.i("Recoleccion", "eventos: "+eventos.size());
                     ITEMS.clear();
                     for (ListIterator<Evento> iter = eventos.listIterator(); iter.hasNext();){
@@ -83,7 +104,6 @@ public class ListaEventosFragment extends Fragment {
                         String[] fecha = event.getFecha().toString().split(" ");
                         ITEMS.add(new PlaceholderItem(event.getIde(),event.getTitulo(),fecha[2]+"/"+fecha[1]+"/"+fecha[5], event.getUbicacion(), event.getEsMunicipio()));
                     }
-
                     requireActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());
                 }
             }).start();
