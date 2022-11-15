@@ -1,7 +1,6 @@
 package com.example.proyecto.Room.Modelo;
 
 import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -9,21 +8,20 @@ import androidx.room.PrimaryKey;
 public class Usuario {
 
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo
     @NonNull
     private int idu;
 
-    @ColumnInfo
     private String username;
 
-    @ColumnInfo
     private String password;
 
+    private boolean conectado;
 
-    public Usuario(int idu, String username, String password) {
+    public Usuario(int idu, String username, String password, boolean conectado) {
         this.idu = idu;
         this.username = username;
         this.password = password;
+        this.conectado = conectado;
     }
 
     public  int getIdu() {
@@ -50,4 +48,7 @@ public class Usuario {
         this.password = password;
     }
 
+    public void setConectado(boolean conectado) {this.conectado = conectado;}
+
+    public boolean isConectado() {return conectado;}
 }

@@ -18,6 +18,22 @@
         android:theme="@style/Theme.Proyecto"
         tools:targetApi="31">
         <activity
+            android:name=".Registrarse"
+            android:exported="false"
+            android:theme="@style/Theme.Proyecto.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".InicioSesion"
+            android:exported="false"
+            android:theme="@style/Theme.Proyecto.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".ui.Localizaciones.DetalleLocalizacionActivity"
             android:exported="false"
             android:theme="@style/Theme.Proyecto.NoActionBar">
