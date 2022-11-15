@@ -7,4 +7,10 @@
         android:title="TODO"
         android:icon="@drawable/icon_localizaciones"
         app:showAsAction="always"/>
+    <item
+        android:id="@+id/cerrarSesion"
+        android:orderInCategory="100"
+        android:title="TODO"
+        android:icon="@drawable/ic_cerrar_sesion"
+        app:showAsAction="always"/>
 </menu>

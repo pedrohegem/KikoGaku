@@ -16,6 +16,8 @@ import android.os.Bundle;
 import com.example.proyecto.Json.JsonSingleton;
 import com.example.proyecto.Json.Montana;
 import com.example.proyecto.Json.Municipio;
+import com.example.proyecto.Room.DAO.UsuarioDAO;
+import com.example.proyecto.Room.Modelo.Usuario;
 import com.example.proyecto.databinding.ActivityMainBinding;
 import com.example.proyecto.ui.Eventos.CrearEventoActivity;
 import com.example.proyecto.ui.Localizaciones.LocalizacionesActivity;
@@ -25,6 +27,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.Toast;
 
 import com.example.proyecto.Room.AppDatabase;
 import com.google.android.material.navigation.NavigationView;
@@ -55,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        validarConexion();
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -105,6 +110,28 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, LocalizacionesActivity.class));
             return true;
         }
+        else if (id == R.id.cerrarSesion) {
+            // Se invoca un metodo del DAO usuario que se encarga de modificar el estadoConectado a false del usuario. De esta forma, al
+            UsuarioDAO usuarioDAO = AppDatabase.getInstance(getApplicationContext()).usuarioDAO();
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    AppDatabase.getInstance(getApplicationContext()).usuarioDAO().activarEstadoConexion(false, AppDatabase.getUsuario().getIdu());
+                    // Se pone a null el usuario del singleton AppDataBase
+                    AppDatabase.setUsuario(null);
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), "Se ha cerrado sesión", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    // Se inicia la actividad Main para comprobar que, efectivamente, el usuario ha cerrado sesión
+                    startActivity(new Intent(getApplicationContext(), InicioSesion.class));
+                }
+            }).start();
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -138,5 +165,25 @@ public class MainActivity extends AppCompatActivity {
         for (Municipio m: municipioList) {
             JsonSingleton.getInstance().municipioMap.put(m.getMunicipio(), new Municipio(m.getCodigo(), m.getMunicipio(), m.getProvincia()));
         }
+    }
+
+    public void validarConexion(){
+        AppDatabase appDatabase = AppDatabase.getInstance(getApplicationContext());
+        final UsuarioDAO usuarioDAO = appDatabase.usuarioDAO();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Usuario usuario = usuarioDAO.usuarioConectado(true);
+                // Si no hay ningun usuario con el campo 'conectado' a true, entonces nos dirigimos al iniciar sesion
+                if(usuario == null){
+                    startActivity(new Intent(MainActivity.this, InicioSesion.class));
+                }
+                else{
+                    // Si existe un usuario conectado a la aplicacion, entonces se añade en el Singleton
+                    AppDatabase.getInstance(getApplicationContext()).setUsuario(usuario);
+                }
+            }
+        }).start();
     }
 }

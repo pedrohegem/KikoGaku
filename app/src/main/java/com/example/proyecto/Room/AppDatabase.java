@@ -12,10 +12,11 @@ import com.example.proyecto.Room.Modelo.Evento;
 import com.example.proyecto.Room.Modelo.Usuario;
 
 
-@Database(entities = {Usuario.class, Evento.class}, version = 2, exportSchema = false)
+@Database(entities = {Usuario.class, Evento.class}, version = 3, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase appDataBase;
     private static Context contexto;
+    private static Usuario usuario;
 
     public abstract UsuarioDAO usuarioDAO();
     public abstract EventoDAO eventoDAO();
@@ -26,9 +27,12 @@ public abstract class AppDatabase extends RoomDatabase {
     public static AppDatabase getInstance(Context context){
         if (appDataBase == null) {
             appDataBase = Room.databaseBuilder(context.getApplicationContext(),
-                    AppDatabase.class, "database.db").build();
+                    AppDatabase.class, "database.db").fallbackToDestructiveMigration().build();
         }
         return appDataBase;
     }
 
+    public static Usuario getUsuario() {return usuario;}
+
+    public static void setUsuario(Usuario usuario) {AppDatabase.usuario = usuario;}
 }

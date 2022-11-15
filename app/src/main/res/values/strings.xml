@@ -82,4 +82,11 @@
     <string name="ordenar_por">Ordenar por:</string>
 
     <string name="Nombre_municipio">Nombre</string>
+
+    <string name="guardar">Guardar</string>
+    <string name="editar_perfil">Editar perfil</string>
+    <string name="introduce_username">Introduce username</string>
+    <string name="nueva_contrase_a">Nueva contraseña</string>
+    <string name="introduzca_contrase_a_actual">Introduzca contraseña actual</string>
+    <string name="Cerrar_sesión">Cerrar sesión</string>
 </resources>
