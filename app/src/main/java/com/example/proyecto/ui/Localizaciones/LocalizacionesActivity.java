@@ -145,7 +145,7 @@ public class LocalizacionesActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     // Redirige a detalles de una localización
                     Intent intent = new Intent(mContext, DetalleLocalizacionActivity.class);
-                    intent.putExtra("municipio", holder.mItem);
+                    intent.putExtra("ubicacion", holder.mItem);
                     startActivity(intent);
 
                 }
