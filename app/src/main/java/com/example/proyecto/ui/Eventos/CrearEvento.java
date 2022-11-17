@@ -79,4 +79,11 @@ public class CrearEvento extends Fragment{
         binding = null;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        CrearEventoActivity cea = (CrearEventoActivity) getActivity();
+        cea.setDayLight();
+    }
+
 }

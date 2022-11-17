@@ -248,4 +248,11 @@ public class ModificarEventoMontanaFragment extends Fragment implements AdapterV
         main = (DetallesEventoActivity) main;
         mContext = context;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        DetallesEventoActivity cea = (DetallesEventoActivity) getActivity();
+        cea.setDayLight();
+    }
 }

@@ -58,4 +58,5 @@ public class DeleteDialogFragment extends androidx.fragment.app.DialogFragment {
         super.onAttach(context);
         mContext = context;
     }
+
 }

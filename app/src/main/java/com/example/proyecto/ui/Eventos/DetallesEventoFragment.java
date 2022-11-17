@@ -183,46 +183,44 @@ public class DetallesEventoFragment extends Fragment implements APIManagerDelega
     @Override
     public void onGetWeatherSuccess(Weather weather) {
 
-        requireActivity().runOnUiThread(() -> {
-            switch (weather.gifResource){
-                case 0://Error
-                    Log.e("Error Weather", "onGetWeatherSuccess: No se ha obtenido el estado del tiempo correctamente");
-                    break;
-                case 1://Tormenta
-                    iconoTiempo.setImageResource(R.drawable.itormenta);
-                    break;
-                case 2://Llovizna
-                    iconoTiempo.setImageResource(R.drawable.illovizna);
-                    break;
-                case 3://Lluvia
-                    iconoTiempo.setImageResource(R.drawable.illuvia);
-                    break;
-                case 4://Nieve
-                    iconoTiempo.setImageResource(R.drawable.inieve);
-                    break;
-                case 5://Niebla
-                    iconoTiempo.setImageResource(R.drawable.iniebla);
-                    break;
-                case 6://Nubes
-                    iconoTiempo.setImageResource(R.drawable.inubes);
-                    break;
-                case 7://Sol
-                    iconoTiempo.setImageResource(R.drawable.isol);
-                    break;
-                default:
-                    iconoTiempo.setImageResource(R.drawable.isol);
-                    break;
-            }
-            textViewTemp.setText(String.valueOf(weather.temperatura));
-            temperaturaMaxMin.setText(weather.tempMinima +"º / "+ weather.tempMaxima +"º");
-            if(main.esMunicipio()){
-                localidadTiempo.setText(weather.ciudad);
-            }
-            descripcionTiempo.setText(weather.descEstadoTiempo);
-            viento.setText(String.valueOf(weather.velocidadViento));
-            humedad.setText(String.valueOf(weather.humedad));
-            sensTermica.setText(weather.sensTermica + "º");
-        });
+        switch (weather.gifResource){
+            case 0://Error
+                Log.e("Error Weather", "onGetWeatherSuccess: No se ha obtenido el estado del tiempo correctamente");
+                break;
+            case 1://Tormenta
+                iconoTiempo.setImageResource(R.drawable.itormenta);
+                break;
+            case 2://Llovizna
+                iconoTiempo.setImageResource(R.drawable.illovizna);
+                break;
+            case 3://Lluvia
+                iconoTiempo.setImageResource(R.drawable.illuvia);
+                break;
+            case 4://Nieve
+                iconoTiempo.setImageResource(R.drawable.inieve);
+                break;
+            case 5://Niebla
+                iconoTiempo.setImageResource(R.drawable.iniebla);
+                break;
+            case 6://Nubes
+                iconoTiempo.setImageResource(R.drawable.inubes);
+                break;
+            case 7://Sol
+                iconoTiempo.setImageResource(R.drawable.isol);
+                break;
+            default:
+                iconoTiempo.setImageResource(R.drawable.isol);
+                break;
+        }
+        textViewTemp.setText(String.valueOf(weather.temperatura));
+        temperaturaMaxMin.setText(weather.tempMinima +"º / "+ weather.tempMaxima +"º");
+        if(main.esMunicipio()){
+            localidadTiempo.setText(weather.ciudad);
+        }
+        descripcionTiempo.setText(weather.descEstadoTiempo);
+        viento.setText(String.valueOf(weather.velocidadViento));
+        humedad.setText(String.valueOf(weather.humedad));
+        sensTermica.setText(weather.sensTermica + "º");
 
     }
 
@@ -231,4 +229,12 @@ public class DetallesEventoFragment extends Fragment implements APIManagerDelega
         String noPerms = "No es posible consultar el tiempo a partir de los próximos 5 días. (FREE API SADGE)";
         Toast.makeText(getContext(), noPerms, Toast.LENGTH_LONG).show();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        DetallesEventoActivity cea = (DetallesEventoActivity) getActivity();
+        cea.setDayLight();
+    }
+
 }

@@ -1,37 +1,70 @@
 package com.example.proyecto.ui.ajustes;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.annotation.Nullable;
+import androidx.preference.CheckBoxPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 
-import com.example.proyecto.databinding.FragmentAjustesBinding;
+import com.example.proyecto.MainActivity;
+import com.example.proyecto.R;
 
-public class AjustesFragment extends Fragment {
+public class AjustesFragment extends PreferenceFragmentCompat {
 
-    private FragmentAjustesBinding binding;
+    private Context mContext;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        AjustesViewModel ajustesViewModel =
-                new ViewModelProvider(this).get(AjustesViewModel.class);
+    @Override
+    public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
+        setPreferencesFromResource(R.xml.preferences, rootKey);
 
-        binding = FragmentAjustesBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        // -- Obtenemos vista del checkbox
+        CheckBoxPreference swi = findPreference("pref_nightmode");
 
-        final TextView textView = binding.textAjustes;
-        ajustesViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-        return root;
+        // -- Obtenemos las sp de la mainactivity que serán modificadas al hacer clic en el checkbox
+        MainActivity ma = (MainActivity) getActivity();
+        SharedPreferences sp = ma.getSharedPreferences("preferences", ma.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+
+        // -- Para acompasar el checkbox con la elección del modo oscuro o claro del usuario
+        int tema = sp.getInt("Theme", 1);
+        if(tema == 1){
+            swi.setChecked(false);
+        }
+        else{
+            swi.setChecked(true);
+        }
+
+        // -- Con el editor, se actualiza el sharedPreferences para la actividad main
+
+        swi.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(@NonNull Preference preference) {
+
+                if(swi.isChecked()){
+                    // 0 es que se ha activado el checkbox para poner modo claro
+                    editor.putInt("Theme", 0).apply();
+                }
+                else{
+                    editor.putInt("Theme", 1).apply();
+                }
+                //editor.commit();
+                // Se modifica el theme de la actividad
+                ma.setDayLight();
+
+                return true;
+            }
+        });
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.mContext = context;
     }
+
 }

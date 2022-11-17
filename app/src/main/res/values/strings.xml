@@ -106,4 +106,6 @@
     <string name="iniciar_sesi_n">Iniciar Sesión</string>
     <string name="registrarse">Registrarse</string>
     <string name="inicio_de_sesi_n">Inicio de Sesión</string>
+    <string name="lightmode">Modo Claro</string>
+    <string name="lightmode_sum">Activa modo claro en la aplicación</string>
 </resources>

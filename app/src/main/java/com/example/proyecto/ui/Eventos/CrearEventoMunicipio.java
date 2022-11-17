@@ -184,4 +184,11 @@ public class CrearEventoMunicipio extends Fragment{
         super.onDestroyView();
         binding = null;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        CrearEventoActivity cea = (CrearEventoActivity) getActivity();
+        cea.setDayLight();
+    }
 }

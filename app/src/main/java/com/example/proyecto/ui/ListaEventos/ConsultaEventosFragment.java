@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.example.proyecto.MainActivity;
 import com.example.proyecto.R;
 import com.example.proyecto.databinding.FragmentConsultarEventosBinding;
 import com.google.android.material.navigation.NavigationBarView;
@@ -156,5 +157,11 @@ public class ConsultaEventosFragment extends Fragment implements AdapterView.OnI
         }
 
 
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        MainActivity cea = (MainActivity) getActivity();
+        cea.setDayLight();
     }
 }

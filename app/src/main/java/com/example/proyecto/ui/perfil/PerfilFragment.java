@@ -117,4 +117,10 @@ public class PerfilFragment extends Fragment {
         mContext = context;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        MainActivity cea = (MainActivity) getActivity();
+        cea.setDayLight();
+    }
 }

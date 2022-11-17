@@ -1,0 +1,10 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="pref_nightmode"
+        android:title="@string/lightmode"
+        android:summary="@string/lightmode_sum"/>
+
+</PreferenceScreen>
