@@ -64,7 +64,8 @@ public class InicioSesion extends AppCompatActivity {
                                 usuarioDAO.activarEstadoConexion(true, usuario.getIdu());
 
                                 // Iniciamos la actividad principal Main
-                                startActivity(new Intent(InicioSesion.this, MainActivity.class));
+                                runOnUiThread(() -> startActivity(new Intent(InicioSesion.this, MainActivity.class)));
+
                             }
                         }
                     }).start();

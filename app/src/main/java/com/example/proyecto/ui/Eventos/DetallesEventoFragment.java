@@ -65,7 +65,6 @@ public class DetallesEventoFragment extends Fragment implements APIManagerDelega
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
-
     }
 
     @Override
@@ -123,39 +122,38 @@ public class DetallesEventoFragment extends Fragment implements APIManagerDelega
                 @Override
                 public void run() {
                     List<Evento> eventos = eventoDao.getEvent(idEvento);
-                    if (eventos.isEmpty() == true) {
-                    } else {
-                        evento = eventos.get(0);
+                    getActivity().runOnUiThread(() -> {
+                        if (eventos.isEmpty() != true) {
+                            evento = eventos.get(0);
 
-                        nombreEvento.setText(evento.getTitulo());
-                        if(!main.esMunicipio()){
-                            localidadTiempo.setText(evento.getUbicacion());
-                        }
-                        localidadEvento.setText(evento.getUbicacion());
-                        Log.i("Fecha", "year: "+evento.getFecha());
-
-                        fechaEvento.setText(DateConverter.toString(evento.getFecha()));
-
-                        if(evento.getDescripcion().isEmpty()){
-                            descripcionEvento.setText("Sin descripción");
-                        }
-                        else {
-                            descripcionEvento.setText(evento.getDescripcion());
-                        }
-
-                        botonModificar.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Bundle bundle = new Bundle();
-                                bundle.putInt("idEvento",idEvento);
-                                if(evento.getEsMunicipio() == true) {
-                                    NavHostFragment.findNavController(DetallesEventoFragment.this).navigate(R.id.action_detallesEvento_to_nav_modificar_evento,bundle);
-                                }else{
-                                    NavHostFragment.findNavController(DetallesEventoFragment.this).navigate(R.id.action_nav_detalles_evento_to_nav_modificar_evento_montana,bundle);
-                                }
+                            nombreEvento.setText(evento.getTitulo());
+                            if (!main.esMunicipio()) {
+                                localidadTiempo.setText(evento.getUbicacion());
                             }
-                        });
-                    }
+                            localidadEvento.setText(evento.getUbicacion());
+                            Log.i("Fecha", "year: " + evento.getFecha());
+
+                            fechaEvento.setText(DateConverter.toString(evento.getFecha()));
+
+                            if (evento.getDescripcion().isEmpty()) {
+                                descripcionEvento.setText("Sin descripción");
+                            } else {
+                                descripcionEvento.setText(evento.getDescripcion());
+                            }
+                            botonModificar.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Bundle bundle = new Bundle();
+                                    bundle.putInt("idEvento", idEvento);
+                                    if (evento.getEsMunicipio() == true) {
+                                        NavHostFragment.findNavController(DetallesEventoFragment.this).navigate(R.id.action_detallesEvento_to_nav_modificar_evento, bundle);
+                                    } else {
+                                        NavHostFragment.findNavController(DetallesEventoFragment.this).navigate(R.id.action_nav_detalles_evento_to_nav_modificar_evento_montana, bundle);
+                                    }
+                                }
+                            });
+                        }
+                    });
                 }
             }).start();
 

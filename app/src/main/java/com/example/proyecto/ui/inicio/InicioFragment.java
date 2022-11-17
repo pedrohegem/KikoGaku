@@ -2,6 +2,7 @@ package com.example.proyecto.ui.inicio;
 
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -20,6 +21,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.proyecto.MainActivity;
 import com.example.proyecto.databinding.FragmentInicioBinding;
 import com.example.proyecto.utils.APIManagerDelegate;
 import com.example.proyecto.R;
@@ -44,7 +46,11 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
 
         binding = FragmentInicioBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
+        textViewCiudad = binding.textViewCiudad;
+        textViewTemp = binding.textViewTemp;
+        textViewDesc = binding.textViewDesc;
+        textViewTempMaxMin = binding.textViewTempMaxMin;
+        gifImage = binding.gifImageView;
         APIManager apiManager = new APIManager(this);
         getLocationCoords();
         apiManager.getEventWeather(latitud, longitud);
@@ -89,47 +95,43 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
 
     @Override
     public void onGetWeatherSuccess(Weather weather) {
-        textViewCiudad = binding.textViewCiudad;
-        textViewTemp = binding.textViewTemp;
-        textViewDesc = binding.textViewDesc;
-        textViewTempMaxMin = binding.textViewTempMaxMin;
-        gifImage = binding.gifImageView;
 
-        //TODO: controlar cuando se hace de noche
-        switch (weather.gifResource){
-            case 0://Error
-                Log.e("Error Weather", "onGetWeatherSuccess: No se ha obtenido el estado del tiempo correctamente");
-                break;
-            case 1://Tormenta
-                gifImage.setImageResource(R.drawable.gif_tormenta);
-                break;
-            case 2://Llovizna
-                gifImage.setImageResource(R.drawable.gif_lluvia);
-                break;
-            case 3://Lluvia
-                gifImage.setImageResource(R.drawable.gif_lluvia);
-                break;
-            case 4://Nieve
-                break;
-            case 5://Niebla
-                gifImage.setImageResource(R.drawable.gif_sol_niebla);
-                break;
-            case 6://Nubes
-                gifImage.setImageResource(R.drawable.gif_sol_nubes);
-                break;
-            case 7://Sol
-                gifImage.setImageResource(R.drawable.gif_sol);
-                break;
-            default:
-                gifImage.setImageResource(R.drawable.gif_sol);
-                break;
-        }
+        getActivity().runOnUiThread(() -> {
+            switch (weather.gifResource){
+                case 0://Error
+                    Log.e("Error Weather", "onGetWeatherSuccess: No se ha obtenido el estado del tiempo correctamente");
+                    break;
+                case 1://Tormenta
+                    gifImage.setImageResource(R.drawable.gif_tormenta);
+                    break;
+                case 2://Llovizna
+                    gifImage.setImageResource(R.drawable.gif_lluvia);
+                    break;
+                case 3://Lluvia
+                    gifImage.setImageResource(R.drawable.gif_lluvia);
+                    break;
+                case 4://Nieve
+                    break;
+                case 5://Niebla
+                    gifImage.setImageResource(R.drawable.gif_sol_niebla);
+                    break;
+                case 6://Nubes
+                    gifImage.setImageResource(R.drawable.gif_sol_nubes);
+                    break;
+                case 7://Sol
+                    gifImage.setImageResource(R.drawable.gif_sol);
+                    break;
+                default:
+                    gifImage.setImageResource(R.drawable.gif_sol);
+                    break;
+            }
+            textViewCiudad.setText(weather.ciudad);
+            Log.d("TEMP", Integer.toString(weather.temperatura));
+            textViewTemp.setText(weather.temperatura +"º");
+            textViewDesc.setText(weather.getDescEstadoTiempoMay());//Estado del tiempo con ña primera letra en Mayusculas de cada palabra
+            textViewTempMaxMin.setText(weather.tempMaxima + "º / " + weather.tempMinima + "º");
+        });
 
-        textViewCiudad.setText(weather.ciudad);
-        Log.d("TEMP", Integer.toString(weather.temperatura));
-        textViewTemp.setText(weather.temperatura +"º");
-        textViewDesc.setText(weather.getDescEstadoTiempoMay());//Estado del tiempo con ña primera letra en Mayusculas de cada palabra
-        textViewTempMaxMin.setText(weather.tempMaxima + "º / " + weather.tempMinima + "º");
     }
 
     @Override

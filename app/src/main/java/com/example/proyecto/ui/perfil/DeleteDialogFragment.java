@@ -39,7 +39,7 @@ public class DeleteDialogFragment extends androidx.fragment.app.DialogFragment {
                                 usuarioDAO.deleteUser(usuario);
 
                                 AppDatabase.setUsuario(null);
-                                startActivity(new Intent(mContext, MainActivity.class));
+                                getActivity().runOnUiThread(() -> startActivity(new Intent(mContext, MainActivity.class)));
                             }
                         }).start();
                     }

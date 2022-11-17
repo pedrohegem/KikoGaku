@@ -73,10 +73,10 @@ public class PerfilFragment extends Fragment {
                                     @Override
                                     public void run() {
                                         Toast.makeText(mContext, "Se ha modificado el perfil correctamente", Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(mContext, MainActivity.class));
                                     }
                                 });
-                                //Toast.makeText(mContext, "Se ha modificado el perfil correctamente", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(mContext, MainActivity.class));
+
                             }
                         }).start();
                     }

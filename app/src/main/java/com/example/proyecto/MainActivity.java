@@ -125,10 +125,11 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             Toast.makeText(getApplicationContext(), "Se ha cerrado sesión", Toast.LENGTH_SHORT).show();
+                            // Se inicia la actividad Main para comprobar que, efectivamente, el usuario ha cerrado sesión
+                            startActivity(new Intent(getApplicationContext(), InicioSesion.class));
                         }
                     });
-                    // Se inicia la actividad Main para comprobar que, efectivamente, el usuario ha cerrado sesión
-                    startActivity(new Intent(getApplicationContext(), InicioSesion.class));
+
                 }
             }).start();
         }
@@ -181,7 +182,8 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else{
                     // Si existe un usuario conectado a la aplicacion, entonces se añade en el Singleton
-                    AppDatabase.getInstance(getApplicationContext()).setUsuario(usuario);
+                    runOnUiThread(() -> AppDatabase.getInstance(getApplicationContext()).setUsuario(usuario));
+
                 }
             }
         }).start();
