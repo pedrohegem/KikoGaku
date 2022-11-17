@@ -89,4 +89,21 @@
     <string name="nueva_contrase_a">Nueva contraseña</string>
     <string name="introduzca_contrase_a_actual">Introduzca contraseña actual</string>
     <string name="Cerrar_sesión">Cerrar sesión</string>
+    <string name="textoVacio">-</string>
+    <string name="fechaVacia">--/--/----</string>
+    <string name="viento">Viento:</string>
+    <string name="humedad">Humedad:</string>
+    <string name="sensaci_n_t_rmica">Sensación Térmica:</string>
+    <string name="MaxMinVacia">--º / --º</string>
+    <string name="not_found">Not found</string>
+    <string name="nombre">Nombre:</string>
+    <string name="numeroNotfound">-1</string>
+    <string name="descripci_n_del_evento">Descripción del evento</string>
+    <string name="iconoclima">IconoClima</string>
+    <string name="botonanadirnuevoevento">BotonAnadirNuevoEvento</string>
+    <string name="localidad">Localidad</string>
+    <string name="introduce_la_contrase_a">Introduce la contraseña</string>
+    <string name="iniciar_sesi_n">Iniciar Sesión</string>
+    <string name="registrarse">Registrarse</string>
+    <string name="inicio_de_sesi_n">Inicio de Sesión</string>
 </resources>

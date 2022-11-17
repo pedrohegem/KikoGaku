@@ -30,7 +30,6 @@
         android:gravity="start"
         android:hapticFeedbackEnabled="false"
         android:textAppearance="?attr/textAppearanceListItem"
-        android:textColor="@color/white"
         android:textColorHint="@color/black"
         android:textStyle="bold"
         tools:text="Nombre Evento" />

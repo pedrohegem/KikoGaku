@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/Azul_osc"
     tools:context=".ui.Eventos.CrearEventoMontana">
 
     <ScrollView
@@ -14,13 +13,12 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/Azul_osc">
+                android:layout_height="match_parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/LayoutModificar"
@@ -37,12 +35,13 @@
                         android:layout_width="210dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="40dp"
-                        android:background="@color/white"
+                        android:background="@color/white_50"
                         android:ems="10"
+                        android:textColorHint="@color/gray"
+                        android:textColor="@color/black"
                         android:hint="@string/n_montana_evento"
                         android:inputType="textPersonName"
                         android:minHeight="48dp"
-                        android:textColor="@color/black"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.505"
                         app:layout_constraintStart_toStartOf="parent"
@@ -53,8 +52,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="40dp"
-                        android:background="@color/white"
+                        android:background="@color/white_50"
                         android:ems="10"
+                        android:textColorHint="@color/gray"
                         android:hint="@string/n_nombre_evento"
                         android:inputType="textPersonName"
                         android:minHeight="48dp"
@@ -62,17 +62,19 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.505"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"/>
 
                     <EditText
                         android:id="@+id/InputDescripcionEvento"
                         android:layout_width="wrap_content"
                         android:layout_height="65dp"
                         android:layout_marginTop="44dp"
-                        android:background="@color/white"
+                        android:background="@color/white_50"
                         android:ems="10"
                         android:gravity="start|top"
                         android:hint="@string/n_descripcion_evento"
+                        android:textColorHint="@color/gray"
+                        android:textColor="@color/black"
                         android:inputType="textMultiLine"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -83,10 +85,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="40dp"
-                        android:background="@color/white"
+                        android:background="@color/white_50"
                         android:clickable="true"
                         android:ems="10"
                         android:focusable="false"
+                        android:textColorHint="@color/gray"
+                        android:textColor="@color/black"
                         android:hint="@string/n_fecha_inicio_evento"
                         android:inputType="date"
                         android:maxLines="1"
@@ -117,7 +121,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
                     android:text="@string/n_crear_montana"
-                    android:textColor="@color/white"
                     android:textSize="24sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"

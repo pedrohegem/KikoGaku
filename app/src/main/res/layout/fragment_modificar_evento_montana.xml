@@ -5,8 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.Eventos.ModificarEventoMontanaFragment"
-    android:background="@color/Azul_osc">
+    tools:context=".ui.Eventos.ModificarEventoMontanaFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -20,7 +19,6 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/Azul_osc"
                 tools:context=".ui.Eventos.ModificarEventoMunicipioFragment">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -38,7 +36,7 @@
                         android:layout_width="210dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="40dp"
-                        android:background="@color/white"
+                        android:background="@color/white_50"
                         android:ems="10"
                         android:hint="@string/n_localidad_evento"
                         android:inputType="textPersonName"
@@ -54,7 +52,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="40dp"
-                        android:background="@color/white"
+                        android:background="@color/white_50"
                         android:ems="10"
                         android:hint="@string/n_nombre_evento"
                         android:inputType="textPersonName"
@@ -70,7 +68,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="65dp"
                         android:layout_marginTop="44dp"
-                        android:background="@color/white"
+                        android:background="@color/white_50"
                         android:ems="10"
                         android:gravity="start|top"
                         android:hint="@string/n_descripcion_evento"
@@ -84,7 +82,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="40dp"
-                        android:background="@color/white"
+                        android:background="@color/white_50"
                         android:clickable="true"
                         android:focusable="false"
                         android:ems="10"
@@ -116,7 +114,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
                     android:text="@string/n_modificar"
-                    android:textColor="@color/white"
                     android:textSize="24sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"

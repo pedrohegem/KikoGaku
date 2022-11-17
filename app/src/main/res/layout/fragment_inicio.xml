@@ -50,8 +50,8 @@
             android:layout_marginTop="10dp"
             android:hint="Sevilla"
             android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
+            android:textColor="@color/white_50"
+            android:textColorHint="@color/white_50"
             android:textSize="34sp"
             android:textStyle="normal" />
 
@@ -62,8 +62,8 @@
             android:layout_gravity="center"
             android:hint="Mayormente Nublado"
             android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
+            android:textColor="@color/white_50"
+            android:textColorHint="@color/white_50"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -75,7 +75,7 @@
             android:fontFamily="sans-serif"
             android:text="14º"
             android:textAlignment="center"
-            android:textColor="@color/white"
+            android:textColor="@color/white_50"
             android:textSize="70sp"
             android:textStyle="bold" />
 
@@ -95,8 +95,8 @@
                 android:hint="Min / Max:"
                 android:paddingRight="10dp"
                 android:text="Min / Max:"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
+                android:textColor="@color/white_50"
+                android:textColorHint="@color/white_50"
                 android:textSize="20sp" />
 
             <TextView
@@ -107,8 +107,8 @@
                 android:hint="12º / 21º"
                 android:paddingLeft="10dp"
                 android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
+                android:textColor="@color/white_50"
+                android:textColorHint="@color/white_50"
                 android:textSize="20sp"
                 android:textStyle="normal" />
         </LinearLayout>
