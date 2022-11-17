@@ -58,11 +58,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
 
         validarConexion();
-
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -197,7 +195,6 @@ public class MainActivity extends AppCompatActivity {
         int tema = sp.getInt("Theme", 1);
         Log.d("NUMERO MODO", String.valueOf(tema));
         if(tema == 0){ // Modo claro
-            Log.d("DENTRO CLARO", "AAAAAAAAAAAAAAAAAAAAAAA");
             getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO); // método que da error
         }
         else{ // Modo oscuro
