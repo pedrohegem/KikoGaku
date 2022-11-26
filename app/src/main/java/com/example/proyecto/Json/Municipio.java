@@ -1,10 +1,17 @@
 
 package com.example.proyecto.Json;
 
+import androidx.room.Ignore;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Municipio {
+
+
+    public static final String CODIGO="codigo";
+    public static final String MUNICIPIO="municipio";
+    public static final String PROVINCIA="provincia";
 
     @SerializedName("Codigo")
     @Expose
@@ -15,6 +22,11 @@ public class Municipio {
     @SerializedName("Provincia")
     @Expose
     private String provincia;
+
+    @Ignore
+    public Municipio() {
+
+    }
 
     public String getCodigo() {
         return codigo;

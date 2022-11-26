@@ -18,6 +18,13 @@ import java.util.Locale;
 @Entity
 public class Evento implements Comparable<Evento> {
 
+    public static final String IDE="ide";
+    public static final String TÍTULO="titulo";
+    public static final String UBICACION="ubicacion";
+    public static final String DESCRIPCION="descripcion";
+    public static final String ESMUNICIPIO="esMunicipio";
+    public static final String FECHA="fecha";
+
     @Ignore
     public final static SimpleDateFormat FORMAT = new SimpleDateFormat(
             "yyyy-MM-dd", Locale.US);
@@ -56,6 +63,11 @@ public class Evento implements Comparable<Evento> {
             this.fecha = new Date();
         }
         this.esMunicipio = esMunicipio;
+    }
+
+    @Ignore
+    public Evento() {
+
     }
 
     public int getIde() {
