@@ -98,7 +98,7 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
     @Override
     public void onGetWeatherSuccess(Weather weather) {
 
-        switch (weather.gifResource){
+        switch (weather.getGifResource()){
             case 0://Error
                 Log.e("Error Weather", "onGetWeatherSuccess: No se ha obtenido el estado del tiempo correctamente");
                 break;
@@ -127,10 +127,10 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
                 break;
         }
         textViewCiudad.setText(weather.ciudad);
-        Log.d("TEMP", Integer.toString(weather.temperatura));
-        textViewTemp.setText(weather.temperatura +"º");
+        Log.d("TEMP", Integer.toString(weather.getTemperatura()));
+        textViewTemp.setText(weather.getTemperatura() +"º");
         textViewDesc.setText(weather.getDescEstadoTiempoMay());//Estado del tiempo con ña primera letra en Mayusculas de cada palabra
-        textViewTempMaxMin.setText(weather.tempMaxima + "º / " + weather.tempMinima + "º");
+        textViewTempMaxMin.setText(weather.getTempMaxima() + "º / " + weather.getTempMinima() + "º");
     }
 
     @Override
