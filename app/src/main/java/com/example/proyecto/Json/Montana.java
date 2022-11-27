@@ -1,10 +1,16 @@
 
 package com.example.proyecto.Json;
 
+import androidx.room.Ignore;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Montana {
+
+    public static final String LATITUD="latitud";
+    public static final String LONGITUD="longitud";
+    public static final String NOMBRE="nombre";
 
     @SerializedName("Latitud")
     @Expose
@@ -20,6 +26,10 @@ public class Montana {
         this.latitud = latitud;
         this.longitud = longitud;
         this.nombre = nombre;
+    }
+    @Ignore
+    public Montana() {
+
     }
 
     public Double getLatitud() {
