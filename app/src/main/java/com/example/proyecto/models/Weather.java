@@ -1,4 +1,4 @@
-package com.example.proyecto.Room.Modelo;
+package com.example.proyecto.models;
 
 import org.json.JSONException;
 import org.json.JSONObject;

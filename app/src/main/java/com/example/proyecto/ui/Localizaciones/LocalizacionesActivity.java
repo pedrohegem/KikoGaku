@@ -16,8 +16,8 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.proyecto.Json.JsonSingleton;
-import com.example.proyecto.Json.Municipio;
+import com.example.proyecto.utils.JsonSingleton;
+import com.example.proyecto.models.Municipio;
 import com.example.proyecto.R;
 import com.example.proyecto.databinding.ActivityLocalizacionesBinding;
 import com.example.proyecto.databinding.LocalizacionListaBinding;

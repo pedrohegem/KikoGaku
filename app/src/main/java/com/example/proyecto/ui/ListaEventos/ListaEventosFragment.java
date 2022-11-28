@@ -19,8 +19,8 @@ import android.widget.TextView;
 
 import com.example.proyecto.MainActivity;
 import com.example.proyecto.R;
-import com.example.proyecto.Room.AppDatabase;
-import com.example.proyecto.Room.Modelo.Evento;
+import com.example.proyecto.repository.room.AppDatabase;
+import com.example.proyecto.models.Evento;
 import com.example.proyecto.databinding.EventoListaBinding;
 import com.example.proyecto.ui.Eventos.DetallesEventoActivity;
 import com.example.proyecto.ui.ListaEventos.placeholder.PlaceholderItem;
@@ -28,7 +28,6 @@ import com.example.proyecto.ui.ListaEventos.placeholder.PlaceholderItem;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.ListIterator;
 

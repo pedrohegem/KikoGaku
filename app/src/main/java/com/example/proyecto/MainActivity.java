@@ -3,22 +3,14 @@ package com.example.proyecto;
 import android.content.Intent;
 import static java.lang.Thread.sleep;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 
-import com.example.proyecto.Json.JsonSingleton;
-import com.example.proyecto.Json.Montana;
-import com.example.proyecto.Json.Municipio;
-import com.example.proyecto.Room.DAO.UsuarioDAO;
-import com.example.proyecto.Room.Modelo.Usuario;
+import com.example.proyecto.utils.JsonSingleton;
+import com.example.proyecto.models.Montana;
+import com.example.proyecto.models.Municipio;
+import com.example.proyecto.repository.room.DAO.UsuarioDAO;
+import com.example.proyecto.models.Usuario;
 import com.example.proyecto.databinding.ActivityMainBinding;
 import com.example.proyecto.ui.Eventos.CrearEventoActivity;
 import com.example.proyecto.ui.Localizaciones.LocalizacionesActivity;
@@ -30,7 +22,7 @@ import android.view.View;
 import android.view.Menu;
 import android.widget.Toast;
 
-import com.example.proyecto.Room.AppDatabase;
+import com.example.proyecto.repository.room.AppDatabase;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.appcompat.app.AppCompatDelegate;
@@ -45,11 +37,8 @@ import androidx.room.Room;
 import com.google.gson.Gson;
 
 import java.io.InputStreamReader;
-import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 public class MainActivity extends AppCompatActivity {
 

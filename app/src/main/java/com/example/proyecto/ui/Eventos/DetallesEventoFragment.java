@@ -18,18 +18,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.proyecto.Json.JsonSingleton;
-import com.example.proyecto.Json.Montana;
+import com.example.proyecto.utils.JsonSingleton;
+import com.example.proyecto.models.Montana;
 import com.example.proyecto.MainActivity;
 import com.example.proyecto.R;
-import com.example.proyecto.Room.AppDatabase;
-import com.example.proyecto.Room.DAO.EventoDAO;
-import com.example.proyecto.Room.Modelo.Evento;
-import com.example.proyecto.Room.Modelo.Weather;
-import com.example.proyecto.Room.javadb.DateConverter;
+import com.example.proyecto.repository.room.AppDatabase;
+import com.example.proyecto.repository.room.DAO.EventoDAO;
+import com.example.proyecto.models.Evento;
+import com.example.proyecto.models.Weather;
+import com.example.proyecto.utils.DateConverter;
 import com.example.proyecto.databinding.FragmentDetallesEventoBinding;
-import com.example.proyecto.utils.APIManager;
-import com.example.proyecto.utils.APIManagerDelegate;
+import com.example.proyecto.repository.networking.APIManager;
+import com.example.proyecto.repository.networking.APIManagerDelegate;
 
 import java.util.List;
 

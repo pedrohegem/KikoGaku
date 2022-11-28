@@ -8,7 +8,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,12 +20,12 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.example.proyecto.Json.JsonSingleton;
+import com.example.proyecto.utils.JsonSingleton;
 import com.example.proyecto.R;
-import com.example.proyecto.Room.AppDatabase;
-import com.example.proyecto.Room.DAO.EventoDAO;
-import com.example.proyecto.Room.Modelo.Evento;
-import com.example.proyecto.Room.javadb.DateConverter;
+import com.example.proyecto.repository.room.AppDatabase;
+import com.example.proyecto.repository.room.DAO.EventoDAO;
+import com.example.proyecto.models.Evento;
+import com.example.proyecto.utils.DateConverter;
 import com.example.proyecto.databinding.FragmentCrearEventoMontanaBinding;
 import com.example.proyecto.ui.DatePickerFragment;
 import com.google.android.material.snackbar.Snackbar;

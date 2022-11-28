@@ -12,9 +12,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
-import com.example.proyecto.Room.AppDatabase;
-import com.example.proyecto.Room.DAO.UsuarioDAO;
-import com.example.proyecto.Room.Modelo.Usuario;
+import com.example.proyecto.repository.room.AppDatabase;
+import com.example.proyecto.repository.room.DAO.UsuarioDAO;
+import com.example.proyecto.models.Usuario;
 
 public class InicioSesion extends AppCompatActivity {
 

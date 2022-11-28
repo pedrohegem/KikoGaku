@@ -1,4 +1,4 @@
-package com.example.proyecto.Room.javadb;
+package com.example.proyecto.utils;
 
 import androidx.room.TypeConverter;
 

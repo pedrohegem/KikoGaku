@@ -13,10 +13,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import com.example.proyecto.R;
-import com.example.proyecto.Room.Modelo.Weather;
+import com.example.proyecto.models.Weather;
 import com.example.proyecto.databinding.ActivityDetalleLocalizacionBinding;
-import com.example.proyecto.utils.APIManager;
-import com.example.proyecto.utils.APIManagerDelegate;
+import com.example.proyecto.repository.networking.APIManager;
+import com.example.proyecto.repository.networking.APIManagerDelegate;
 
 public class DetalleLocalizacionActivity extends AppCompatActivity implements APIManagerDelegate {
 

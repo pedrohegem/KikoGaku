@@ -12,9 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.proyecto.MainActivity;
-import com.example.proyecto.Room.AppDatabase;
-import com.example.proyecto.Room.DAO.UsuarioDAO;
-import com.example.proyecto.Room.Modelo.Usuario;
+import com.example.proyecto.repository.room.AppDatabase;
+import com.example.proyecto.repository.room.DAO.UsuarioDAO;
+import com.example.proyecto.models.Usuario;
 
 public class DeleteDialogFragment extends androidx.fragment.app.DialogFragment {
 

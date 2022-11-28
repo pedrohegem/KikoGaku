@@ -1,8 +1,8 @@
-package com.example.proyecto.utils;
+package com.example.proyecto.repository.networking;
 
 import android.util.Log;
 
-import com.example.proyecto.Room.Modelo.Weather;
+import com.example.proyecto.models.Weather;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;

@@ -1,6 +1,7 @@
-package com.example.proyecto.Json;
+package com.example.proyecto.utils;
 
-import com.example.proyecto.Room.Modelo.Evento;
+import com.example.proyecto.models.Montana;
+import com.example.proyecto.models.Municipio;
 
 import java.util.Map;
 import java.util.Objects;

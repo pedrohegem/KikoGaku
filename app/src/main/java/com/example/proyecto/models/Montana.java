@@ -1,5 +1,5 @@
 
-package com.example.proyecto.Json;
+package com.example.proyecto.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

@@ -1,6 +1,6 @@
-package com.example.proyecto.utils;
+package com.example.proyecto.repository.networking;
 
-import com.example.proyecto.Room.Modelo.Weather;
+import com.example.proyecto.models.Weather;
 
 // Interfaz encargada de delegar las llamadas a la API de OpenWeather
 public interface APIManagerDelegate {

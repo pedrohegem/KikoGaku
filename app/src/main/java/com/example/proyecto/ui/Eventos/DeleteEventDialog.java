@@ -11,18 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.proyecto.MainActivity;
-import com.example.proyecto.R;
-import com.example.proyecto.Room.AppDatabase;
-import com.example.proyecto.Room.DAO.EventoDAO;
-import com.example.proyecto.Room.Modelo.Evento;
-
-import java.util.Date;
+import com.example.proyecto.repository.room.AppDatabase;
+import com.example.proyecto.repository.room.DAO.EventoDAO;
+import com.example.proyecto.models.Evento;
 
 /**
  * A simple {@link Fragment} subclass.

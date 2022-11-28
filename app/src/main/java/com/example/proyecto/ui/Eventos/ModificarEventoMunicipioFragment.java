@@ -1,6 +1,5 @@
 package com.example.proyecto.ui.Eventos;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -15,23 +14,18 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.proyecto.Json.JsonSingleton;
-import com.example.proyecto.MainActivity;
+import com.example.proyecto.utils.JsonSingleton;
 import com.example.proyecto.R;
-import com.example.proyecto.Room.AppDatabase;
-import com.example.proyecto.Room.DAO.EventoDAO;
-import com.example.proyecto.Room.Modelo.Evento;
-import com.example.proyecto.Room.javadb.DateConverter;
+import com.example.proyecto.repository.room.AppDatabase;
+import com.example.proyecto.repository.room.DAO.EventoDAO;
+import com.example.proyecto.models.Evento;
+import com.example.proyecto.utils.DateConverter;
 
 import com.example.proyecto.databinding.FragmentModificarEventoMunicipioBinding;
 import com.example.proyecto.ui.DatePickerFragment;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.security.cert.Certificate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;

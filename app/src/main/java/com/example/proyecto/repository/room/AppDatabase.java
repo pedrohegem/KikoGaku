@@ -1,4 +1,4 @@
-package com.example.proyecto.Room;
+package com.example.proyecto.repository.room;
 
 import android.content.Context;
 
@@ -6,10 +6,10 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.example.proyecto.Room.DAO.EventoDAO;
-import com.example.proyecto.Room.DAO.UsuarioDAO;
-import com.example.proyecto.Room.Modelo.Evento;
-import com.example.proyecto.Room.Modelo.Usuario;
+import com.example.proyecto.repository.room.DAO.EventoDAO;
+import com.example.proyecto.repository.room.DAO.UsuarioDAO;
+import com.example.proyecto.models.Evento;
+import com.example.proyecto.models.Usuario;
 
 
 @Database(entities = {Usuario.class, Evento.class}, version = 3, exportSchema = false)

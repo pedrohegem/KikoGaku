@@ -1,4 +1,4 @@
-package com.example.proyecto.Room.DAO;
+package com.example.proyecto.repository.room.DAO;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -6,7 +6,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.example.proyecto.Room.Modelo.Evento;
+import com.example.proyecto.models.Evento;
 
 import java.util.List;
 
