@@ -69,7 +69,7 @@ public class DetalleLocalizacionActivity extends AppCompatActivity implements AP
     @Override
     public void onGetWeatherSuccess(Weather weather) {
         runOnUiThread(() -> {
-            switch (weather.gifResource){
+            switch (weather.getGifResource()){
                 case 0://Error
                     Log.e("Error Weather", "onGetWeatherSuccess: No se ha obtenido el estado del tiempo correctamente");
                     break;
@@ -98,13 +98,13 @@ public class DetalleLocalizacionActivity extends AppCompatActivity implements AP
                     iconoTiempo.setImageResource(R.drawable.isol);
                     break;
             }
-            textViewTemp.setText(String.valueOf(weather.temperatura));
-            temperaturaMaxMin.setText(weather.tempMinima +"º / "+ weather.tempMaxima +"º");
+            textViewTemp.setText(String.valueOf(weather.getTemperatura()));
+            temperaturaMaxMin.setText(weather.getTempMinima() +"º / "+ weather.getTempMaxima() +"º");
             localidadTiempo.setText(weather.ciudad);
-            descripcionTiempo.setText(weather.descEstadoTiempo);
-            viento.setText(String.valueOf(weather.velocidadViento));
-            humedad.setText(String.valueOf(weather.humedad));
-            sensTermica.setText(weather.sensTermica + "º");
+            descripcionTiempo.setText(weather.getDescEstadoTiempo());
+            viento.setText(String.valueOf(weather.getVelocidadViento()));
+            humedad.setText(String.valueOf(weather.getHumedad()));
+            sensTermica.setText(weather.getSensTermica() + "º");
         });
     }
 
