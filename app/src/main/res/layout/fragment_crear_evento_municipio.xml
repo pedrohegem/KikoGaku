@@ -90,7 +90,7 @@
                         android:ems="10"
                         android:textColorHint="@color/gray"
                         android:textColor="@color/black"
-                        android:focusable="true"
+                        android:focusable="false"
                         android:hint="@string/n_fecha_inicio_evento"
                         android:inputType="date"
                         android:maxLines="1"
