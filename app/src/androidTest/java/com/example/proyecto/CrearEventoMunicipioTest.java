@@ -9,6 +9,7 @@ import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
@@ -18,10 +19,14 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
+import static java.lang.Thread.sleep;
+
+import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -43,8 +48,8 @@ import org.junit.runner.RunWith;
 public class CrearEventoMunicipioTest {
 
     @Rule
-    public ActivityScenarioRule<CrearEventoActivity> mActivityScenarioRule =
-            new ActivityScenarioRule<>(CrearEventoActivity.class);
+    public ActivityScenarioRule<InicioSesion> mActivityScenarioRule =
+            new ActivityScenarioRule<>(InicioSesion.class);
 
     @Rule
     public GrantPermissionRule mGrantPermissionRule =
@@ -53,8 +58,9 @@ public class CrearEventoMunicipioTest {
                     "android.permission.ACCESS_COARSE_LOCATION");
 
     @Test
-    public void crearEventoMunicipioTest() {
- /*       ViewInteraction materialButton = onView(
+    public void crearEventoMunicipioTest() throws InterruptedException {
+        // REGISTRO DE SESION
+        ViewInteraction materialButton = onView(
                 allOf(withId(R.id.bRegistrarse), withText("Registrarse"),
                         childAtPosition(
                                 childAtPosition(
@@ -72,7 +78,7 @@ public class CrearEventoMunicipioTest {
                                         0),
                                 1),
                         isDisplayed()));
-        appCompatEditText.perform(replaceText("jo"), closeSoftKeyboard());
+        appCompatEditText.perform(replaceText("jorge"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.password),
@@ -94,6 +100,7 @@ public class CrearEventoMunicipioTest {
                         isDisplayed()));
         materialButton2.perform(click());
 
+        // INICIO DE SESION
         ViewInteraction appCompatEditText3 = onView(
                 allOf(withId(R.id.username),
                         childAtPosition(
@@ -102,7 +109,7 @@ public class CrearEventoMunicipioTest {
                                         0),
                                 1),
                         isDisplayed()));
-        appCompatEditText3.perform(replaceText("jo"), closeSoftKeyboard());
+        appCompatEditText3.perform(replaceText("jorge"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText4 = onView(
                 allOf(withId(R.id.password),
@@ -123,8 +130,9 @@ public class CrearEventoMunicipioTest {
                                 3),
                         isDisplayed()));
         materialButton3.perform(click());
-*/
-/*        ViewInteraction floatingActionButton = onView(
+
+        // MAINACTIVITY - INICIOFRAGMENT
+        ViewInteraction floatingActionButton = onView(
                 allOf(withId(R.id.fab), withContentDescription("BotonAnadirNuevoEvento"),
                         childAtPosition(
                                 allOf(withId(R.id.app_bar_main),
@@ -134,7 +142,9 @@ public class CrearEventoMunicipioTest {
                                 2),
                         isDisplayed()));
         floatingActionButton.perform(click());
-*/
+
+
+        // ELECCIÓN CREAR EVENTO MUNICIPIO O MONTAÑA
         ViewInteraction materialButton4 = onView(
                 allOf(withId(R.id.CrearMunicipio), withText("Evento de municipio"),
                         childAtPosition(
@@ -146,6 +156,7 @@ public class CrearEventoMunicipioTest {
                         isDisplayed()));
         materialButton4.perform(click());
 
+        // CREAR EVENTO MUNICIPIO
         ViewInteraction appCompatEditText5 = onView(
                 allOf(withId(R.id.InputNombreEvento),
                         childAtPosition(
@@ -153,40 +164,14 @@ public class CrearEventoMunicipioTest {
                                         childAtPosition(
                                                 withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
                                                 0)),
-                                0)));
+                                0), isDisplayed()));
         appCompatEditText5.perform(scrollTo(), replaceText("Futbol "), closeSoftKeyboard());
 
-        ViewInteraction appCompatEditText6 = onView(
-                allOf(withId(R.id.inputLocalidad),
-                        childAtPosition(
-                                allOf(withId(R.id.LayoutModificar),
-                                        childAtPosition(
-                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                0)),
-                                1)));
-        appCompatEditText6.perform(scrollTo(), replaceText("Sevilla"), closeSoftKeyboard());
-/*
-        ViewInteraction appCompatEditText7 = onView(
-                allOf(withId(R.id.InputFechaEvento),
-                        childAtPosition(
-                                allOf(withId(R.id.LayoutModificar),
-                                        childAtPosition(
-                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                0)),
-                                3)));
-        appCompatEditText7.perform(scrollTo(), click());
 
-        ViewInteraction materialButton5 = onView(
-                allOf(withId(android.R.id.button1),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        0),
-                                2),
-                        isDisplayed()));
-        materialButton5.perform(click());
-*/
+        onView(withId(R.id.inputLocalidad)).perform(typeText("Sevilla"), closeSoftKeyboard());
+
         onView(withId(R.id.InputFechaEvento)).perform(typeText("30/01/2023"), closeSoftKeyboard());
+
         ViewInteraction appCompatEditText8 = onView(
                 allOf(withId(R.id.InputDescripcionEvento),
                         childAtPosition(
@@ -194,10 +179,10 @@ public class CrearEventoMunicipioTest {
                                         childAtPosition(
                                                 withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
                                                 0)),
-                                2)));
+                                2), isDisplayed()));
         appCompatEditText8.perform(scrollTo(), replaceText("Con amigos"), closeSoftKeyboard());
 
-        //pressBack();
+
 
         ViewInteraction materialButton6 = onView(
                 allOf(withId(R.id.BotonModificar), withText("Crear evento"),
@@ -205,55 +190,19 @@ public class CrearEventoMunicipioTest {
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
                                         0),
-                                1)));
+                                1), isDisplayed()));
         materialButton6.perform(scrollTo(), click());
 
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.EtiquetaDetalles), withText("Futbol "),
-                        withParent(allOf(withId(R.id.LayoutCrear),
-                                withParent(withId(R.id.LayoutDetallesEvento)))),
-                        isDisplayed()));
-        textView.check(matches(withText("Futbol ")));
 
-        ViewInteraction textView2 = onView(
-                allOf(withId(R.id.DetallesLocalidad), withText("Sevilla"),
-                        withParent(allOf(withId(R.id.LayoutCrear),
-                                withParent(withId(R.id.LayoutDetallesEvento)))),
-                        isDisplayed()));
-        textView2.check(matches(withText("Sevilla")));
+        // Vuelve al InicioFragment - para ver que se ha creado
+        pressBack();
 
-        ViewInteraction textView3 = onView(
-                allOf(withId(R.id.DetallesFechaDeInicio), withText("29/11/2022"),
-                        withParent(allOf(withId(R.id.LayoutCrear),
-                                withParent(withId(R.id.LayoutDetallesEvento)))),
-                        isDisplayed()));
-        textView3.check(matches(withText("29/11/2022")));
+        // Se comprueba que existe en el RecyclerView existe el nuevo evento creado y con los datos del evento
 
-        ViewInteraction textView4 = onView(
-                allOf(withId(R.id.DetallesDescripcion), withText("Con amigos"),
-                        withParent(withParent(IsInstanceOf.<View>instanceOf(android.widget.ScrollView.class))),
-                        isDisplayed()));
-        textView4.check(matches(withText("Con amigos")));
+        onView(allOf(withId(R.id.list), isDisplayed())).check(matches(hasDescendant(withId(R.id.Nombre))));
+        onView(allOf(withId(R.id.list), isDisplayed())).check(matches(hasDescendant(withText("Futbol "))));
 
-        ViewInteraction materialButton7 = onView(
-                allOf(withId(R.id.BotonEliminar), withText("Eliminar"),
-                        childAtPosition(
-                                allOf(withId(R.id.LayoutDetallesEvento),
-                                        childAtPosition(
-                                                withId(R.id.nav_host_fragment_content_borrate),
-                                                0)),
-                                3),
-                        isDisplayed()));
-        materialButton7.perform(click());
-
-        ViewInteraction materialButton8 = onView(
-                allOf(withId(android.R.id.button1), withText("Confirmar"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                3)));
-        materialButton8.perform(scrollTo(), click());
+        // TODO - No estoy seguro si tengo que eliminar el evento creado del test. Si ejecuto de nuevo el test, tendría dos eventos iguales.
     }
 
     private static Matcher<View> childAtPosition(
