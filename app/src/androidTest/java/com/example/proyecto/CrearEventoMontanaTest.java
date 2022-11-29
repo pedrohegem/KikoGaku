@@ -3,7 +3,6 @@ package com.example.proyecto;
 
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
@@ -57,7 +56,6 @@ public class CrearEventoMontanaTest {
 
     @Test
     public void crearEventoMontanaTest() {
-        // REGISTRO DE SESION
         ViewInteraction materialButton = onView(
                 allOf(withId(R.id.bRegistrarse), withText("Registrarse"),
                         childAtPosition(
@@ -98,7 +96,6 @@ public class CrearEventoMontanaTest {
                         isDisplayed()));
         materialButton2.perform(click());
 
-        // INICIO DE SESION
         ViewInteraction appCompatEditText3 = onView(
                 allOf(withId(R.id.username),
                         childAtPosition(
@@ -129,7 +126,7 @@ public class CrearEventoMontanaTest {
                         isDisplayed()));
         materialButton3.perform(click());
 
-        // MAINACTIVITY - INICIOFRAGMENT
+
         ViewInteraction floatingActionButton = onView(
                 allOf(withId(R.id.fab), withContentDescription("BotonAnadirNuevoEvento"),
                         childAtPosition(
@@ -172,6 +169,12 @@ public class CrearEventoMontanaTest {
                                 0)));
         appCompatSpinner.perform(scrollTo(), click());
 
+        DataInteraction appCompatCheckedTextView = onData(anything())
+                .inAdapterView(childAtPosition(
+                        withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
+                        0))
+                .atPosition(6);
+        appCompatCheckedTextView.perform(click());
 
         ViewInteraction appCompatEditText6 = onView(
                 allOf(withId(R.id.InputFechaEvento),
@@ -214,15 +217,22 @@ public class CrearEventoMontanaTest {
 
         // ASSERTS de los detalles del EVENTO
         onView(allOf(withId(R.id.EtiquetaDetalles), isDisplayed())).check(matches(withText("Senderismo")));
-        //onView(allOf(withId(R.id.DetallesLocalidad), isDisplayed())).check(matches(withText("Sevilla")));
-        //onView(allOf(withId(R.id.DetallesFechaDeInicio), isDisplayed())).check(matches(withText("29/11/2022")));
+        onView(allOf(withId(R.id.DetallesLocalidad), isDisplayed())).check(matches(withText("Sierra Nevada")));
+        onView(allOf(withId(R.id.DetallesFechaDeInicio), isDisplayed())).check(matches(withText("29/11/2022")));
         onView(allOf(withId(R.id.DetallesDescripcion), isDisplayed())).check(matches(withText("Senderismo\n")));
 
-        // Vuelve al InicioFragment - para ver que se ha creado
-        pressBack();
 
-        // Se comprueba que existe en el RecyclerView existe el nuevo evento creado y con los datos del evento
+        ViewInteraction appCompatImageButton = onView(
+                allOf(childAtPosition(
+                                allOf(withId(R.id.toolbar),
+                                        childAtPosition(
+                                                withClassName(is("com.google.android.material.appbar.AppBarLayout")),
+                                                0)),
+                                1),
+                        isDisplayed()));
+        appCompatImageButton.perform(click());
 
+        // Se comprueba que existe en el RecyclerView existe el nuevo evento creado.
         onView(allOf(withId(R.id.list), isDisplayed())).check(matches(hasDescendant(withId(R.id.Nombre))));
         onView(allOf(withId(R.id.list), isDisplayed())).check(matches(hasDescendant(withText("Senderismo"))));
 
@@ -256,7 +266,7 @@ public class CrearEventoMontanaTest {
         materialButton9.perform(scrollTo(), click());
 
         // ELIMINAR PERFIL
-        ViewInteraction appCompatImageButton = onView(
+        ViewInteraction appCompatImageButton2 = onView(
                 allOf(withContentDescription("Open navigation drawer"),
                         childAtPosition(
                                 allOf(withId(R.id.toolbar),
@@ -265,7 +275,7 @@ public class CrearEventoMontanaTest {
                                                 0)),
                                 1),
                         isDisplayed()));
-        appCompatImageButton.perform(click());
+        appCompatImageButton2.perform(click());
 
         ViewInteraction navigationMenuItemView = onView(
                 allOf(withId(R.id.nav_perfil),
