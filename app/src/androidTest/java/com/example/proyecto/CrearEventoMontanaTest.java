@@ -3,11 +3,13 @@ package com.example.proyecto;
 
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
@@ -52,8 +54,10 @@ public class CrearEventoMontanaTest {
                     "android.permission.ACCESS_FINE_LOCATION",
                     "android.permission.ACCESS_COARSE_LOCATION");
 
-    @Before
-    public void a(){
+
+    @Test
+    public void crearEventoMontanaTest() {
+        // REGISTRO DE SESION
         ViewInteraction materialButton = onView(
                 allOf(withId(R.id.bRegistrarse), withText("Registrarse"),
                         childAtPosition(
@@ -94,6 +98,7 @@ public class CrearEventoMontanaTest {
                         isDisplayed()));
         materialButton2.perform(click());
 
+        // INICIO DE SESION
         ViewInteraction appCompatEditText3 = onView(
                 allOf(withId(R.id.username),
                         childAtPosition(
@@ -123,11 +128,8 @@ public class CrearEventoMontanaTest {
                                 3),
                         isDisplayed()));
         materialButton3.perform(click());
-    }
 
-    @Test
-    public void crearEventoMontanaTest() {
-
+        // MAINACTIVITY - INICIOFRAGMENT
         ViewInteraction floatingActionButton = onView(
                 allOf(withId(R.id.fab), withContentDescription("BotonAnadirNuevoEvento"),
                         childAtPosition(
@@ -170,12 +172,6 @@ public class CrearEventoMontanaTest {
                                 0)));
         appCompatSpinner.perform(scrollTo(), click());
 
-        DataInteraction appCompatCheckedTextView = onData(anything())
-                .inAdapterView(childAtPosition(
-                        withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
-                        0))
-                .atPosition(6);
-        appCompatCheckedTextView.perform(click());
 
         ViewInteraction appCompatEditText6 = onView(
                 allOf(withId(R.id.InputFechaEvento),
@@ -216,8 +212,53 @@ public class CrearEventoMontanaTest {
                                 1)));
         materialButton6.perform(scrollTo(), click());
 
+        // ASSERTS de los detalles del EVENTO
+        onView(allOf(withId(R.id.EtiquetaDetalles), isDisplayed())).check(matches(withText("Senderismo")));
+        //onView(allOf(withId(R.id.DetallesLocalidad), isDisplayed())).check(matches(withText("Sevilla")));
+        //onView(allOf(withId(R.id.DetallesFechaDeInicio), isDisplayed())).check(matches(withText("29/11/2022")));
+        onView(allOf(withId(R.id.DetallesDescripcion), isDisplayed())).check(matches(withText("Senderismo\n")));
+
+        // Vuelve al InicioFragment - para ver que se ha creado
+        pressBack();
+
+        // Se comprueba que existe en el RecyclerView existe el nuevo evento creado y con los datos del evento
+
+        onView(allOf(withId(R.id.list), isDisplayed())).check(matches(hasDescendant(withId(R.id.Nombre))));
+        onView(allOf(withId(R.id.list), isDisplayed())).check(matches(hasDescendant(withText("Senderismo"))));
+
+        // Hay que eliminar el nuevo evento creado
+
+        ViewInteraction recyclerView = onView(
+                allOf(withId(R.id.list),
+                        childAtPosition(
+                                withId(R.id.child_ListaEventos),
+                                0)));
+        recyclerView.perform(actionOnItemAtPosition(0, click()));
+
+        ViewInteraction materialButton8 = onView(
+                allOf(withId(R.id.BotonEliminar), withText("Eliminar"),
+                        childAtPosition(
+                                allOf(withId(R.id.LayoutDetallesEvento),
+                                        childAtPosition(
+                                                withId(R.id.nav_host_fragment_content_borrate),
+                                                0)),
+                                3),
+                        isDisplayed()));
+        materialButton8.perform(click());
+
+        ViewInteraction materialButton9 = onView(
+                allOf(withId(android.R.id.button1), withText("Confirmar"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        materialButton9.perform(scrollTo(), click());
+
+        // ELIMINAR PERFIL
         ViewInteraction appCompatImageButton = onView(
-                allOf(childAtPosition(
+                allOf(withContentDescription("Open navigation drawer"),
+                        childAtPosition(
                                 allOf(withId(R.id.toolbar),
                                         childAtPosition(
                                                 withClassName(is("com.google.android.material.appbar.AppBarLayout")),
@@ -226,24 +267,35 @@ public class CrearEventoMontanaTest {
                         isDisplayed()));
         appCompatImageButton.perform(click());
 
-        // Se comprueba que existe en el RecyclerView existe el nuevo evento creado.
-        onView(allOf(withId(R.id.list), isDisplayed())).check(matches(hasDescendant(withId(R.id.Nombre))));
-
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.Nombre), withText("Senderismo"),
-                        withParent(allOf(withId(R.id.list_item),
-                                withParent(withId(R.id.list)))),
+        ViewInteraction navigationMenuItemView = onView(
+                allOf(withId(R.id.nav_perfil),
+                        childAtPosition(
+                                allOf(withId(androidx.navigation.ui.R.id.design_navigation_view),
+                                        childAtPosition(
+                                                withId(R.id.nav_view),
+                                                0)),
+                                3),
                         isDisplayed()));
-        textView.check(matches(withText("Senderismo")));
+        navigationMenuItemView.perform(click());
 
-        ViewInteraction textView2 = onView(
-                allOf(withId(R.id.Fecha), withText("30/Nov/2022"),
-                        withParent(allOf(withId(R.id.list_item),
-                                withParent(withId(R.id.list)))),
+        ViewInteraction materialButton7 = onView(
+                allOf(withId(R.id.bEliminar), withText("Eliminar cuenta"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.nav_host_fragment_content_main),
+                                        0),
+                                5),
                         isDisplayed()));
-        textView2.check(matches(withText("30/Nov/2022")));
+        materialButton7.perform(click());
 
-        // TODO - No estoy seguro si tengo que eliminar el evento creado del test. Si ejecuto de nuevo el test, tendría dos eventos iguales.
+        ViewInteraction materialButton10 = onView(
+                allOf(withId(android.R.id.button1), withText("Confirmar"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        materialButton10.perform(scrollTo(), click());
     }
 
     private static Matcher<View> childAtPosition(
