@@ -1,6 +1,7 @@
 package com.example.proyecto;
 
 
+import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -18,6 +19,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.is;
 
 import static java.lang.Thread.sleep;
@@ -28,6 +30,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.espresso.DataInteraction;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -171,7 +174,25 @@ public class CrearEventoMunicipioTest {
 
         onView(withId(R.id.inputLocalidad)).perform(typeText("Sevilla"), closeSoftKeyboard());
 
-        onView(withId(R.id.InputFechaEvento)).perform(typeText("30/01/2023"), closeSoftKeyboard());
+        ViewInteraction appCompatEditText7 = onView(
+                allOf(withId(R.id.InputFechaEvento),
+                        childAtPosition(
+                                allOf(withId(R.id.LayoutModificar),
+                                        childAtPosition(
+                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
+                                                0)),
+                                3)));
+        appCompatEditText7.perform(scrollTo(), click());
+
+        ViewInteraction materialButton5 = onView(
+                allOf(withId(android.R.id.button1), withText("OK"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        0),
+                                2),
+                        isDisplayed()));
+        materialButton5.perform(click());
 
         ViewInteraction appCompatEditText8 = onView(
                 allOf(withId(R.id.InputDescripcionEvento),
@@ -193,6 +214,12 @@ public class CrearEventoMunicipioTest {
                                 1), isDisplayed()));
         materialButton6.perform(scrollTo(), click());
 
+
+        // ASSERTS de los detalles del EVENTO
+        onView(allOf(withId(R.id.EtiquetaDetalles), isDisplayed())).check(matches(withText("Futbol ")));
+        onView(allOf(withId(R.id.DetallesLocalidad), isDisplayed())).check(matches(withText("Sevilla")));
+        onView(allOf(withId(R.id.DetallesFechaDeInicio), isDisplayed())).check(matches(withText("29/11/2022")));
+        onView(allOf(withId(R.id.DetallesDescripcion), isDisplayed())).check(matches(withText("Con amigos")));
 
         // Vuelve al InicioFragment - para ver que se ha creado
         pressBack();
@@ -264,14 +291,14 @@ public class CrearEventoMunicipioTest {
                         isDisplayed()));
         materialButton7.perform(click());
 
-        ViewInteraction materialButton5 = onView(
+        ViewInteraction materialButton10 = onView(
                 allOf(withId(android.R.id.button1), withText("Confirmar"),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.ScrollView")),
                                         0),
                                 3)));
-        materialButton5.perform(scrollTo(), click());
+        materialButton10.perform(scrollTo(), click());
     }
 
     private static Matcher<View> childAtPosition(
