@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,7 +24,7 @@ public class DeleteDialogFragment extends androidx.fragment.app.DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), android.R.style.Theme_DeviceDefault_Dialog));
 
         builder.setMessage("¿Deseas eliminar la cuenta?")
                 .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
