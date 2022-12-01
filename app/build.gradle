@@ -69,5 +69,8 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.3.0'
     androidTestImplementation 'androidx.test:rules:1.5.0'
 
+    //Mockito
+    implementation 'org.mockito:mockito-inline:4.9.0'
+
     // FIN de dependencias de TEST
 }
