@@ -5,6 +5,7 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -15,6 +16,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.AdditionalMatchers.not;
 
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +50,7 @@ public class DetallesLocalizacionTest {
                     "android.permission.ACCESS_COARSE_LOCATION");
 
     @Test
-    public void crearEventoMunicipioTest() throws InterruptedException {
+    public void detallesLocalizacionTest() throws InterruptedException {
         // REGISTRO DE SESION
         ViewInteraction materialButton = onView(
                 allOf(withId(R.id.bRegistrarse), withText("Registrarse"),
@@ -165,6 +167,55 @@ public class DetallesLocalizacionTest {
                                 withParent(withId(android.R.id.content)))),
                         isDisplayed()));
         textView2.check(matches(withText("Seville")));
+
+        ViewInteraction textView3 = onView(withId(R.id.textViewDescD)).check(matches(not(withText("Not found"))));
+        ViewInteraction textView4 = onView(withId(R.id.textViewTemperatura)).check(matches(not(withText("-1"))));
+        ViewInteraction textView5 = onView(withId(R.id.textViewTemperaturas)).check(matches(not(withText("--º / --º"))));
+        ViewInteraction textView6 = onView(withId(R.id.textViewSensTermP)).check(matches(not(withText("--"))));
+        ViewInteraction textView7 = onView(withId(R.id.textViewHumedadP)).check(matches(not(withText("--"))));
+        ViewInteraction textView8 = onView(withId(R.id.textViewVientoP)).check(matches(not(withText("--"))));
+
+        // ELIMINAR PERFIL
+        ViewInteraction appCompatImageButton = onView(
+                allOf(withContentDescription("Open navigation drawer"),
+                        childAtPosition(
+                                allOf(withId(R.id.toolbar),
+                                        childAtPosition(
+                                                withClassName(is("com.google.android.material.appbar.AppBarLayout")),
+                                                0)),
+                                1),
+                        isDisplayed()));
+        appCompatImageButton.perform(click());
+
+        ViewInteraction navigationMenuItemView = onView(
+                allOf(withId(R.id.nav_perfil),
+                        childAtPosition(
+                                allOf(withId(androidx.navigation.ui.R.id.design_navigation_view),
+                                        childAtPosition(
+                                                withId(R.id.nav_view),
+                                                0)),
+                                3),
+                        isDisplayed()));
+        navigationMenuItemView.perform(click());
+
+        ViewInteraction materialButton7 = onView(
+                allOf(withId(R.id.bEliminar), withText("Eliminar cuenta"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.nav_host_fragment_content_main),
+                                        0),
+                                5),
+                        isDisplayed()));
+        materialButton7.perform(click());
+
+        ViewInteraction materialButton10 = onView(
+                allOf(withId(android.R.id.button1), withText("Confirmar"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        materialButton10.perform(scrollTo(), click());
     }
 
     private static Matcher<View> childAtPosition(

@@ -60,7 +60,7 @@ public class AnadirBarraBusquedaTest {
                     "android.permission.ACCESS_COARSE_LOCATION");
 
     @Test
-    public void crearEventoMunicipioTest() throws InterruptedException {
+    public void anadirBarraBusquedaTest() throws InterruptedException {
         // REGISTRO DE SESION
         ViewInteraction materialButton = onView(
                 allOf(withId(R.id.bRegistrarse), withText("Registrarse"),
@@ -162,6 +162,48 @@ public class AnadirBarraBusquedaTest {
                                 withParent(withId(R.id.list)))),
                         isDisplayed()));
         textView.check(matches(withText("Sevilla")));
+
+        // ELIMINAR PERFIL
+        ViewInteraction appCompatImageButton = onView(
+                allOf(withContentDescription("Open navigation drawer"),
+                        childAtPosition(
+                                allOf(withId(R.id.toolbar),
+                                        childAtPosition(
+                                                withClassName(is("com.google.android.material.appbar.AppBarLayout")),
+                                                0)),
+                                1),
+                        isDisplayed()));
+        appCompatImageButton.perform(click());
+
+        ViewInteraction navigationMenuItemView = onView(
+                allOf(withId(R.id.nav_perfil),
+                        childAtPosition(
+                                allOf(withId(androidx.navigation.ui.R.id.design_navigation_view),
+                                        childAtPosition(
+                                                withId(R.id.nav_view),
+                                                0)),
+                                3),
+                        isDisplayed()));
+        navigationMenuItemView.perform(click());
+
+        ViewInteraction materialButton7 = onView(
+                allOf(withId(R.id.bEliminar), withText("Eliminar cuenta"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.nav_host_fragment_content_main),
+                                        0),
+                                5),
+                        isDisplayed()));
+        materialButton7.perform(click());
+
+        ViewInteraction materialButton10 = onView(
+                allOf(withId(android.R.id.button1), withText("Confirmar"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        materialButton10.perform(scrollTo(), click());
     }
 
     private static Matcher<View> childAtPosition(
