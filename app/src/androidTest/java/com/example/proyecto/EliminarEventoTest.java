@@ -11,6 +11,7 @@ import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
+import static androidx.test.espresso.matcher.ViewMatchers.assertThat;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
@@ -18,42 +19,63 @@ import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.is;
 
 
-import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import androidx.test.core.app.ActivityScenario;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.DataInteraction;
+import androidx.test.espresso.NoMatchingViewException;
+import androidx.test.espresso.ViewAssertion;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.GrantPermissionRule;
 
-import com.example.proyecto.ui.Eventos.CrearEventoActivity;
-
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
-import org.hamcrest.core.IsInstanceOf;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.Date;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class CrearEventoMunicipioTest {
+
+
+public class EliminarEventoTest {
+
+    // Clase para comprobar que la recyclerview está vacia, se han eliminado correctamente los eventos creados
+    public class RecyclerViewItemCountAssertion implements ViewAssertion {
+
+        private final Matcher<Integer> matcher;
+
+        public RecyclerViewItemCountAssertion(int expectedCount) {
+            this.matcher = is(expectedCount);
+        }
+
+
+        @Override
+        public void check(View view, NoMatchingViewException noViewFoundException) {
+            if (noViewFoundException != null) {
+                throw noViewFoundException;
+            }
+
+            RecyclerView recyclerView = (RecyclerView) view;
+            RecyclerView.Adapter adapter = recyclerView.getAdapter();
+            assertThat(adapter.getItemCount(), matcher);
+        }
+
+    }
 
     @Rule
     public ActivityScenarioRule<InicioSesion> mActivityScenarioRule =
@@ -66,7 +88,9 @@ public class CrearEventoMunicipioTest {
                     "android.permission.ACCESS_COARSE_LOCATION");
 
     @Test
-    public void crearEventoMunicipioTest() throws InterruptedException {
+    public void eliminarEventoTest() throws InterruptedException {
+
+
         // REGISTRO DE SESION
         ViewInteraction materialButton = onView(
                 allOf(withId(R.id.bRegistrarse), withText("Registrarse"),
@@ -140,6 +164,9 @@ public class CrearEventoMunicipioTest {
         materialButton3.perform(click());
 
         // MAINACTIVITY - INICIOFRAGMENT
+
+        // -- EVENTO MUNICIPIO
+
         ViewInteraction floatingActionButton = onView(
                 allOf(withId(R.id.fab), withContentDescription("BotonAnadirNuevoEvento"),
                         childAtPosition(
@@ -266,8 +293,159 @@ public class CrearEventoMunicipioTest {
                                 3)));
         materialButton9.perform(scrollTo(), click());
 
-        // ELIMINAR PERFIL
+
+        // ASSERT. SE COMPRUEBA QUE LA RECYCLERVIEW ESTÁ VACIA (NO TIENE EVENTOS CREADOS)
+        onView(withId(R.id.list)).check(new RecyclerViewItemCountAssertion(0));
+
+        // -- EVENTO MONTANA
+
+        ViewInteraction floatingActionButton2 = onView(
+                allOf(withId(R.id.fab), withContentDescription("BotonAnadirNuevoEvento"),
+                        childAtPosition(
+                                allOf(withId(R.id.app_bar_main),
+                                        childAtPosition(
+                                                withId(R.id.drawer_layout),
+                                                0)),
+                                2),
+                        isDisplayed()));
+        floatingActionButton2.perform(click());
+
+        ViewInteraction materialButton11 = onView(
+                allOf(withId(R.id.CrearMontana), withText("Evento de montaña"),
+                        childAtPosition(
+                                allOf(withId(R.id.LayoutCrearEvento),
+                                        childAtPosition(
+                                                withId(R.id.nav_host_fragment_content_crear_evento),
+                                                0)),
+                                2),
+                        isDisplayed()));
+        materialButton11.perform(click());
+
+        ViewInteraction appCompatEditText12 = onView(
+                allOf(withId(R.id.InputNombreEvento),
+                        childAtPosition(
+                                allOf(withId(R.id.LayoutModificar),
+                                        childAtPosition(
+                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
+                                                0)),
+                                1)));
+        appCompatEditText12.perform(scrollTo(), replaceText("Senderismo"), closeSoftKeyboard());
+
+        ViewInteraction appCompatSpinner = onView(
+                allOf(withId(R.id.SpinnerMunicipio),
+                        childAtPosition(
+                                allOf(withId(R.id.LayoutModificar),
+                                        childAtPosition(
+                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
+                                                0)),
+                                0)));
+        appCompatSpinner.perform(scrollTo(), click());
+
+        DataInteraction appCompatCheckedTextView = onData(anything())
+                .inAdapterView(childAtPosition(
+                        withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
+                        0))
+                .atPosition(6);
+        appCompatCheckedTextView.perform(click());
+
+        ViewInteraction appCompatEditText6 = onView(
+                allOf(withId(R.id.InputFechaEvento),
+                        childAtPosition(
+                                allOf(withId(R.id.LayoutModificar),
+                                        childAtPosition(
+                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
+                                                0)),
+                                3)));
+        appCompatEditText6.perform(scrollTo(), click());
+
+        ViewInteraction materialButton13 = onView(
+                allOf(withId(android.R.id.button1), withText("OK"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        0),
+                                2),
+                        isDisplayed()));
+        materialButton13.perform(click());
+
+        ViewInteraction appCompatEditText14 = onView(
+                allOf(withId(R.id.InputDescripcionEvento),
+                        childAtPosition(
+                                allOf(withId(R.id.LayoutModificar),
+                                        childAtPosition(
+                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
+                                                0)),
+                                2)));
+        appCompatEditText14.perform(scrollTo(), replaceText("Senderismo\n"), closeSoftKeyboard());
+
+        ViewInteraction materialButton15 = onView(
+                allOf(withId(R.id.BotonModificar), withText("Crear evento"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        0),
+                                1)));
+        materialButton15.perform(scrollTo(), click());
+
+        // ASSERTS de los detalles del EVENTO
+        onView(allOf(withId(R.id.EtiquetaDetalles), isDisplayed())).check(matches(withText("Senderismo")));
+        onView(allOf(withId(R.id.DetallesLocalidad), isDisplayed())).check(matches(withText("Sierra Nevada")));
+
+
+        String date2 = formatter.format(new Date());
+
+        onView(allOf(withId(R.id.DetallesFechaDeInicio), isDisplayed())).check(matches(withText(date)));
+        onView(allOf(withId(R.id.DetallesDescripcion), isDisplayed())).check(matches(withText("Senderismo\n")));
+
+
         ViewInteraction appCompatImageButton = onView(
+                allOf(childAtPosition(
+                                allOf(withId(R.id.toolbar),
+                                        childAtPosition(
+                                                withClassName(is("com.google.android.material.appbar.AppBarLayout")),
+                                                0)),
+                                1),
+                        isDisplayed()));
+        appCompatImageButton.perform(click());
+
+        // Se comprueba que existe en el RecyclerView existe el nuevo evento creado.
+        onView(allOf(withId(R.id.list), isDisplayed())).check(matches(hasDescendant(withId(R.id.Nombre))));
+        onView(allOf(withId(R.id.list), isDisplayed())).check(matches(hasDescendant(withText("Senderismo"))));
+
+        // Hay que eliminar el nuevo evento creado
+
+        ViewInteraction recyclerView2 = onView(
+                allOf(withId(R.id.list),
+                        childAtPosition(
+                                withId(R.id.child_ListaEventos),
+                                0)));
+        recyclerView2.perform(actionOnItemAtPosition(0, click()));
+
+        ViewInteraction materialButton16 = onView(
+                allOf(withId(R.id.BotonEliminar), withText("Eliminar"),
+                        childAtPosition(
+                                allOf(withId(R.id.LayoutDetallesEvento),
+                                        childAtPosition(
+                                                withId(R.id.nav_host_fragment_content_borrate),
+                                                0)),
+                                3),
+                        isDisplayed()));
+        materialButton16.perform(click());
+
+        ViewInteraction materialButton17 = onView(
+                allOf(withId(android.R.id.button1), withText("Confirmar"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        materialButton17.perform(scrollTo(), click());
+
+        // ASSERT. SE COMPRUEBA QUE LA RECYCLERVIEW ESTÁ VACIA (NO TIENE EVENTOS CREADOS)
+        onView(withId(R.id.list)).check(new RecyclerViewItemCountAssertion(0));
+
+        // ELIMINAR PERFIL
+        ViewInteraction appCompatImageButton3 = onView(
                 allOf(withContentDescription("Open navigation drawer"),
                         childAtPosition(
                                 allOf(withId(R.id.toolbar),
@@ -276,7 +454,7 @@ public class CrearEventoMunicipioTest {
                                                 0)),
                                 1),
                         isDisplayed()));
-        appCompatImageButton.perform(click());
+        appCompatImageButton3.perform(click());
 
         ViewInteraction navigationMenuItemView = onView(
                 allOf(withId(R.id.nav_perfil),
@@ -327,4 +505,6 @@ public class CrearEventoMunicipioTest {
             }
         };
     }
+
+
 }

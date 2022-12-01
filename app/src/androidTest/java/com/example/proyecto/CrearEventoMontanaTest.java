@@ -39,6 +39,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class CrearEventoMontanaTest {
@@ -218,7 +222,11 @@ public class CrearEventoMontanaTest {
         // ASSERTS de los detalles del EVENTO
         onView(allOf(withId(R.id.EtiquetaDetalles), isDisplayed())).check(matches(withText("Senderismo")));
         onView(allOf(withId(R.id.DetallesLocalidad), isDisplayed())).check(matches(withText("Sierra Nevada")));
-        onView(allOf(withId(R.id.DetallesFechaDeInicio), isDisplayed())).check(matches(withText("29/11/2022")));
+
+        DateFormat formatter = new SimpleDateFormat("d/MM/yyyy");
+        String date = formatter.format(new Date());
+
+        onView(allOf(withId(R.id.DetallesFechaDeInicio), isDisplayed())).check(matches(withText(date)));
         onView(allOf(withId(R.id.DetallesDescripcion), isDisplayed())).check(matches(withText("Senderismo\n")));
 
 
