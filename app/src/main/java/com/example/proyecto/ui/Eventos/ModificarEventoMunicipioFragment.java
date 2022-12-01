@@ -13,12 +13,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.proyecto.InicioSesion;
 import com.example.proyecto.Json.JsonSingleton;
 import com.example.proyecto.MainActivity;
 import com.example.proyecto.R;
@@ -115,11 +117,17 @@ public class ModificarEventoMunicipioFragment extends Fragment {
                         Log.d("ERROR", "Fallo en el evento");
                     } else {
                         evento = eventos.get(0);
-                        nombreEvento.setText(evento.getTitulo());
-                        String[] fecha = evento.getFecha().toString().split(" ");
-                        fechaEvento.setText(fecha[2] + "/" + fecha[1] + "/" + fecha[5]);
-                        localidadEvento.setText(evento.getUbicacion());
-                        descripcionEvento.setText(evento.getDescripcion());
+                        requireActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                nombreEvento.setText(evento.getTitulo());
+                                String[] fecha = evento.getFecha().toString().split(" ");
+                                fechaEvento.setText(fecha[2] + "/" + fecha[1] + "/" + fecha[5]);
+                                localidadEvento.setText(evento.getUbicacion());
+                                descripcionEvento.setText(evento.getDescripcion());
+                            }
+                        });
+
                     }
                 }
             }).start();
