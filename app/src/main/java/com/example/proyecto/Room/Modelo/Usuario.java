@@ -2,10 +2,17 @@ package com.example.proyecto.Room.Modelo;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity
 public class Usuario {
+
+    public static final String IDU="idu";
+    public static final String USERNAME="username";
+    public static final String PASSWORD="password";
+    public static final String CONECTADO="conectado";
+
 
     @PrimaryKey(autoGenerate = true)
     @NonNull
@@ -22,6 +29,11 @@ public class Usuario {
         this.username = username;
         this.password = password;
         this.conectado = conectado;
+    }
+
+    @Ignore
+    public Usuario() {
+
     }
 
     public  int getIdu() {
