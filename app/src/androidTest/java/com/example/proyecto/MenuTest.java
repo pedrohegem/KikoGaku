@@ -24,6 +24,7 @@ import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
+import androidx.test.rule.GrantPermissionRule;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -40,6 +41,12 @@ public class MenuTest {
     @Rule
     public ActivityScenarioRule<LaunchActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(LaunchActivity.class);
+
+    @Rule
+    public GrantPermissionRule mGrantPermissionRule =
+            GrantPermissionRule.grant(
+                    "android.permission.ACCESS_FINE_LOCATION",
+                    "android.permission.ACCESS_COARSE_LOCATION");
 
     @Test
     public void menuTest() {
@@ -114,7 +121,7 @@ public class MenuTest {
         materialButton3.perform(click());
 
         ViewInteraction appCompatImageButton = onView(
-                allOf(withContentDescription("Abrir panel lateral de navegación"),
+                allOf(withContentDescription("Open navigation drawer"),
                         childAtPosition(
                                 allOf(withId(R.id.toolbar),
                                         childAtPosition(
@@ -150,7 +157,7 @@ public class MenuTest {
         viewGroup.check(matches(isDisplayed()));
 
         ViewInteraction appCompatImageButton2 = onView(
-                allOf(withContentDescription("Abrir panel lateral de navegación"),
+                allOf(withContentDescription("Open navigation drawer"),
                         childAtPosition(
                                 allOf(withId(R.id.toolbar),
                                         childAtPosition(
@@ -178,7 +185,7 @@ public class MenuTest {
         textView.check(matches(isDisplayed()));
 
         ViewInteraction appCompatImageButton3 = onView(
-                allOf(withContentDescription("Abrir panel lateral de navegación"),
+                allOf(withContentDescription("Open navigation drawer"),
                         childAtPosition(
                                 allOf(withId(R.id.toolbar),
                                         childAtPosition(
@@ -200,7 +207,7 @@ public class MenuTest {
         navigationMenuItemView3.perform(click());
 
         ViewInteraction appCompatImageButton4 = onView(
-                allOf(withContentDescription("Abrir panel lateral de navegación"),
+                allOf(withContentDescription("Open navigation drawer"),
                         childAtPosition(
                                 allOf(withId(R.id.toolbar),
                                         childAtPosition(
@@ -229,7 +236,7 @@ public class MenuTest {
         imageView.check(matches(isDisplayed()));
 
         ViewInteraction appCompatImageButton5 = onView(
-                allOf(withContentDescription("Abrir panel lateral de navegación"),
+                allOf(withContentDescription("Open navigation drawer"),
                         childAtPosition(
                                 allOf(withId(R.id.toolbar),
                                         childAtPosition(

@@ -163,6 +163,8 @@ public class AnadirBarraBusquedaTest {
                         isDisplayed()));
         textView.check(matches(withText("Sevilla")));
 
+        pressBack();
+
         // ELIMINAR PERFIL
         ViewInteraction appCompatImageButton = onView(
                 allOf(withContentDescription("Open navigation drawer"),

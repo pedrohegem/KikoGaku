@@ -13,15 +13,11 @@ import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.AdditionalMatchers.not;
-import static org.mockito.Mockito.when;
 
-import android.app.Activity;
-import android.location.Location;
-import android.location.LocationManager;
+
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -31,42 +27,25 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.GrantPermissionRule;
-import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
-import androidx.test.runner.lifecycle.Stage;
 
-import com.example.proyecto.Json.Municipio;
-import com.example.proyecto.Room.Modelo.Weather;
-import com.example.proyecto.utils.APIManager;
-import com.example.proyecto.utils.APIManagerDelegate;
+
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 
-import java.util.Collection;
-import java.util.Iterator;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class TiempoActualTest {
 
-    @Before
-    public void setUp(){
-        LocationManager lm = (LocationManager) getActivityInstance().getSystemService(getActivityInstance().LOCATION_SERVICE);
-        Location location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        location.setLatitude(-6.3748);
-        location.setLongitude(39.522);
-  /*
-        apiManager.getEventWeather(-6.3748, 39.522);
-        when(apiManager.getEventWeather(-6.3748, 39.522)).thenReturn(50.00);
-*/
-    }
+
 
     @Rule
     public ActivityScenarioRule<InicioSesion> mActivityScenarioRule =
@@ -76,41 +55,11 @@ public class TiempoActualTest {
     public GrantPermissionRule mGrantPermissionRule =
             GrantPermissionRule.grant(
                     "android.permission.ACCESS_FINE_LOCATION",
-                    "android.permission.ACCESS_COARSE_LOCATION",
-                    "android.permission.ACCESS_MOCK_LOCATION");
+                    "android.permission.ACCESS_COARSE_LOCATION");
 
-    @Mock
-    private Municipio actual;
-
-    private Activity getActivityInstance() {
-        final Activity[] currentActivity = null;
-
-        getInstrumentation().runOnMainSync(new Runnable(){
-        public void run () {
-            Collection resumedActivity = ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(Stage.RESUMED);
-            Iterator<Activity> it = resumedActivity.iterator();
-            currentActivity[0] = it.next();
-        }}
-        );
-
-        return currentActivity[0];
-    }
 
     @Test
     public void tiempoActualTest() throws InterruptedException {
-
-        /*APIManager apiManager = new APIManager(new APIManagerDelegate() {
-            @Override
-            public void onGetWeatherSuccess(Weather weather) {
-                weather.
-            }
-
-            @Override
-            public void onGetWeatherFailure() {
-
-            }
-        });*/
-
         // REGISTRO DE SESION
         ViewInteraction materialButton = onView(
                 allOf(withId(R.id.bRegistrarse), withText("Registrarse"),
@@ -191,10 +140,12 @@ public class TiempoActualTest {
                         isDisplayed()));
         textView.check(matches(withText("Inicio")));
 
-        ViewInteraction textView2 = onView(withId(R.id.textViewCiudad)).check(matches(not(withText("Not Found"))));
-        ViewInteraction textView3 = onView(withId(R.id.textViewDesc)).check(matches(not(withText("not found"))));
-        ViewInteraction textView4 = onView(withId(R.id.textViewTemp)).check(matches(not(withText("-1"))));
-        ViewInteraction textView5 = onView(withId(R.id.textViewTempMaxMin)).check(matches(not(withText("--º / --º"))));
+
+        onView(allOf(withId(R.id.textViewCiudad), isDisplayed())).check(matches((Matchers.not("Not Found"))));
+        onView(allOf(withId(R.id.textViewDesc), isDisplayed())).check(matches((Matchers.not("not found"))));
+        onView(withId(R.id.textViewTemp)).check(matches(Matchers.not(withText("-1"))));
+        onView(withId(R.id.textViewTempMaxMin)).check(matches(Matchers.not(withText("--º / --º"))));
+
 
         // ELIMINAR PERFIL
         ViewInteraction appCompatImageButton = onView(

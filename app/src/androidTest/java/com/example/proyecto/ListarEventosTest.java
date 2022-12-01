@@ -7,6 +7,7 @@ import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
@@ -16,6 +17,9 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
+import static java.lang.Thread.sleep;
+
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -24,6 +28,8 @@ import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
+import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.rule.GrantPermissionRule;
 
 import com.example.proyecto.Room.AppDatabase;
 import com.example.proyecto.Room.Modelo.Evento;
@@ -45,17 +51,24 @@ public class ListarEventosTest {
     public ActivityScenarioRule<LaunchActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(LaunchActivity.class);
 
+    @Rule
+    public GrantPermissionRule mGrantPermissionRule =
+            GrantPermissionRule.grant(
+                    "android.permission.ACCESS_FINE_LOCATION",
+                    "android.permission.ACCESS_COARSE_LOCATION");
+
     @Test
-    public void listarEventosTest() {
+    public void listarEventosTest() throws InterruptedException {
+        Context c = InstrumentationRegistry.getInstrumentation().getTargetContext();
         //--------------------------------------- Cargar datos ---------------------------------------
         Evento event = new Evento("Cenar1", "Madrid", "Cañas", new Date(System.currentTimeMillis()), true);
         Evento event1 = new Evento("Cenar2", "Madrid", "Cañas", new Date(System.currentTimeMillis()), true);
         Evento event2 = new Evento("Cenar3", "Madrid", "Cañas", new Date(System.currentTimeMillis()), true);
         Evento event3 = new Evento("Cenar4", "Madrid", "Cañas", new Date(System.currentTimeMillis()), true);
-        AppDatabase.getInstance(null).eventoDAO().insertEvent(event);
-        AppDatabase.getInstance(null).eventoDAO().insertEvent(event1);
-        AppDatabase.getInstance(null).eventoDAO().insertEvent(event2);
-        AppDatabase.getInstance(null).eventoDAO().insertEvent(event3);
+        AppDatabase.getInstance(c).eventoDAO().insertEvent(event);
+        AppDatabase.getInstance(c).eventoDAO().insertEvent(event1);
+        AppDatabase.getInstance(c).eventoDAO().insertEvent(event2);
+        AppDatabase.getInstance(c).eventoDAO().insertEvent(event3);
         //--------------------------------------------------------------------------------------------
         ViewInteraction materialButton = onView(
                 allOf(withId(R.id.bRegistrarse), withText("Registrarse"),
@@ -133,15 +146,19 @@ public class ListarEventosTest {
         onView(allOf(withId(R.id.list), isDisplayed())).check(matches(hasDescendant(withText("Cenar3"))));
         onView(allOf(withId(R.id.list), isDisplayed())).check(matches(hasDescendant(withText("Cenar4"))));
 
+        Evento e = AppDatabase.getInstance(null).eventoDAO().getAll().get(0);
+        AppDatabase.getInstance(null).eventoDAO().deleteEvent(e);
+        e = AppDatabase.getInstance(null).eventoDAO().getAll().get(0);
+        AppDatabase.getInstance(null).eventoDAO().deleteEvent(e);
+        e = AppDatabase.getInstance(null).eventoDAO().getAll().get(0);
+        AppDatabase.getInstance(null).eventoDAO().deleteEvent(e);
+        e = AppDatabase.getInstance(null).eventoDAO().getAll().get(0);
+        AppDatabase.getInstance(null).eventoDAO().deleteEvent(e);
 
-
-        AppDatabase.getInstance(null).eventoDAO().deleteEvent(event);
-        AppDatabase.getInstance(null).eventoDAO().deleteEvent(event1);
-        AppDatabase.getInstance(null).eventoDAO().deleteEvent(event2);
-        AppDatabase.getInstance(null).eventoDAO().deleteEvent(event3);
 //----------------------------------- INICIO FIN -----------------------------------
-        ViewInteraction appCompatImageButton = onView(
-                allOf(withContentDescription("Abrir panel lateral de navegación"),
+        // ELIMINAR PERFIL
+        ViewInteraction appCompatImageButton2 = onView(
+                allOf(withContentDescription("Open navigation drawer"),
                         childAtPosition(
                                 allOf(withId(R.id.toolbar),
                                         childAtPosition(
@@ -149,7 +166,7 @@ public class ListarEventosTest {
                                                 0)),
                                 1),
                         isDisplayed()));
-        appCompatImageButton.perform(click());
+        appCompatImageButton2.perform(click());
 
         ViewInteraction navigationMenuItemView = onView(
                 allOf(withId(R.id.nav_perfil),
@@ -162,7 +179,7 @@ public class ListarEventosTest {
                         isDisplayed()));
         navigationMenuItemView.perform(click());
 
-        ViewInteraction materialButton4 = onView(
+        ViewInteraction materialButton7 = onView(
                 allOf(withId(R.id.bEliminar), withText("Eliminar cuenta"),
                         childAtPosition(
                                 childAtPosition(
@@ -170,16 +187,16 @@ public class ListarEventosTest {
                                         0),
                                 5),
                         isDisplayed()));
-        materialButton4.perform(click());
+        materialButton7.perform(click());
 
-        ViewInteraction materialButton5 = onView(
+        ViewInteraction materialButton10 = onView(
                 allOf(withId(android.R.id.button1), withText("Confirmar"),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.ScrollView")),
                                         0),
                                 3)));
-        materialButton5.perform(scrollTo(), click());
+        materialButton10.perform(scrollTo(), click());
     }
 
     private static Matcher<View> childAtPosition(

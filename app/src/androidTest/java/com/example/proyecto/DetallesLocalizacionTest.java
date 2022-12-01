@@ -2,10 +2,12 @@ package com.example.proyecto;
 
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
+import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -30,10 +32,13 @@ import androidx.test.rule.GrantPermissionRule;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeMatcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.Objects;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
@@ -168,12 +173,16 @@ public class DetallesLocalizacionTest {
                         isDisplayed()));
         textView2.check(matches(withText("Seville")));
 
-        ViewInteraction textView3 = onView(withId(R.id.textViewDescD)).check(matches(not(withText("Not found"))));
-        ViewInteraction textView4 = onView(withId(R.id.textViewTemperatura)).check(matches(not(withText("-1"))));
-        ViewInteraction textView5 = onView(withId(R.id.textViewTemperaturas)).check(matches(not(withText("--º / --º"))));
-        ViewInteraction textView6 = onView(withId(R.id.textViewSensTermP)).check(matches(not(withText("--"))));
-        ViewInteraction textView7 = onView(withId(R.id.textViewHumedadP)).check(matches(not(withText("--"))));
-        ViewInteraction textView8 = onView(withId(R.id.textViewVientoP)).check(matches(not(withText("--"))));
+
+        onView(allOf(withId(R.id.textViewUbicacion), isDisplayed())).check(matches((Matchers.not("Not Found"))));
+        onView(allOf(withId(R.id.textViewTemperatura), isDisplayed())).check(matches((Matchers.not("-1"))));
+        onView(allOf(withId(R.id.textViewTemperaturas), isDisplayed())).check(matches((Matchers.not("--º / --º"))));
+        onView(allOf(withId(R.id.textViewSensTermP), isDisplayed())).check(matches((Matchers.not("--"))));
+        onView(allOf(withId(R.id.textViewHumedadP), isDisplayed())).check(matches((Matchers.not("--"))));
+        onView(allOf(withId(R.id.textViewVientoP), isDisplayed())).check(matches((Matchers.not("--"))));
+
+        pressBack();
+        pressBack();
 
         // ELIMINAR PERFIL
         ViewInteraction appCompatImageButton = onView(
