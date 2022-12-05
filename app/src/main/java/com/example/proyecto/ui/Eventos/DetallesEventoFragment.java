@@ -121,7 +121,7 @@ public class DetallesEventoFragment extends Fragment implements APIManagerDelega
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    List<Evento> eventos = eventoDao.getEvent(idEvento);
+                    List<Evento> eventos = eventoDao.getEvent(idEvento).getValue();
                     getActivity().runOnUiThread(() -> {
                         if (eventos.isEmpty() != true) {
                             evento = eventos.get(0);

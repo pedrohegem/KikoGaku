@@ -44,7 +44,7 @@ public class DeleteEventDialog extends androidx.fragment.app.DialogFragment {
                                 int ide = getArguments().getInt("idEvento", 0);
                                 Evento e;
                                 EventoDAO eventoDao = AppDatabase.getInstance(mContext).eventoDAO();
-                                e = eventoDao.getEvent(ide).get(0);
+                                e = eventoDao.getEvent(ide).getValue().get(0);
 
                                 eventoDao.deleteEvent(e);
 

@@ -125,7 +125,7 @@ public class ModificarEventoMontanaFragment extends Fragment implements AdapterV
                 @Override
                 public void run() {
                     Looper.prepare();
-                    List<Evento> eventos = eventoDao.getEvent(idEvento);
+                    List<Evento> eventos = eventoDao.getEvent(idEvento).getValue();
                     if (eventos.isEmpty() == true) {
                         Log.d("ERROR", "Fallo en el evento");
                     } else {
