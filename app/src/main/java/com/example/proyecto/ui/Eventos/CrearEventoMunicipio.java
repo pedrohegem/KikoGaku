@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,9 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import com.example.proyecto.models.Weather;
+import com.example.proyecto.repository.networking.APIManager;
+import com.example.proyecto.repository.networking.APIManagerDelegate;
 import com.example.proyecto.utils.JsonSingleton;
 import com.example.proyecto.R;
 import com.example.proyecto.repository.room.AppDatabase;
@@ -28,7 +32,7 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.Calendar;
 import java.util.Date;
 
-public class CrearEventoMunicipio extends Fragment{
+public class CrearEventoMunicipio extends Fragment implements APIManagerDelegate {
 
     private Context mContext;
 
@@ -37,9 +41,11 @@ public class CrearEventoMunicipio extends Fragment{
     private EditText nombreEvento, fechaEvento, descripcionEvento, localidadEvento;
     private Button botonCrear;
 
+    private Evento e;
     int idEvento, diaEvento;
     String localidad;
 
+    private APIManager api;
     private String nombreM, localidadM, fechaM, descripcionM;
 
     FragmentCrearEventoMunicipioBinding binding;
@@ -60,6 +66,7 @@ public class CrearEventoMunicipio extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        api = new APIManager(this);
         if (getArguments() != null) {
             nombreM = getArguments().getString("NombreEvento");
             descripcionM = getArguments().getString("DescripcionEvento");
@@ -129,28 +136,9 @@ public class CrearEventoMunicipio extends Fragment{
                     snackbar = Snackbar.make(view, textoError, Snackbar.LENGTH_LONG);
                     snackbar.show();
                 } else {
-                    Evento evento = new Evento(nombre, localidad, descripcion, fecha, true);
-                    EventoDAO eventoDAO = AppDatabase.getInstance(mContext).eventoDAO();
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                idEvento = (int)eventoDAO.insertEvent(evento);
-                                Calendar cal = Calendar.getInstance();
-                                int diaActual = cal.get(Calendar.DAY_OF_MONTH);
-
-                                Intent intent = new Intent(mContext, DetallesEventoActivity.class);
-                                intent.putExtra("idEvento", idEvento);
-                                intent.putExtra("ubicacionEvento", localidad);
-                                intent.putExtra("esMunicipio", true);
-                                if(diaActual == diaEvento) { // Si el evento es en el día actual....
-                                    intent.putExtra("diaEvento", -1);
-                                } else {
-                                    intent.putExtra("diaEvento", diaEvento - diaActual);
-                                }
-                                startActivity(intent);
-                            }
-
-                        }).start();
+                    // Ya tenemos los datos del formulario
+                    e = new Evento(nombre, localidad, descripcion, fecha, true);
+                    api.getEventWeather(localidad);
                 }
             }
         });
@@ -189,5 +177,38 @@ public class CrearEventoMunicipio extends Fragment{
         super.onResume();
         CrearEventoActivity cea = (CrearEventoActivity) getActivity();
         cea.setDayLight();
+    }
+
+    @Override
+    public void onGetWeatherSuccess(Weather weather) {
+
+        e.setWeather(weather);
+
+        EventoDAO eventoDAO = AppDatabase.getInstance(mContext).eventoDAO();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                idEvento = (int)eventoDAO.insertEvent(e);
+                Calendar cal = Calendar.getInstance();
+                int diaActual = cal.get(Calendar.DAY_OF_MONTH);
+
+                Intent intent = new Intent(mContext, DetallesEventoActivity.class);
+                intent.putExtra("idEvento", idEvento);
+                intent.putExtra("ubicacionEvento", e.getUbicacion());
+                intent.putExtra("esMunicipio", true);
+                if(diaActual == diaEvento) { // Si el evento es en el día actual....
+                    intent.putExtra("diaEvento", -1);
+                } else {
+                    intent.putExtra("diaEvento", diaEvento - diaActual);
+                }
+                startActivity(intent);
+            }
+
+        }).start();
+    }
+
+    @Override
+    public void onGetWeatherFailure() {
+        Log.d("CrearEvento", "Error creando un evento de municipio");
     }
 }

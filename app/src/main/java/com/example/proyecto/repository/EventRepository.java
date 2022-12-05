@@ -12,8 +12,8 @@ import com.example.proyecto.AppExecutors;
 import com.example.proyecto.repository.networking.APIManager;
 import com.example.proyecto.repository.room.DAO.EventoDAO;
 
-public class RepoRepository {
-    private static final String LOG_TAG = RepoRepository.class.getSimpleName();
+public class EventRepository {
+   /* private static final String LOG_TAG = RepoRepository.class.getSimpleName();
 
     // For Singleton instantiation
     private static RepoRepository sInstance;
@@ -73,7 +73,7 @@ public class RepoRepository {
 
     /**
      * Database related operations
-     **/
+
 
     public LiveData<List<Repo>> getCurrentRepos() {
         // TODO - Return LiveData from Room. Use Transformation to get owner
@@ -83,7 +83,7 @@ public class RepoRepository {
     /**
      * Checks if we have to update the repos data.
      * @return Whether a fetch is needed
-     */
+
     private boolean isFetchNeeded(String username) {
         Long lastFetchTimeMillis = lastUpdateTimeMillisMap.get(username);
         lastFetchTimeMillis = lastFetchTimeMillis == null ? 0L : lastFetchTimeMillis;
@@ -91,5 +91,5 @@ public class RepoRepository {
         // TODO - Implement cache policy: When time has passed or no repos in cache
         return true;
     }
-
+**/
 }

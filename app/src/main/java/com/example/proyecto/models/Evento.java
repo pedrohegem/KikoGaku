@@ -123,6 +123,18 @@ public class Evento implements Comparable<Evento> {
         return esMunicipio;
     }
 
+    public void setWeather(Weather weather) {
+        this.temperatura = weather.temperatura;
+        this.sensTermica = weather.sensTermica;
+        this.tempMinima = weather.tempMinima;
+        this.tempMaxima = weather.tempMaxima;
+        this.presion = weather.presion;
+        this.humedad = weather.humedad;
+        this.velocidadViento = weather.velocidadViento;
+        this.estadoTiempo = weather.estadoTiempo;
+        this.descEstadoTiempo = weather.descEstadoTiempo;
+        this.gifResource = weather.gifResource;
+    }
 
     public Date getFecha() {
         return fecha;

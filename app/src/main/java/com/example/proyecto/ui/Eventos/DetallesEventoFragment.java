@@ -125,7 +125,7 @@ public class DetallesEventoFragment extends Fragment implements APIManagerDelega
                     getActivity().runOnUiThread(() -> {
                         if (eventos.isEmpty() != true) {
                             evento = eventos.get(0);
-
+                            
                             nombreEvento.setText(evento.getTitulo());
                             if (!main.esMunicipio()) {
                                 localidadTiempo.setText(evento.getUbicacion());
