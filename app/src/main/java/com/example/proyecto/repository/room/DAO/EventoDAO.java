@@ -1,5 +1,6 @@
 package com.example.proyecto.repository.room.DAO;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -16,7 +17,7 @@ public interface EventoDAO {
     long insertEvent(Evento evento);
 
     @Query("SELECT * FROM evento")
-    List<Evento> getAll();
+    LiveData<List<Evento>> getAll();
 
     @Query("SELECT * FROM evento WHERE esMunicipio <> 0")
     List<Evento> getMunicipios();
@@ -25,7 +26,7 @@ public interface EventoDAO {
     List<Evento> getMontanas();
 
     @Query("SELECT * FROM evento WHERE ide = (:idEvento)")
-    List<Evento> getEvent(int idEvento);
+    LiveData<List<Evento>> getEvent(int idEvento);
 
     @Query("SELECT * FROM evento WHERE titulo = (:tituloEvento)")
     List<Evento> getEvent(String tituloEvento);

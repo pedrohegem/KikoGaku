@@ -2,17 +2,104 @@ package com.example.proyecto.repository;
 
 import android.util.Log;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 
 import com.example.proyecto.AppExecutors;
+import com.example.proyecto.models.Evento;
+import com.example.proyecto.models.Montana;
+import com.example.proyecto.models.Weather;
 import com.example.proyecto.repository.networking.APIManager;
+import com.example.proyecto.repository.networking.APIManagerDelegate;
 import com.example.proyecto.repository.room.DAO.EventoDAO;
+import com.example.proyecto.utils.JsonSingleton;
 
-public class EventRepository {
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class EventRepository implements APIManagerDelegate {
+
+    private static EventRepository sInstance;
+    private APIManager apiManager;
+    private EventoDAO dao;
+    private Evento e;
+    private final MutableLiveData<Integer> filterID;
+    private static final long MIN_TIME_FROM_LAST_FETCH_MILLIS = 30000;
+    private final Map<Integer, Long> lastUpdateTimeMillisMap = new HashMap<>();
+
+    public synchronized static EventRepository getInstance(EventoDAO dao) {
+        Log.d("EventRepository", "Getting the repository");
+        if (sInstance == null) {
+            sInstance = new EventRepository(dao);
+            Log.d("EventRepository", "Made new repository");
+        }
+        return sInstance;
+    }
+
+    private EventRepository(EventoDAO dao) {
+        this.dao = dao;
+        this.apiManager = new APIManager(this);
+        this.filterID = new MutableLiveData<>();
+    }
+
+    public LiveData<List<Evento>> getAllEventos() {
+        return dao.getAll();
+    }
+
+    public void setEventID (int id) {
+        filterID.setValue(new Integer(id));
+        //  Comprobar si es necesario un fetch desde la API
+        AppExecutors.getInstance().diskIO().execute(() -> {
+            if(isFetchNeeded(id)){
+                doFetchEvento(id);
+            }
+        });
+    }
+
+    private void doFetchEvento(int id) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                e = dao.getEvent(id).getValue().get(0);
+                if(e.getEsMunicipio()){
+                    apiManager.getEventWeather(e.getUbicacion());
+                } else {
+                    Montana m = JsonSingleton.getInstance().montanaMap.get(e.getUbicacion());
+                    apiManager.getEventWeather(m.getLatitud(),m.getLongitud());
+                }
+            }
+        }).start();
+    }
+
+    public LiveData<List<Evento>> getEventoByID() {
+        return Transformations.switchMap(filterID, dao::getEvent);
+    }
+
+    @Override
+    public void onGetWeatherSuccess(Weather weather) {
+        e.setWeather(weather);
+        dao.updateEvent(e);
+    }
+
+    @Override
+    public void onGetWeatherFailure() {
+        Log.d("EventRepository", "La llamada a la API ha fallado...");
+    }
+
+    private boolean isFetchNeeded(int id) {
+        Long lastFetchTimeMillis = lastUpdateTimeMillisMap.get(new Integer(id));
+        lastFetchTimeMillis = lastFetchTimeMillis == null ? 0L : lastFetchTimeMillis;
+        long timeFromLastFetch = System.currentTimeMillis() - lastFetchTimeMillis;
+        return timeFromLastFetch > MIN_TIME_FROM_LAST_FETCH_MILLIS;
+    }
+
+
+
+
+
+
    /* private static final String LOG_TAG = RepoRepository.class.getSimpleName();
 
     // For Singleton instantiation

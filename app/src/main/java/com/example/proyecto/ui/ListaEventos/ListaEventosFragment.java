@@ -85,7 +85,7 @@ public class ListaEventosFragment extends Fragment {
                     List<Evento> eventos = new ArrayList<>();
                     switch (filtroRealizado){
                         case -1:
-                            eventos = AppDatabase.getInstance(getContext()).eventoDAO().getAll();
+                            //eventos = AppDatabase.getInstance(getContext()).eventoDAO().getAll();
                             break;
                         case 0:
                             eventos = AppDatabase.getInstance(getContext()).eventoDAO().getMunicipios();
