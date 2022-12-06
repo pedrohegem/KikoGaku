@@ -38,6 +38,6 @@ public interface EventoDAO {
     @Update
     void updateEvent(Evento evento);
 
-    @Query("DELETE FROM evento WHERE ide = (:id)")
-    void deleteEvent(int id);
+    @Delete
+    void deleteEvent(Evento evento);
 }

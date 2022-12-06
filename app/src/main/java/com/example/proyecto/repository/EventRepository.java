@@ -95,9 +95,8 @@ public class EventRepository implements APIManagerDelegate{
     }
 
     public void deleteEvent ( int id) {
-        AppExecutors.getInstance().diskIO().execute(() -> {
-            dao.deleteEvent(id);
-        });
+        Evento e = dao.getEvent(id).get(0);
+        dao.deleteEvent(e);
     }
 
     private boolean isFetchNeeded(Integer id) {

@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import android.widget.Toast;
 
+import com.example.proyecto.AppExecutors;
 import com.example.proyecto.MainActivity;
 import com.example.proyecto.repository.EventRepository;
 import com.example.proyecto.repository.room.AppDatabase;
@@ -37,9 +38,11 @@ public class DeleteEventDialog extends androidx.fragment.app.DialogFragment {
                 .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        int ide = getArguments().getInt("idEvento", 0);
-                        EventRepository.getInstance(AppDatabase.getInstance(mContext).eventoDAO()).deleteEvent(ide);
-                        startActivity(new Intent(mContext, MainActivity.class));
+                        AppExecutors.getInstance().diskIO().execute(() -> {
+                            int ide = getArguments().getInt("idEvento", 0);
+                            EventRepository.getInstance(AppDatabase.getInstance(mContext).eventoDAO()).deleteEvent(ide);
+                            startActivity(new Intent(mContext, MainActivity.class));
+                        });
                     }
                 })
                 .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {

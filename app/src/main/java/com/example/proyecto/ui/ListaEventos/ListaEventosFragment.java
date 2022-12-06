@@ -92,43 +92,6 @@ public class ListaEventosFragment extends Fragment {
             }
         });
 
-        try{
-            new Thread(new Runnable() {
-                @SuppressLint("NotifyDataSetChanged")
-                @Override
-                public void run() {
-                    List<Evento> eventos = new ArrayList<>();
-                    switch (filtroRealizado){
-                        case -1:
-                            //eventos = AppDatabase.getInstance(getContext()).eventoDAO().getAll();
-                            break;
-                        case 0:
-                            eventos = AppDatabase.getInstance(getContext()).eventoDAO().getMunicipios();
-                            break;
-                        case 1:
-                            eventos = AppDatabase.getInstance(getContext()).eventoDAO().getMontanas();
-                            break;
-                    }
-                    if (filtroOrden==1){//Ordenado por fecha
-                        Collections.sort(eventos);
-                    }
-                    Log.i("Recoleccion", "eventos: "+eventos.size());
-                    ITEMS.clear();
-                    /*
-                    for (ListIterator<Evento> iter = eventos.listIterator(); iter.hasNext();){
-                        Evento event = iter.next();
-                        String[] fecha = event.getFecha().toString().split(" ");
-                        ITEMS.add(new PlaceholderItem(event.getIde(),event.getTitulo(),fecha[2]+"/"+fecha[1]+"/"+fecha[5], event.getUbicacion(), event.getEsMunicipio()));
-                    }
-                    requireActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());*/
-                }
-            }).start();
-
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
     }
 
     public void updateUI( List<Evento> listaEventos ) {

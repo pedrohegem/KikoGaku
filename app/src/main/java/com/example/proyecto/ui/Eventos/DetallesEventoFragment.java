@@ -104,9 +104,11 @@ public class DetallesEventoFragment extends Fragment {
 
         final Observer<Evento> observer = new Observer<Evento>() {
             @Override
-            public void onChanged(@Nullable final Evento evento) {
+            public void onChanged(final Evento evento) {
                 Log.d(TAG, "Data changed on observer...");
-                updateUI(evento);
+                if(evento != null) {
+                    updateUI(evento);
+                }
             }
         };
 
