@@ -19,7 +19,6 @@ public interface EventoDAO {
     @Query("SELECT * FROM evento")
     LiveData<List<Evento>> getAll();
 
-
     @Query("SELECT * FROM evento WHERE esMunicipio <> 0")
     List<Evento> getMunicipios();
 

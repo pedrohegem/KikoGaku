@@ -1,5 +1,6 @@
 package com.example.proyecto.ui.Eventos;
 
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -17,8 +18,6 @@ import com.example.proyecto.AppExecutors;
 import com.example.proyecto.MainActivity;
 import com.example.proyecto.repository.EventRepository;
 import com.example.proyecto.repository.room.AppDatabase;
-import com.example.proyecto.repository.room.DAO.EventoDAO;
-import com.example.proyecto.models.Evento;
 
 /**
  * A simple {@link Fragment} subclass.

@@ -83,7 +83,9 @@ public class ListaEventosFragment extends Fragment {
             filtroRealizado = getArguments().getInt(ARG_TIPO_FILTRO, -1);
             filtroOrden = getArguments().getInt(ARG_FILTRO_ORDEN, -1);
         }
-
+        adapter.mValues.clear(); // clear list
+        ITEMS.clear();
+        adapter.notifyDataSetChanged();
         eventRepository = EventRepository.getInstance(AppDatabase.getInstance(mContext).eventoDAO());
         eventRepository.getAllEvents().observe(this, new Observer<List<Evento>>() {
             @Override

@@ -15,6 +15,7 @@ import android.widget.EditText;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.proyecto.repository.EventRepository;
 import com.example.proyecto.utils.JsonSingleton;
 import com.example.proyecto.R;
 import com.example.proyecto.repository.room.AppDatabase;
@@ -168,7 +169,7 @@ public class ModificarEventoMunicipioFragment extends Fragment {
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                eventoDAO.updateEvent(e);
+                                EventRepository.getInstance(AppDatabase.getInstance(mContext).eventoDAO()).modifyEvent(e);
                                 Calendar cal = Calendar.getInstance();
                                 int diaActual = cal.get(Calendar.DAY_OF_MONTH);
 

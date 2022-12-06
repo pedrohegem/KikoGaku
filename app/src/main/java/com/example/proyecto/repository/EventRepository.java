@@ -99,6 +99,10 @@ public class EventRepository implements APIManagerDelegate{
         dao.deleteEvent(e);
     }
 
+    public void modifyEvent (Evento evento){
+        dao.updateEvent(evento);
+    }
+
     private boolean isFetchNeeded(Integer id) {
         Long lastFetchTimeMillis = lastUpdateTimeMillisMap.get(id);
         lastFetchTimeMillis = lastFetchTimeMillis == null ? 0L : lastFetchTimeMillis;

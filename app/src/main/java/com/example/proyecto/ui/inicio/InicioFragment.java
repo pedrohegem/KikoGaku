@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -37,6 +38,12 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
 
     private FragmentInicioBinding binding;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -51,6 +58,9 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
         getLocationCoords();
         apiManager.getEventWeather(latitud, longitud);
 
+        Fragment childFragment = new ListaEventosFragment();
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.replace(R.id.child_ListaEventos, childFragment).commit();
 
 
         return root;
@@ -58,9 +68,7 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        Fragment childFragment = new ListaEventosFragment();
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.replace(R.id.child_ListaEventos, childFragment).commit();
+
     }
 
     @Override
