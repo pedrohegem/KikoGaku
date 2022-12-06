@@ -17,7 +17,7 @@ public interface EventoDAO {
     long insertEvent(Evento evento);
 
     @Query("SELECT * FROM evento")
-    LiveData<List<Evento>> getAll();
+    List<Evento> getAll();
 
     @Query("SELECT * FROM evento WHERE esMunicipio <> 0")
     List<Evento> getMunicipios();
@@ -27,6 +27,9 @@ public interface EventoDAO {
 
     @Query("SELECT * FROM evento WHERE ide = (:idEvento)")
     LiveData<List<Evento>> getEvent(int idEvento);
+
+    @Query("SELECT * FROM evento WHERE ide = (:idEvento)")
+    LiveData<Evento> getEventByID(int idEvento);
 
     @Query("SELECT * FROM evento WHERE titulo = (:tituloEvento)")
     List<Evento> getEvent(String tituloEvento);

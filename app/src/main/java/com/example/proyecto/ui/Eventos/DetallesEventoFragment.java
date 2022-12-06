@@ -6,7 +6,11 @@ import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
@@ -18,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.proyecto.repository.EventRepository;
 import com.example.proyecto.utils.JsonSingleton;
 import com.example.proyecto.models.Montana;
 import com.example.proyecto.MainActivity;
@@ -34,20 +39,24 @@ import com.example.proyecto.repository.networking.APIManagerDelegate;
 import java.util.List;
 
 
-public class DetallesEventoFragment extends Fragment implements APIManagerDelegate {
+public class DetallesEventoFragment extends Fragment {
 
     private DetallesEventoActivity main;
     private APIManager apiManager;
     private Context mContext;
 
+    private String TAG = "DetallesEventoFragment";
     private TextView nombreEvento, localidadEvento, fechaEvento, descripcionEvento;
     private TextView textViewTemp, temperaturaMaxMin, localidadTiempo, descripcionTiempo, viento, humedad, sensTermica;
     private Button botonModificar, botonBorrar;
     ImageView iconoTiempo;
+    private EventRepository eventRepository;
+    private MutableLiveData<Evento> mutableLiveData = new MutableLiveData<>();
+    private int idEvento;
 
     private FragmentDetallesEventoBinding binding;
 
-    private Evento evento;
+    private Evento eventazo;
 
     public DetallesEventoFragment() {
         // Required empty public constructor
@@ -90,72 +99,33 @@ public class DetallesEventoFragment extends Fragment implements APIManagerDelega
         botonModificar = binding.BotonModificar;
         botonBorrar = binding.BotonEliminar;
 
-        apiManager = new APIManager(this);
 
-        // Gestión de llamadas a la API
-        if(main.esMunicipio()) {
-            int diaEvento = main.getDiaEvento();
-            if(diaEvento < 1) {
-                apiManager.getEventWeather(main.getUbicacion());
-            } else if (diaEvento > 0 && diaEvento < 5) {
-                apiManager.getEventForecast(main.getUbicacion(), diaEvento);
+        // ---------------------- Refactorizacion --------------------------------
+        this.eventRepository = EventRepository.getInstance(AppDatabase.getInstance(mContext).eventoDAO());
+
+        final Observer<Evento> observer = new Observer<Evento>() {
+            @Override
+            public void onChanged(@Nullable final Evento evento) {
+                Log.d(TAG, "Data changed on observer...");
+                mutableLiveData.setValue(evento);
             }
-        } else { // Evento de Montaña
-            Montana m = JsonSingleton.getInstance().montanaMap.get(main.getUbicacion());
-            Log.d("MONT", "onCreateView: " + m.getLatitud() + " " + m.getLongitud());
-            int diaEvento = main.getDiaEvento();
-            if(diaEvento < 1) {
-                apiManager.getEventWeather(m.getLatitud(),m.getLongitud());
-            } else if (diaEvento > 0 && diaEvento < 5) {
-                apiManager.getEventForecast(m.getLatitud(),m.getLongitud(), diaEvento);
+        };
+
+        this.idEvento = main.getIdEvento();
+        eventRepository.getEventByID(idEvento).observeForever(observer);
+
+        //--------------------------------------------------------------------------
+
+
+        final Observer<Evento> observer2 = new Observer<Evento>() {
+            @Override
+            public void onChanged(@Nullable final Evento evento) {
+                updateUI(evento);
             }
-
-        }
-
-        int idEvento = main.getIdEvento();
+        };
+        mutableLiveData.observeForever(observer2);
 
 
-        Log.d("IdEvento", idEvento+"");
-
-        EventoDAO eventoDao = AppDatabase.getInstance(mContext).eventoDAO();
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    List<Evento> eventos = eventoDao.getEvent(idEvento).getValue();
-                    getActivity().runOnUiThread(() -> {
-                        if (eventos.isEmpty() != true) {
-                            evento = eventos.get(0);
-
-                            nombreEvento.setText(evento.getTitulo());
-                            if (!main.esMunicipio()) {
-                                localidadTiempo.setText(evento.getUbicacion());
-                            }
-                            localidadEvento.setText(evento.getUbicacion());
-                            Log.i("Fecha", "year: " + evento.getFecha());
-
-                            fechaEvento.setText(DateConverter.toString(evento.getFecha()));
-
-                            if (evento.getDescripcion().isEmpty()) {
-                                descripcionEvento.setText("Sin descripción");
-                            } else {
-                                descripcionEvento.setText(evento.getDescripcion());
-                            }
-                            botonModificar.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    Bundle bundle = new Bundle();
-                                    bundle.putInt("idEvento", idEvento);
-                                    if (evento.getEsMunicipio() == true) {
-                                        NavHostFragment.findNavController(DetallesEventoFragment.this).navigate(R.id.action_detallesEvento_to_nav_modificar_evento, bundle);
-                                    } else {
-                                        NavHostFragment.findNavController(DetallesEventoFragment.this).navigate(R.id.action_nav_detalles_evento_to_nav_modificar_evento_montana, bundle);
-                                    }
-                                }
-                            });
-                        }
-                    });
-                }
-            }).start();
 
         botonBorrar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,17 +143,24 @@ public class DetallesEventoFragment extends Fragment implements APIManagerDelega
 
         return root;
     }
-    @Override
-    public void onAttach(@NonNull Context context) {
-        main = (DetallesEventoActivity) context;
-        mContext = context;
-        super.onAttach(context);
-    }
 
-    @Override
-    public void onGetWeatherSuccess(Weather weather) {
+    public void updateUI(Evento evento) {
+        nombreEvento.setText(evento.getTitulo());
+        if (!main.esMunicipio()) {
+            localidadTiempo.setText(evento.getUbicacion());
+        }
+        localidadEvento.setText(evento.getUbicacion());
+        Log.i("Fecha", "year: " + evento.getFecha());
 
-        switch (weather.gifResource){
+        fechaEvento.setText(DateConverter.toString(evento.getFecha()));
+
+        if (evento.getDescripcion().isEmpty()) {
+            descripcionEvento.setText("Sin descripción");
+        } else {
+            descripcionEvento.setText(evento.getDescripcion());
+        }
+
+        switch (evento.getGifResource()){
             case 0://Error
                 Log.e("Error Weather", "onGetWeatherSuccess: No se ha obtenido el estado del tiempo correctamente");
                 break;
@@ -212,22 +189,35 @@ public class DetallesEventoFragment extends Fragment implements APIManagerDelega
                 iconoTiempo.setImageResource(R.drawable.isol);
                 break;
         }
-        textViewTemp.setText(String.valueOf(weather.temperatura));
-        temperaturaMaxMin.setText(weather.tempMinima +"º / "+ weather.tempMaxima +"º");
+        textViewTemp.setText(String.valueOf(evento.getTemperatura()));
+        temperaturaMaxMin.setText(evento.getTempMinima() +"º / "+ evento.getTempMaxima() +"º");
         if(main.esMunicipio()){
-            localidadTiempo.setText(weather.ciudad);
+            localidadTiempo.setText(evento.getUbicacion());
         }
-        descripcionTiempo.setText(weather.descEstadoTiempo);
-        viento.setText(String.valueOf(weather.velocidadViento));
-        humedad.setText(String.valueOf(weather.humedad));
-        sensTermica.setText(weather.sensTermica + "º");
+        descripcionTiempo.setText(evento.getDescEstadoTiempo());
+        viento.setText(String.valueOf(evento.getVelocidadViento()));
+        humedad.setText(String.valueOf(evento.getHumedad()));
+        sensTermica.setText(evento.getSensTermica() + "º");
 
+        botonModificar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("idEvento", idEvento);
+                if (evento.getEsMunicipio() == true) {
+                    NavHostFragment.findNavController(DetallesEventoFragment.this).navigate(R.id.action_detallesEvento_to_nav_modificar_evento, bundle);
+                } else {
+                    NavHostFragment.findNavController(DetallesEventoFragment.this).navigate(R.id.action_nav_detalles_evento_to_nav_modificar_evento_montana, bundle);
+                }
+            }
+        });
     }
 
     @Override
-    public void onGetWeatherFailure() {
-        String noPerms = "No es posible consultar el tiempo a partir de los próximos 5 días. (FREE API SADGE)";
-        Toast.makeText(getContext(), noPerms, Toast.LENGTH_LONG).show();
+    public void onAttach(@NonNull Context context) {
+        main = (DetallesEventoActivity) context;
+        mContext = context;
+        super.onAttach(context);
     }
 
     @Override
