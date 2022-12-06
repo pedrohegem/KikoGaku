@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import android.widget.Toast;
 
 import com.example.proyecto.MainActivity;
+import com.example.proyecto.repository.EventRepository;
 import com.example.proyecto.repository.room.AppDatabase;
 import com.example.proyecto.repository.room.DAO.EventoDAO;
 import com.example.proyecto.models.Evento;
@@ -36,21 +37,9 @@ public class DeleteEventDialog extends androidx.fragment.app.DialogFragment {
                 .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        // Se debe eliminar el usuario en la BD y en el Singleton de AppDataBase. Redirigir a MainActivity
-
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                int ide = getArguments().getInt("idEvento", 0);
-                                Evento e;
-                                EventoDAO eventoDao = AppDatabase.getInstance(mContext).eventoDAO();
-                                e = eventoDao.getEvent(ide).get(0);
-
-                                eventoDao.deleteEvent(e);
-
-                                startActivity(new Intent(mContext, MainActivity.class));
-                            }
-                        }).start();
+                        int ide = getArguments().getInt("idEvento", 0);
+                        EventRepository.getInstance(AppDatabase.getInstance(mContext).eventoDAO()).deleteEvent(ide);
+                        startActivity(new Intent(mContext, MainActivity.class));
                     }
                 })
                 .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {

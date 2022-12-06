@@ -17,7 +17,8 @@ public interface EventoDAO {
     long insertEvent(Evento evento);
 
     @Query("SELECT * FROM evento")
-    List<Evento> getAll();
+    LiveData<List<Evento>> getAll();
+
 
     @Query("SELECT * FROM evento WHERE esMunicipio <> 0")
     List<Evento> getMunicipios();
@@ -37,6 +38,6 @@ public interface EventoDAO {
     @Update
     void updateEvent(Evento evento);
 
-    @Delete
-    void deleteEvent(Evento evento);
+    @Query("DELETE FROM evento WHERE ide = (:id)")
+    void deleteEvent(int id);
 }

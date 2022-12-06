@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 
 import com.example.proyecto.MainActivity;
 import com.example.proyecto.R;
+import com.example.proyecto.repository.EventRepository;
 import com.example.proyecto.repository.room.AppDatabase;
 import com.example.proyecto.models.Evento;
 import com.example.proyecto.databinding.EventoListaBinding;
@@ -30,15 +32,20 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * A fragment representing a list of Items.
  */
 public class ListaEventosFragment extends Fragment {
+    private static final String TAG = "ListaEventosFragment";
+
     private static final String ARG_COLUMN_COUNT = "column-count";
     private static final String ARG_TIPO_FILTRO = "PosicionTab";
     private static final String ARG_FILTRO_ORDEN = "PosicionSpinner";
 
+    private EventRepository eventRepository;
     private Context mContext;
     private int mColumnCount = 1;
     private int filtroRealizado = -1;
@@ -69,6 +76,7 @@ public class ListaEventosFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "Creando lista...");
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
@@ -76,6 +84,13 @@ public class ListaEventosFragment extends Fragment {
             filtroOrden = getArguments().getInt(ARG_FILTRO_ORDEN, -1);
         }
 
+        eventRepository = EventRepository.getInstance(AppDatabase.getInstance(mContext).eventoDAO());
+        eventRepository.getAllEvents().observe(this, new Observer<List<Evento>>() {
+            @Override
+            public void onChanged(List<Evento> eventos) {
+                updateUI(eventos);
+            }
+        });
 
         try{
             new Thread(new Runnable() {
@@ -85,7 +100,7 @@ public class ListaEventosFragment extends Fragment {
                     List<Evento> eventos = new ArrayList<>();
                     switch (filtroRealizado){
                         case -1:
-                            eventos = AppDatabase.getInstance(getContext()).eventoDAO().getAll();
+                            //eventos = AppDatabase.getInstance(getContext()).eventoDAO().getAll();
                             break;
                         case 0:
                             eventos = AppDatabase.getInstance(getContext()).eventoDAO().getMunicipios();
@@ -99,12 +114,13 @@ public class ListaEventosFragment extends Fragment {
                     }
                     Log.i("Recoleccion", "eventos: "+eventos.size());
                     ITEMS.clear();
+                    /*
                     for (ListIterator<Evento> iter = eventos.listIterator(); iter.hasNext();){
                         Evento event = iter.next();
                         String[] fecha = event.getFecha().toString().split(" ");
                         ITEMS.add(new PlaceholderItem(event.getIde(),event.getTitulo(),fecha[2]+"/"+fecha[1]+"/"+fecha[5], event.getUbicacion(), event.getEsMunicipio()));
                     }
-                    requireActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());
+                    requireActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());*/
                 }
             }).start();
 
@@ -113,6 +129,48 @@ public class ListaEventosFragment extends Fragment {
             e.printStackTrace();
         }
 
+    }
+
+    public void updateUI( List<Evento> listaEventos ) {
+        Log.d(TAG, "List size: " + listaEventos.size());
+        List<PlaceholderItem> placeholderItems = new ArrayList<>();
+
+        //  Filtrar la Lista según el tipo de filtrado
+        List<Evento> filteredList = filterList(listaEventos);
+
+        for (ListIterator<Evento> iter = filteredList.listIterator(); iter.hasNext();){
+            Evento event = iter.next();
+            String[] fecha = event.getFecha().toString().split(" ");
+            ITEMS.add(new PlaceholderItem(event.getIde(),event.getTitulo(),fecha[2]+"/"+fecha[1]+"/"+fecha[5], event.getUbicacion(), event.getEsMunicipio()));
+            placeholderItems.add(new PlaceholderItem(event.getIde(),event.getTitulo(),fecha[2]+"/"+fecha[1]+"/"+fecha[5], event.getUbicacion(), event.getEsMunicipio()));
+        }
+        adapter.mValues = placeholderItems;
+        requireActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());
+    }
+
+    public List<Evento> filterList (List<Evento> listToFilter) {
+        List<Evento> filteredList = new ArrayList<>();
+
+        Predicate<Evento> byMunicipio = evento -> evento.getEsMunicipio();
+        Predicate<Evento> byMontaña = evento -> !evento.getEsMunicipio();
+
+        switch (filtroRealizado){
+            case -1: // Sin filtro
+                filteredList = listToFilter;
+                break;
+            case 0: // Eventos de Municipio
+                filteredList = listToFilter.stream().filter(byMunicipio).collect(Collectors.toList());
+                break;
+            case 1:
+                filteredList = listToFilter.stream().filter(byMontaña).collect(Collectors.toList());
+                break;
+        }
+
+        if (filtroOrden == 1){ // Ordenado por fecha
+            Collections.sort(filteredList);
+        }
+
+        return filteredList;
     }
 
     /*Inicialializa all */
@@ -143,7 +201,7 @@ public class ListaEventosFragment extends Fragment {
 
     public class ListaEventosAdapter extends RecyclerView.Adapter<ListaEventosAdapter.ViewHolder> {
 
-        private final List<PlaceholderItem> mValues;
+        private List<PlaceholderItem> mValues;
 
         public ListaEventosAdapter(List<PlaceholderItem> items) {
             mValues = items;
