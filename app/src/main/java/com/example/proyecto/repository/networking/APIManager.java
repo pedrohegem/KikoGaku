@@ -85,6 +85,11 @@ public class APIManager {
                 Log.e("WeatherCall", "onFailure: " + e.toString());
                 delegate.onGetWeatherFailure();
             }
+
+            @Override
+            public boolean getUseSynchronousMode() {
+                return false;
+            }
         });
     }
 
@@ -105,6 +110,11 @@ public class APIManager {
             public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject response) {
                 Log.e("ForecastCall", "onFailure: " + e.toString());
                 delegate.onGetWeatherFailure();
+            }
+
+            @Override
+            public boolean getUseSynchronousMode() {
+                return false;
             }
         });
     }

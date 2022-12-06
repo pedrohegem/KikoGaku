@@ -26,7 +26,7 @@ public interface EventoDAO {
     List<Evento> getMontanas();
 
     @Query("SELECT * FROM evento WHERE ide = (:idEvento)")
-    LiveData<List<Evento>> getEvent(int idEvento);
+    List<Evento> getEvent(int idEvento);
 
     @Query("SELECT * FROM evento WHERE ide = (:idEvento)")
     LiveData<Evento> getEventByID(int idEvento);

@@ -51,7 +51,6 @@ public class DetallesEventoFragment extends Fragment {
     private Button botonModificar, botonBorrar;
     ImageView iconoTiempo;
     private EventRepository eventRepository;
-    private MutableLiveData<Evento> mutableLiveData = new MutableLiveData<>();
     private int idEvento;
 
     private FragmentDetallesEventoBinding binding;
@@ -107,7 +106,7 @@ public class DetallesEventoFragment extends Fragment {
             @Override
             public void onChanged(@Nullable final Evento evento) {
                 Log.d(TAG, "Data changed on observer...");
-                mutableLiveData.setValue(evento);
+                updateUI(evento);
             }
         };
 
@@ -115,16 +114,6 @@ public class DetallesEventoFragment extends Fragment {
         eventRepository.getEventByID(idEvento).observeForever(observer);
 
         //--------------------------------------------------------------------------
-
-
-        final Observer<Evento> observer2 = new Observer<Evento>() {
-            @Override
-            public void onChanged(@Nullable final Evento evento) {
-                updateUI(evento);
-            }
-        };
-        mutableLiveData.observeForever(observer2);
-
 
 
         botonBorrar.setOnClickListener(new View.OnClickListener() {
