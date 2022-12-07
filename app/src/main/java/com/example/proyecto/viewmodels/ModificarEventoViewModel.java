@@ -10,18 +10,22 @@ import com.example.proyecto.ui.ListaEventos.ListaEventosFragment;
 /**
  * {@link ViewModel} for {@link ListaEventosFragment}
  */
-public class ModificarEventoMontanaViewModel extends ViewModel {
+public class ModificarEventoViewModel extends ViewModel {
 
     private final EventRepository eventRepository;
     private LiveData<Evento> mEvento;
 
-    public ModificarEventoMontanaViewModel(EventRepository eventRepository) {
+    public ModificarEventoViewModel(EventRepository eventRepository) {
         this.eventRepository = eventRepository;
     }
 
     public LiveData<Evento> getEventByID(int idEvento) {
         mEvento = eventRepository.getEventByID(idEvento);
         return mEvento;
+    }
+
+    public void updateEvent(Evento e){
+        eventRepository.modifyEvent(e);
     }
 
 }

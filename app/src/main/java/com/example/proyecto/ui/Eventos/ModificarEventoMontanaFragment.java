@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,26 +21,20 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.example.proyecto.AppContainer;
+import com.example.proyecto.AppExecutors;
 import com.example.proyecto.MyApplication;
-import com.example.proyecto.repository.EventRepository;
 import com.example.proyecto.utils.JsonSingleton;
 import com.example.proyecto.R;
-import com.example.proyecto.repository.room.AppDatabase;
-import com.example.proyecto.repository.room.DAO.EventoDAO;
 import com.example.proyecto.models.Evento;
 import com.example.proyecto.utils.DateConverter;
 
 import com.example.proyecto.databinding.FragmentModificarEventoMontanaBinding;
 import com.example.proyecto.ui.DatePickerFragment;
-import com.example.proyecto.viewmodels.ListaEventosViewModel;
-import com.example.proyecto.viewmodels.ModificarEventoMontanaViewModel;
-import com.example.proyecto.viewmodels.ModificarEventoMontanaViewModelFactory;
+import com.example.proyecto.viewmodels.ModificarEventoViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -129,16 +122,16 @@ public class ModificarEventoMontanaFragment extends Fragment implements AdapterV
         }
 
         AppContainer appContainer = ((MyApplication) mContext.getApplicationContext()).appContainer;
-        ModificarEventoMontanaViewModel mViewModel = new ViewModelProvider((ViewModelStoreOwner) this, (ViewModelProvider.Factory) appContainer.modificarEventoMontanaViewModelFactory).get(ModificarEventoMontanaViewModel.class);
-        Log.d("OBSERVERR", idEvento+"");
+        ModificarEventoViewModel mViewModel = new ViewModelProvider((ViewModelStoreOwner) this, (ViewModelProvider.Factory) appContainer.modificarEventoMontanaViewModelFactory).get(ModificarEventoViewModel.class);
+
         mViewModel.getEventByID(idEvento).observe(getViewLifecycleOwner(), new Observer<Evento>() {
             @Override
-            public void onChanged(Evento evento) {
-                Log.d("OBSERVERR", evento.getIde()+"");
-                Log.d("OBSERVERR", "DENTRO");
-                if (evento == null) {
+            public void onChanged(Evento event) {
+                if (event == null) {
                     Log.d("ERROR", "Fallo en el evento");
                 } else {
+                    Log.d("ELSE CHANGED", "MODIFICADO");
+                    evento = event;
                     nombreEvento.setText(evento.getTitulo());
                     fechaEvento.setText(DateConverter.toString(evento.getFecha()));
                     localidadEvento.setSelection(ubicaciones.indexOf(evento.getUbicacion()));
@@ -146,28 +139,7 @@ public class ModificarEventoMontanaFragment extends Fragment implements AdapterV
                 }
             }
         });
-        /*
-        EventoDAO eventoDao = AppDatabase.getInstance(mContext).eventoDAO();
-        try {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    List<Evento> eventos = eventoDao.getEvent(idEvento);
-                    if (eventos.isEmpty() == true) {
-                        Log.d("ERROR", "Fallo en el evento");
-                    } else {
-                        evento = eventos.get(0);
-                        nombreEvento.setText(evento.getTitulo());
-                        fechaEvento.setText(DateConverter.toString(evento.getFecha()));
-                        localidadEvento.setSelection(ubicaciones.indexOf(evento.getUbicacion()));
-                        descripcionEvento.setText(evento.getDescripcion());
-                    }
-                }
-            }).start();
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-        */
+
 
         botonModificar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,7 +148,6 @@ public class ModificarEventoMontanaFragment extends Fragment implements AdapterV
                 Snackbar snackbar;
 
                 Date fecha = DateConverter.toDate(fechaEvento.getText().toString());
-                Log.d("FECHOTE", "onClick: " + fechaEvento.getText().toString());
                 String descripcion = descripcionEvento.getText().toString();
 
                 String textoError = "";
@@ -204,31 +175,14 @@ public class ModificarEventoMontanaFragment extends Fragment implements AdapterV
                 } else {
                     Evento e = new Evento(nombre, localidad, descripcion, fecha, false);
                     e.setIde(evento.getIde());
-                    EventoDAO eventoDAO = AppDatabase.getInstance(getContext()).eventoDAO();
-                    try {
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                EventRepository.getInstance(AppDatabase.getInstance(mContext).eventoDAO()).modifyEvent(e);
-                                Calendar cal = Calendar.getInstance();
-                                int diaActual = cal.get(Calendar.DAY_OF_MONTH);
 
-                                Intent intent = new Intent(mContext, DetallesEventoActivity.class);
-                                intent.putExtra("idEvento", idEvento);
-                                intent.putExtra("ubicacionEvento", localidad);
-                                intent.putExtra("esMunicipio", false);
-                                if(diaActual == diaEvento) { // Si el evento es en el día actual....
-                                    intent.putExtra("diaEvento", -1);
-                                } else {
-                                    intent.putExtra("diaEvento", diaEvento - diaActual);
-                                }
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
-                            }
-                        }).start();
-                    } catch (Exception exception) {
-                        exception.printStackTrace();
-                    }
+                    AppExecutors.getInstance().diskIO().execute(() -> {
+                        mViewModel.updateEvent(e);
+                        Intent intent = new Intent(mContext, DetallesEventoActivity.class);
+                        intent.putExtra("idEvento", idEvento);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    });
                 }
             }
         });

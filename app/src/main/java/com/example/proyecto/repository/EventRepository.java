@@ -66,28 +66,32 @@ public class EventRepository implements APIManagerDelegate{
             Log.d(TAG, "Loading data from API into DB...");
             evento = dao.getEvent(id).get(0);
 
-            int days = ForecastDay.getCallDay(evento.getFecha());
-
-            if(days == 0) { // Get weather from today
-                Log.d(TAG, "Loading weather from todays...");
-                if(evento.getEsMunicipio()) {
-                    apiManager.getEventWeather(evento.getUbicacion());
-                } else {
-                    Montana m = JsonSingleton.getInstance().montanaMap.get(evento.getUbicacion());
-                    apiManager.getEventWeather(m.getLatitud(),m.getLongitud());
-                }
-            } else if (days > 0 && days < 5) { // Get weather forecast
-                Log.d(TAG, "Loading weather from forecast...");
-                if(evento.getEsMunicipio()) {
-                    apiManager.getEventForecast(evento.getUbicacion(), days);
-                } else {
-                    Montana m = JsonSingleton.getInstance().montanaMap.get(evento.getUbicacion());
-                    apiManager.getEventForecast(m.getLatitud(),m.getLongitud(), days);
-                }
-            }
+            manageAPICalls(evento);
 
             lastUpdateTimeMillisMap.put(new Integer(id), System.currentTimeMillis());
         });
+    }
+
+    public void manageAPICalls(Evento e){
+        int days = ForecastDay.getCallDay(e.getFecha());
+
+        if(days == 0) { // Get weather from today
+            Log.d(TAG, "Loading weather from todays...");
+            if(e.getEsMunicipio()) {
+                apiManager.getEventWeather(e.getUbicacion());
+            } else {
+                Montana m = JsonSingleton.getInstance().montanaMap.get(e.getUbicacion());
+                apiManager.getEventWeather(m.getLatitud(),m.getLongitud());
+            }
+        } else if (days > 0 && days < 5) { // Get weather forecast
+            Log.d(TAG, "Loading weather from forecast...");
+            if(e.getEsMunicipio()) {
+                apiManager.getEventForecast(e.getUbicacion(), days);
+            } else {
+                Montana m = JsonSingleton.getInstance().montanaMap.get(e.getUbicacion());
+                apiManager.getEventForecast(m.getLatitud(),m.getLongitud(), days);
+            }
+        }
     }
 
     public int insertEvent ( Evento evento ) {
@@ -99,8 +103,9 @@ public class EventRepository implements APIManagerDelegate{
         dao.deleteEvent(e);
     }
 
-    public void modifyEvent (Evento evento){
-        dao.updateEvent(evento);
+    public void modifyEvent (Evento e){
+        evento = e;
+        manageAPICalls(evento);
     }
 
     private boolean isFetchNeeded(Integer id) {

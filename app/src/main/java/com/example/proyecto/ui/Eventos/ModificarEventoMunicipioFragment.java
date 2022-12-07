@@ -14,7 +14,13 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 
+import com.example.proyecto.AppContainer;
+import com.example.proyecto.AppExecutors;
+import com.example.proyecto.MyApplication;
 import com.example.proyecto.repository.EventRepository;
 import com.example.proyecto.utils.JsonSingleton;
 import com.example.proyecto.R;
@@ -25,6 +31,7 @@ import com.example.proyecto.utils.DateConverter;
 
 import com.example.proyecto.databinding.FragmentModificarEventoMunicipioBinding;
 import com.example.proyecto.ui.DatePickerFragment;
+import com.example.proyecto.viewmodels.ModificarEventoViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Calendar;
@@ -98,28 +105,26 @@ public class ModificarEventoMunicipioFragment extends Fragment {
             idEvento = getArguments().getInt("idEvento");
         }
 
-        EventoDAO eventoDao = AppDatabase.getInstance(mContext).eventoDAO();
-        try {
-            int finalIdEvento = idEvento;
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    List<Evento> eventos = eventoDao.getEvent(finalIdEvento);
-                    if (eventos.isEmpty() == true) {
-                        Log.d("ERROR", "Fallo en el evento");
-                    } else {
-                        evento = eventos.get(0);
-                        nombreEvento.setText(evento.getTitulo());
-                        String[] fecha = evento.getFecha().toString().split(" ");
-                        fechaEvento.setText(fecha[2] + "/" + fecha[1] + "/" + fecha[5]);
-                        localidadEvento.setText(evento.getUbicacion());
-                        descripcionEvento.setText(evento.getDescripcion());
-                    }
+        AppContainer appContainer = ((MyApplication) mContext.getApplicationContext()).appContainer;
+        ModificarEventoViewModel mViewModel = new ViewModelProvider((ViewModelStoreOwner) this, (ViewModelProvider.Factory) appContainer.modificarEventoMontanaViewModelFactory).get(ModificarEventoViewModel.class);
+
+        mViewModel.getEventByID(idEvento).observe(getViewLifecycleOwner(), new Observer<Evento>() {
+            @Override
+            public void onChanged(Evento event) {
+                if (event == null) {
+                    Log.d("ERROR", "Fallo en el evento");
+                } else {
+                    Log.d("ELSE CHANGED", "MODIFICADO");
+                    evento = event;
+                    nombreEvento.setText(evento.getTitulo());
+                    String[] fecha = evento.getFecha().toString().split(" ");
+                    fechaEvento.setText(fecha[2] + "/" + fecha[1] + "/" + fecha[5]);
+                    localidadEvento.setText(evento.getUbicacion());
+                    descripcionEvento.setText(evento.getDescripcion());
                 }
-            }).start();
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
+            }
+        });
+
 
         botonModificar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,32 +168,14 @@ public class ModificarEventoMunicipioFragment extends Fragment {
                 } else {
                     Evento e = new Evento(nombre, localidad, descripcion, fecha, true);
                     e.setIde(evento.getIde());
-                    EventoDAO eventoDAO = AppDatabase.getInstance(getContext()).eventoDAO();
-                    try {
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                EventRepository.getInstance(AppDatabase.getInstance(mContext).eventoDAO()).modifyEvent(e);
-                                Calendar cal = Calendar.getInstance();
-                                int diaActual = cal.get(Calendar.DAY_OF_MONTH);
 
-                                Intent intent = new Intent(mContext, DetallesEventoActivity.class);
-                                intent.putExtra("idEvento", idEvento);
-                                intent.putExtra("ubicacionEvento", localidad);
-                                intent.putExtra("esMunicipio", true);
-                                if(diaActual == diaEvento) { // Si el evento es en el día actual....
-                                    intent.putExtra("diaEvento", -1);
-                                } else {
-                                    intent.putExtra("diaEvento", diaEvento - diaActual);
-                                }
-
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                mContext.startActivity(intent);
-                            }
-                        }).start();
-                    } catch (Exception exception) {
-                        exception.printStackTrace();
-                    }
+                    AppExecutors.getInstance().diskIO().execute(() -> {
+                        mViewModel.updateEvent(e);
+                        Intent intent = new Intent(mContext, DetallesEventoActivity.class);
+                        intent.putExtra("idEvento", idEvento);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    });
                 }
             }
         });

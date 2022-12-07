@@ -61,7 +61,6 @@ public class DetallesEventoActivity extends AppCompatActivity {
         return getIntent().getIntExtra("idEvento", 0);
     }
 
-    public boolean esMunicipio() {return  getIntent().getBooleanExtra("esMunicipio", true);}
 
     public void setDayLight(){
         // Para obtener la configuracion que el usuario ha introducido previamente en la app, se obtiene el objeto SharedPreferences

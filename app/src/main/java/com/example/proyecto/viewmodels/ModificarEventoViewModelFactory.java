@@ -5,17 +5,17 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.proyecto.repository.EventRepository;
 
-public class ModificarEventoMontanaViewModelFactory extends ViewModelProvider.NewInstanceFactory {
+public class ModificarEventoViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
     private final EventRepository mRepository;
 
-    public ModificarEventoMontanaViewModelFactory(EventRepository repository) {
+    public ModificarEventoViewModelFactory(EventRepository repository) {
         this.mRepository = repository;
     }
 
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
         //noinspection unchecked
-        return (T) new ModificarEventoMontanaViewModel(mRepository);
+        return (T) new ModificarEventoViewModel(mRepository);
     }
 }

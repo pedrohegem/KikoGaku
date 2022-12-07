@@ -145,7 +145,7 @@ public class DetallesEventoFragment extends Fragment {
 
     public void updateUI(Evento evento) {
         nombreEvento.setText(evento.getTitulo());
-        if (!main.esMunicipio()) {
+        if (!evento.getEsMunicipio()) {
             localidadTiempo.setText(evento.getUbicacion());
         }
         localidadEvento.setText(evento.getUbicacion());
@@ -189,7 +189,7 @@ public class DetallesEventoFragment extends Fragment {
         textViewTemp.setText(String.valueOf(evento.getTemperatura()));
         temperaturaMaxMin.setText(evento.getTempMinima() +"º / "+ evento.getTempMaxima() +"º");
 
-        if(main.esMunicipio()){
+        if(evento.getEsMunicipio()){
             localidadTiempo.setText(evento.getUbicacion());
         }
 
