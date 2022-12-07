@@ -42,50 +42,36 @@ public class LocationRepository implements APIManagerDelegate {
         LiveData<Location> data = dao.getLocation(ubicacion);
 
         AppExecutors.getInstance().diskIO().execute( () -> {
-            if (dao.getLocationNoLD(ubicacion) == null) {
-                Log.d(TAG, "Insert of " + ubicacion + " is needed...");
-                Location newLocation = new Location(ubicacion);
-                dao.insertLocation(newLocation);
-                Log.d(TAG, ubicacion + " inserted...");
-            }
-
             if(isFetchNeeded(ubicacion)) {
                 Log.d(TAG, "Fetch from API is needed");
                 loadData(ubicacion);
             }
         });
 
-
-
         return data;
     }
 
     public void loadData (String ubicacion ) {
+        Log.d(TAG, "Loading data from API into DB...");
 
-            Log.d(TAG, "Loading data from API into DB...");
+        location = new Location(ubicacion);
+        apiManager.getEventWeather(ubicacion);
 
-            location = dao.getLocationNoLD(ubicacion);
-            if(location != null) {
-                apiManager.getEventWeather(ubicacion);
-            } else {
-                Log.d(TAG, "Location es NULL...");
-            }
-
-            lastUpdateTimeMillisMap.put(ubicacion, System.currentTimeMillis());
+        lastUpdateTimeMillisMap.put(ubicacion, System.currentTimeMillis());
     }
 
     private boolean isFetchNeeded (String ubicacion) {
         Long lastFetchTimeMillis = lastUpdateTimeMillisMap.get(ubicacion);
         lastFetchTimeMillis = lastFetchTimeMillis == null ? 0L : lastFetchTimeMillis;
         long timeFromLastFetch = System.currentTimeMillis() - lastFetchTimeMillis;
-        return timeFromLastFetch > MIN_TIME_FROM_LAST_FETCH_MILLIS;
+        return timeFromLastFetch > MIN_TIME_FROM_LAST_FETCH_MILLIS || dao.getLocationNoLD(ubicacion) == null;
     }
 
     @Override
     public void onGetWeatherSuccess(Weather weather) {
         Log.d(TAG, "API Call returned with success...");
         location.setWeather(weather);
-        dao.updateLocation(location);
+        dao.insertLocation(location);
     }
 
     @Override

@@ -6,10 +6,8 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class Location {
-
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @NonNull
-    private int id;
     private String ubicacion;
     private int temperatura;
     private int sensTermica;
@@ -57,13 +55,6 @@ public class Location {
         this.ubicacion = ubicacion;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public int getTemperatura() {
         return temperatura;

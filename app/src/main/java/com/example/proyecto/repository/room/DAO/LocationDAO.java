@@ -1,5 +1,7 @@
 package com.example.proyecto.repository.room.DAO;
 
+import static androidx.room.OnConflictStrategy.REPLACE;
+
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
@@ -11,7 +13,7 @@ import com.example.proyecto.models.Location;
 @Dao
 public interface LocationDAO {
 
-    @Insert
+    @Insert(onConflict = REPLACE)
     public long insertLocation (Location location);
 
     @Query("SELECT * FROM location WHERE ubicacion = (:ubicacion)")
@@ -20,6 +22,4 @@ public interface LocationDAO {
     @Query("SELECT * FROM location WHERE ubicacion = (:ubicacion)")
     public LiveData<Location> getLocation ( String ubicacion );
 
-    @Update
-    public void updateLocation ( Location location );
 }
