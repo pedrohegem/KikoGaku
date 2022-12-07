@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
@@ -22,6 +24,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.proyecto.AppContainer;
+import com.example.proyecto.MyApplication;
 import com.example.proyecto.repository.EventRepository;
 import com.example.proyecto.utils.JsonSingleton;
 import com.example.proyecto.models.Montana;
@@ -35,6 +39,8 @@ import com.example.proyecto.utils.DateConverter;
 import com.example.proyecto.databinding.FragmentDetallesEventoBinding;
 import com.example.proyecto.repository.networking.APIManager;
 import com.example.proyecto.repository.networking.APIManagerDelegate;
+import com.example.proyecto.viewmodels.DetallesEventoViewModel;
+import com.example.proyecto.viewmodels.ListaEventosViewModel;
 
 import java.util.List;
 
@@ -100,6 +106,8 @@ public class DetallesEventoFragment extends Fragment {
 
 
         // ---------------------- Refactorizacion --------------------------------
+        AppContainer appContainer = ((MyApplication) mContext.getApplicationContext()).appContainer;
+        DetallesEventoViewModel mViewModel = new ViewModelProvider((ViewModelStoreOwner) this, (ViewModelProvider.Factory) appContainer.detallesEventoViewModelFactory).get(DetallesEventoViewModel.class);
         this.eventRepository = EventRepository.getInstance(AppDatabase.getInstance(mContext).eventoDAO());
 
         final Observer<Evento> observer = new Observer<Evento>() {
@@ -113,7 +121,7 @@ public class DetallesEventoFragment extends Fragment {
         };
 
         this.idEvento = main.getIdEvento();
-        eventRepository.getEventByID(idEvento).observeForever(observer);
+        mViewModel.getEventByID(idEvento).observeForever(observer);
 
         //--------------------------------------------------------------------------
 
@@ -173,18 +181,18 @@ public class DetallesEventoFragment extends Fragment {
             case 6://Nubes
                 iconoTiempo.setImageResource(R.drawable.inubes);
                 break;
-            case 7://Sol
-                iconoTiempo.setImageResource(R.drawable.isol);
-                break;
+            //Sol
             default:
                 iconoTiempo.setImageResource(R.drawable.isol);
                 break;
         }
         textViewTemp.setText(String.valueOf(evento.getTemperatura()));
         temperaturaMaxMin.setText(evento.getTempMinima() +"º / "+ evento.getTempMaxima() +"º");
+
         if(main.esMunicipio()){
             localidadTiempo.setText(evento.getUbicacion());
         }
+
         descripcionTiempo.setText(evento.getDescEstadoTiempo());
         viento.setText(String.valueOf(evento.getVelocidadViento()));
         humedad.setText(String.valueOf(evento.getHumedad()));

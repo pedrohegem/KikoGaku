@@ -12,7 +12,7 @@ import com.example.proyecto.models.Evento;
 import com.example.proyecto.models.Usuario;
 
 
-@Database(entities = {Usuario.class, Evento.class}, version = 3, exportSchema = false)
+@Database(entities = {Usuario.class, Evento.class}, version = 4, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase appDataBase;
     private static Context contexto;

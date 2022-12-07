@@ -1,12 +1,13 @@
 package com.example.proyecto.ui.ListaEventos;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,7 +19,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.proyecto.AppContainer;
 import com.example.proyecto.MainActivity;
+import com.example.proyecto.MyApplication;
 import com.example.proyecto.R;
 import com.example.proyecto.repository.EventRepository;
 import com.example.proyecto.repository.room.AppDatabase;
@@ -26,6 +29,7 @@ import com.example.proyecto.models.Evento;
 import com.example.proyecto.databinding.EventoListaBinding;
 import com.example.proyecto.ui.Eventos.DetallesEventoActivity;
 import com.example.proyecto.ui.ListaEventos.placeholder.PlaceholderItem;
+import com.example.proyecto.viewmodels.ListaEventosViewModel;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -61,16 +65,6 @@ public class ListaEventosFragment extends Fragment {
 
     }
 
-    /*Crea una nueva fila*/
-    @SuppressWarnings("unused")
-    public static ListaEventosFragment newInstance(int columnCount, String nom, String fech) {
-        ListaEventosFragment fragment = new ListaEventosFragment();
-        Bundle bundle = new Bundle();
-        bundle.putInt(ARG_COLUMN_COUNT, columnCount);
-
-        fragment.setArguments(bundle);
-        return fragment;
-    }
 
     /* recoje el numero de filas, como argumento*/
     @Override
@@ -83,18 +77,22 @@ public class ListaEventosFragment extends Fragment {
             filtroRealizado = getArguments().getInt(ARG_TIPO_FILTRO, -1);
             filtroOrden = getArguments().getInt(ARG_FILTRO_ORDEN, -1);
         }
+
         adapter.mValues.clear(); // clear list
         ITEMS.clear();
         adapter.notifyDataSetChanged();
-        eventRepository = EventRepository.getInstance(AppDatabase.getInstance(mContext).eventoDAO());
-        eventRepository.getAllEvents().observe(this, new Observer<List<Evento>>() {
+
+        AppContainer appContainer = ((MyApplication) mContext.getApplicationContext()).appContainer;
+        ListaEventosViewModel mViewModel = new ViewModelProvider((ViewModelStoreOwner) this, (ViewModelProvider.Factory) appContainer.listaEventosViewModelFactory).get(ListaEventosViewModel.class);
+
+        mViewModel.getEventos().observe(this, new Observer<List<Evento>>() {
             @Override
             public void onChanged(List<Evento> eventos) {
                 updateUI(eventos);
             }
         });
-
     }
+
 
     public void updateUI( List<Evento> listaEventos ) {
         Log.d(TAG, "List size: " + listaEventos.size());
@@ -112,6 +110,7 @@ public class ListaEventosFragment extends Fragment {
         adapter.mValues = placeholderItems;
         requireActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());
     }
+
 
     public List<Evento> filterList (List<Evento> listToFilter) {
         List<Evento> filteredList = new ArrayList<>();
@@ -138,7 +137,7 @@ public class ListaEventosFragment extends Fragment {
         return filteredList;
     }
 
-    /*Inicialializa all */
+    /*Inicialializa el recyclerview */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

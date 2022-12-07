@@ -104,7 +104,6 @@ public class ModificarEventoMunicipioFragment extends Fragment {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    Looper.prepare();
                     List<Evento> eventos = eventoDao.getEvent(finalIdEvento);
                     if (eventos.isEmpty() == true) {
                         Log.d("ERROR", "Fallo en el evento");

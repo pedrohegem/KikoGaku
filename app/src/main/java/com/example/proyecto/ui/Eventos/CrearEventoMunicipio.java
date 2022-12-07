@@ -8,7 +8,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,21 +15,16 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
-import com.example.proyecto.models.Weather;
 import com.example.proyecto.repository.EventRepository;
-import com.example.proyecto.repository.networking.APIManager;
-import com.example.proyecto.repository.networking.APIManagerDelegate;
 import com.example.proyecto.utils.JsonSingleton;
 import com.example.proyecto.R;
 import com.example.proyecto.repository.room.AppDatabase;
-import com.example.proyecto.repository.room.DAO.EventoDAO;
 import com.example.proyecto.models.Evento;
 import com.example.proyecto.utils.DateConverter;
 import com.example.proyecto.databinding.FragmentCrearEventoMunicipioBinding;
 import com.example.proyecto.ui.DatePickerFragment;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.util.Calendar;
 import java.util.Date;
 
 public class CrearEventoMunicipio extends Fragment{
@@ -44,10 +38,6 @@ public class CrearEventoMunicipio extends Fragment{
 
     private Evento e;
     int idEvento, diaEvento;
-    String localidad;
-
-    private APIManager api;
-    private String nombreM, localidadM, fechaM, descripcionM;
 
     FragmentCrearEventoMunicipioBinding binding;
 
@@ -55,23 +45,9 @@ public class CrearEventoMunicipio extends Fragment{
 
     }
 
-    public static CrearEventoMunicipio newInstance(String NombreEvento, String DescripcionEvento) {
-        CrearEventoMunicipio fragment = new CrearEventoMunicipio();
-        Bundle args = new Bundle();
-        args.putString("NombreEvento", NombreEvento);
-        args.putString("DescripcionEvento", DescripcionEvento);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            nombreM = getArguments().getString("NombreEvento");
-            descripcionM = getArguments().getString("DescripcionEvento");
-        }
     }
 
     @Override

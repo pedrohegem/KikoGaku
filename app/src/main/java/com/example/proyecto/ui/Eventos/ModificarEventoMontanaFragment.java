@@ -17,7 +17,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 
+import com.example.proyecto.AppContainer;
+import com.example.proyecto.MyApplication;
 import com.example.proyecto.repository.EventRepository;
 import com.example.proyecto.utils.JsonSingleton;
 import com.example.proyecto.R;
@@ -28,6 +33,9 @@ import com.example.proyecto.utils.DateConverter;
 
 import com.example.proyecto.databinding.FragmentModificarEventoMontanaBinding;
 import com.example.proyecto.ui.DatePickerFragment;
+import com.example.proyecto.viewmodels.ListaEventosViewModel;
+import com.example.proyecto.viewmodels.ModificarEventoMontanaViewModel;
+import com.example.proyecto.viewmodels.ModificarEventoMontanaViewModelFactory;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -120,12 +128,30 @@ public class ModificarEventoMontanaFragment extends Fragment implements AdapterV
             idEvento = getArguments().getInt("idEvento");
         }
 
+        AppContainer appContainer = ((MyApplication) mContext.getApplicationContext()).appContainer;
+        ModificarEventoMontanaViewModel mViewModel = new ViewModelProvider((ViewModelStoreOwner) this, (ViewModelProvider.Factory) appContainer.modificarEventoMontanaViewModelFactory).get(ModificarEventoMontanaViewModel.class);
+        Log.d("OBSERVERR", idEvento+"");
+        mViewModel.getEventByID(idEvento).observe(getViewLifecycleOwner(), new Observer<Evento>() {
+            @Override
+            public void onChanged(Evento evento) {
+                Log.d("OBSERVERR", evento.getIde()+"");
+                Log.d("OBSERVERR", "DENTRO");
+                if (evento == null) {
+                    Log.d("ERROR", "Fallo en el evento");
+                } else {
+                    nombreEvento.setText(evento.getTitulo());
+                    fechaEvento.setText(DateConverter.toString(evento.getFecha()));
+                    localidadEvento.setSelection(ubicaciones.indexOf(evento.getUbicacion()));
+                    descripcionEvento.setText(evento.getDescripcion());
+                }
+            }
+        });
+        /*
         EventoDAO eventoDao = AppDatabase.getInstance(mContext).eventoDAO();
         try {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    Looper.prepare();
                     List<Evento> eventos = eventoDao.getEvent(idEvento);
                     if (eventos.isEmpty() == true) {
                         Log.d("ERROR", "Fallo en el evento");
@@ -141,6 +167,8 @@ public class ModificarEventoMontanaFragment extends Fragment implements AdapterV
         } catch (Exception exception) {
             exception.printStackTrace();
         }
+        */
+
         botonModificar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

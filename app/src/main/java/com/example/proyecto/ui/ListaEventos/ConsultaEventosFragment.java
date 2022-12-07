@@ -149,7 +149,6 @@ public class ConsultaEventosFragment extends Fragment implements AdapterView.OnI
         public Fragment createFragment(int position) {
             switch (position){
                 case 0:
-                    return new ListaEventosFragment();
                 case 1:
                     return new ListaEventosFragment();
             }

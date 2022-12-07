@@ -20,15 +20,11 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.example.proyecto.models.Montana;
-import com.example.proyecto.models.Weather;
+
 import com.example.proyecto.repository.EventRepository;
-import com.example.proyecto.repository.networking.APIManager;
-import com.example.proyecto.repository.networking.APIManagerDelegate;
 import com.example.proyecto.utils.JsonSingleton;
 import com.example.proyecto.R;
 import com.example.proyecto.repository.room.AppDatabase;
-import com.example.proyecto.repository.room.DAO.EventoDAO;
 import com.example.proyecto.models.Evento;
 import com.example.proyecto.utils.DateConverter;
 import com.example.proyecto.databinding.FragmentCrearEventoMontanaBinding;
@@ -36,7 +32,6 @@ import com.example.proyecto.ui.DatePickerFragment;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSelectedListener {
@@ -46,36 +41,21 @@ public class CrearEventoMontana extends Fragment implements AdapterView.OnItemSe
     private Spinner localidadEvento;
     private Button botonCrear;
     private Context mContext;
-    private Evento evento;
     int idEvento;
     int diaEvento;
     String localidad;
-    private APIManager api;
     private Evento e;
 
-    private String nombreM, localidadM, fechaM, descripcionM;
 
     FragmentCrearEventoMontanaBinding binding;
 
     public CrearEventoMontana() {
     }
 
-    public static CrearEventoMontana newInstance(String NombreEvento, String DescripcionEvento) {
-        CrearEventoMontana fragment = new CrearEventoMontana();
-        Bundle args = new Bundle();
-        args.putString("NombreEvento", NombreEvento);
-        args.putString("DescripcionEvento", DescripcionEvento);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            nombreM = getArguments().getString("NombreEvento");
-            descripcionM = getArguments().getString("DescripcionEvento");
-        }
     }
 
     @Override

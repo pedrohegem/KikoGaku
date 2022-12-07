@@ -66,10 +66,6 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
         return root;
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-
-    }
 
     @Override
     public void onDestroyView() {

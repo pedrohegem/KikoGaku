@@ -52,7 +52,6 @@ public class AjustesFragment extends PreferenceFragmentCompat {
                 else{
                     editor.putInt("Theme", 1).apply();
                 }
-                //editor.commit();
                 // Se modifica el theme de la actividad
                 ma.setDayLight();
 
