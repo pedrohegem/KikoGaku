@@ -133,6 +133,8 @@ public class ModificarEventoMontanaFragment extends Fragment implements AdapterV
                     Log.d("ELSE CHANGED", "MODIFICADO");
                     evento = event;
                     nombreEvento.setText(evento.getTitulo());
+                    String[] fecha = evento.getFecha().toString().split(" ");
+                    fechaEvento.setText(fecha[2] + "/" + fecha[1] + "/" + fecha[5]);
                     fechaEvento.setText(DateConverter.toString(evento.getFecha()));
                     localidadEvento.setSelection(ubicaciones.indexOf(evento.getUbicacion()));
                     descripcionEvento.setText(evento.getDescripcion());
