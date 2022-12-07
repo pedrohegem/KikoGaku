@@ -3,6 +3,8 @@ package com.example.proyecto.ui.inicio;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -26,6 +28,10 @@ import com.example.proyecto.R;
 import com.example.proyecto.models.Weather;
 import com.example.proyecto.ui.ListaEventos.ListaEventosFragment;
 import com.example.proyecto.repository.networking.APIManager;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 import pl.droidsonroids.gif.GifImageView;
 
@@ -55,8 +61,9 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
         textViewTempMaxMin = binding.textViewTempMaxMin;
         gifImage = binding.gifImageView;
         APIManager apiManager = new APIManager(this);
-        getLocationCoords();
-        apiManager.getEventWeather(latitud, longitud);
+        apiManager.getEventWeather(getUbicacionActual());
+
+
 
         Fragment childFragment = new ListaEventosFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
@@ -91,6 +98,24 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
                 longitud = location.getLongitude();
             }
         }
+    }
+
+    public String getUbicacionActual () {
+        getLocationCoords();
+
+        Geocoder geocoder;
+        List<Address> addresses;
+        geocoder = new Geocoder(getContext(), Locale.getDefault());
+        String city = "";
+        try {
+            addresses = geocoder. getFromLocation(latitud, longitud, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+            String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+            city = addresses.get(0).getLocality();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return city;
     }
 
     @Override
