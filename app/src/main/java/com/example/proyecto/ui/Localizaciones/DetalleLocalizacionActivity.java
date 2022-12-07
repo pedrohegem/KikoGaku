@@ -1,5 +1,7 @@
 package com.example.proyecto.ui.Localizaciones;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,7 +14,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 
+import com.example.proyecto.AppContainer;
+import com.example.proyecto.MyApplication;
 import com.example.proyecto.R;
 import com.example.proyecto.models.Evento;
 import com.example.proyecto.models.Location;
@@ -22,6 +28,8 @@ import com.example.proyecto.repository.LocationRepository;
 import com.example.proyecto.repository.networking.APIManager;
 import com.example.proyecto.repository.networking.APIManagerDelegate;
 import com.example.proyecto.repository.room.AppDatabase;
+import com.example.proyecto.viewmodels.DetallesLocalizacionViewModel;
+import com.example.proyecto.viewmodels.TiempoActualViewModel;
 
 public class DetalleLocalizacionActivity extends AppCompatActivity implements APIManagerDelegate {
     private String TAG = "DetallesLocationActivity";
@@ -61,11 +69,10 @@ public class DetalleLocalizacionActivity extends AppCompatActivity implements AP
         sensTermica = binding.textViewSensTermP;
         iconoTiempo = binding.image2;
 
-        this.locationRepository = LocationRepository.getInstance(AppDatabase.getInstance(mContext).locationDAO());
-
+        AppContainer appContainer = ((MyApplication) mContext.getApplicationContext()).appContainer;
         final Observer<Location> observer = new Observer<Location>() {
             @Override
-            public void onChanged(Location location) {
+            public void onChanged(final Location location) {
                 Log.d(TAG, "Data changed on observer...");
                 if(location != null) {
                     updateUI(location);
@@ -73,7 +80,10 @@ public class DetalleLocalizacionActivity extends AppCompatActivity implements AP
             }
         };
 
-        locationRepository.getLocation(ubicacion).observeForever(observer);
+        DetallesLocalizacionViewModel mViewModel = new ViewModelProvider((ViewModelStoreOwner) this, (ViewModelProvider.Factory) appContainer.detallesLocalizacionViewModelFactory).get(DetallesLocalizacionViewModel.class);
+        this.locationRepository = LocationRepository.getInstance(AppDatabase.getInstance(mContext).locationDAO());
+
+        mViewModel.getLocation(ubicacion).observeForever(observer);
     }
 
     public void updateUI (Location location) {
