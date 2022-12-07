@@ -27,6 +27,7 @@ public class AppContainer {
     public AppContainer(Context context){
         database = AppDatabase.getInstance(context);
         eventRepository = EventRepository.getInstance(database.eventoDAO());
+        locationRepository = LocationRepository.getInstance(database.locationDAO());
         listaEventosViewModelFactory = new ListaEventosViewModelFactory(eventRepository);
         detallesEventoViewModelFactory = new DetallesEventoViewModelFactory(eventRepository);
         detallesLocalizacionViewModelFactory = new DetallesLocalizacionViewModelFactory(locationRepository);

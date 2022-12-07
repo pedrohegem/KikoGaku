@@ -54,7 +54,7 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
     private Double latitud;
     private Double longitud;
 
-    private String TAG = "DetallesEventoFragment";
+    private String TAG = "InicioFragment";
 
     private LocationRepository locationRepository;
 
@@ -78,7 +78,6 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
         gifImage = binding.gifImageView;
         APIManager apiManager = new APIManager(this);
         apiManager.getEventWeather(getUbicacionActual());
-
 
 
         Fragment childFragment = new ListaEventosFragment();
