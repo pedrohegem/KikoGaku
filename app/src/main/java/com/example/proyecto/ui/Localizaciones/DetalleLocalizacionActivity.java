@@ -11,28 +11,34 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.lifecycle.Observer;
 
 import com.example.proyecto.R;
+import com.example.proyecto.models.Evento;
+import com.example.proyecto.models.Location;
 import com.example.proyecto.models.Weather;
 import com.example.proyecto.databinding.ActivityDetalleLocalizacionBinding;
+import com.example.proyecto.repository.LocationRepository;
 import com.example.proyecto.repository.networking.APIManager;
 import com.example.proyecto.repository.networking.APIManagerDelegate;
+import com.example.proyecto.repository.room.AppDatabase;
 
 public class DetalleLocalizacionActivity extends AppCompatActivity implements APIManagerDelegate {
+    private String TAG = "DetallesLocationActivity";
+
 
     private ActivityDetalleLocalizacionBinding binding;
     private Context mContext;
-    private APIManager apiManager;
     private TextView textViewTemp, temperaturaMaxMin, localidadTiempo, descripcionTiempo, viento, humedad, sensTermica;
     ImageView iconoTiempo;
+    private LocationRepository locationRepository;
+    private String ubicacion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_localizacion);
 
-
-        // Se establece el contexto
         mContext = getApplicationContext();
 
         // Se establece la toolbar y el comportamiento del back
@@ -42,10 +48,10 @@ public class DetalleLocalizacionActivity extends AppCompatActivity implements AP
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         Intent intent = getIntent();
-        getSupportActionBar().setTitle("Tiempo en " + intent.getStringExtra("ubicacion"));
+        ubicacion = intent.getStringExtra("ubicacion");
+        getSupportActionBar().setTitle("Tiempo en " + ubicacion);
 
         setContentView(binding.getRoot());
-
         textViewTemp = binding.textViewTemperatura;
         temperaturaMaxMin = binding.textViewTemperaturas;
         localidadTiempo = binding.textViewUbicacion;
@@ -55,21 +61,32 @@ public class DetalleLocalizacionActivity extends AppCompatActivity implements AP
         sensTermica = binding.textViewSensTermP;
         iconoTiempo = binding.image2;
 
-        apiManager = new APIManager(this);
-        apiManager.getEventWeather(getIntent().getStringExtra("ubicacion"));
+        this.locationRepository = LocationRepository.getInstance(AppDatabase.getInstance(mContext).locationDAO());
+
+        final Observer<Location> observer = new Observer<Location>() {
+            @Override
+            public void onChanged(Location location) {
+                Log.d(TAG, "Data changed on observer...");
+                if(location != null) {
+                    updateUI(location);
+                }
+            }
+        };
+
+        locationRepository.getLocation(ubicacion).observeForever(observer);
     }
 
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
-
-    @Override
-    public void onGetWeatherSuccess(Weather weather) {
+    public void updateUI (Location location) {
         runOnUiThread(() -> {
-            switch (weather.gifResource){
+            textViewTemp.setText(String.valueOf(location.getTemperatura()));
+            temperaturaMaxMin.setText(location.getTempMinima() +"º / "+ location.getTempMaxima() +"º");
+            localidadTiempo.setText(location.getUbicacion());
+            descripcionTiempo.setText(location.getDescEstadoTiempo());
+            viento.setText(String.valueOf(location.getVelocidadViento()));
+            humedad.setText(String.valueOf(location.getHumedad()));
+            sensTermica.setText(location.getSensTermica() + "º");
+
+            switch (location.getGifResource()){
                 case 0://Error
                     Log.e("Error Weather", "onGetWeatherSuccess: No se ha obtenido el estado del tiempo correctamente");
                     break;
@@ -98,14 +115,18 @@ public class DetalleLocalizacionActivity extends AppCompatActivity implements AP
                     iconoTiempo.setImageResource(R.drawable.isol);
                     break;
             }
-            textViewTemp.setText(String.valueOf(weather.temperatura));
-            temperaturaMaxMin.setText(weather.tempMinima +"º / "+ weather.tempMaxima +"º");
-            localidadTiempo.setText(weather.ciudad);
-            descripcionTiempo.setText(weather.descEstadoTiempo);
-            viento.setText(String.valueOf(weather.velocidadViento));
-            humedad.setText(String.valueOf(weather.humedad));
-            sensTermica.setText(weather.sensTermica + "º");
         });
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    @Override
+    public void onGetWeatherSuccess(Weather weather) {
+
     }
 
     @Override
