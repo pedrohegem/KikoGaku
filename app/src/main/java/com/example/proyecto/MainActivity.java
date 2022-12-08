@@ -26,6 +26,7 @@ import com.example.proyecto.repository.room.AppDatabase;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -48,7 +49,23 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        validarConexion();
+        //validarConexion();
+
+        UserRepository userRepository = UserRepository.getInstance(AppDatabase.getInstance(getApplicationContext()).usuarioDAO());
+        userRepository.getUser().observe(this, new Observer<Usuario>() {
+            @Override
+            public void onChanged(Usuario usuario) {
+                // Si no hay ningun usuario con el campo 'conectado' a true, entonces nos dirigimos al iniciar sesion
+                if(usuario == null){
+                    startActivity(new Intent(MainActivity.this, InicioSesion.class));
+                }
+                else{
+                    // Si existe un usuario conectado a la aplicacion, entonces se añade en el Singleton
+                    AppDatabase.getInstance(getApplicationContext()).setUsuario(usuario);
+                }
+            }
+        });
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -159,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
     public void validarConexion(){
         AppDatabase appDatabase = AppDatabase.getInstance(getApplicationContext());
         final UsuarioDAO usuarioDAO = appDatabase.usuarioDAO();
-
+/*
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -175,6 +192,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }).start();
+        */
+
+
     }
 
     public void setDayLight(){

@@ -46,7 +46,7 @@ import java.util.Locale;
 
 import pl.droidsonroids.gif.GifImageView;
 
-public class InicioFragment extends Fragment implements APIManagerDelegate {
+public class InicioFragment extends Fragment {
 
     private Context mContext;
     public TextView textViewCiudad, textViewTemp, textViewTempMaxMin, textViewDesc;
@@ -76,9 +76,6 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
         textViewDesc = binding.textViewDesc;
         textViewTempMaxMin = binding.textViewTempMaxMin;
         gifImage = binding.gifImageView;
-        APIManager apiManager = new APIManager(this);
-        apiManager.getEventWeather(getUbicacionActual());
-
 
         Fragment childFragment = new ListaEventosFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
@@ -187,54 +184,11 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
         return city;
     }
 
-    @Override
-    public void onGetWeatherSuccess(Weather weather) {
-
-        switch (weather.gifResource){
-            case 0://Error
-                Log.e("Error Weather", "onGetWeatherSuccess: No se ha obtenido el estado del tiempo correctamente");
-                break;
-            case 1://Tormenta
-                gifImage.setImageResource(R.drawable.gif_tormenta);
-                break;
-            case 2://Llovizna
-                gifImage.setImageResource(R.drawable.gif_lluvia);
-                break;
-            case 3://Lluvia
-                gifImage.setImageResource(R.drawable.gif_lluvia);
-                break;
-            case 4://Nieve
-                break;
-            case 5://Niebla
-                gifImage.setImageResource(R.drawable.gif_sol_niebla);
-                break;
-            case 6://Nubes
-                gifImage.setImageResource(R.drawable.gif_sol_nubes);
-                break;
-            case 7://Sol
-                gifImage.setImageResource(R.drawable.gif_sol);
-                break;
-            default:
-                gifImage.setImageResource(R.drawable.gif_sol);
-                break;
-        }
-        textViewCiudad.setText(weather.ciudad);
-        Log.d("TEMP", Integer.toString(weather.temperatura));
-        textViewTemp.setText(weather.temperatura +"º");
-        textViewDesc.setText(weather.getDescEstadoTiempoMay());//Estado del tiempo con ña primera letra en Mayusculas de cada palabra
-        textViewTempMaxMin.setText(weather.tempMaxima + "º / " + weather.tempMinima + "º");
-    }
 
     @Override
     public void onAttach(@NonNull Context context) {
         mContext = context;
         super.onAttach(context);
-    }
-
-    @Override
-    public void onGetWeatherFailure() {
-        String noPerms = "No se ha podido acceder al tiempo de la localización actual. Comprueba tu conexión a Internet";
-        Toast.makeText(getContext(), noPerms, Toast.LENGTH_LONG).show();
     }
 
     @Override

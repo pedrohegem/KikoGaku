@@ -14,7 +14,7 @@ import com.example.proyecto.models.Evento;
 import com.example.proyecto.models.Usuario;
 
 
-@Database(entities = {Usuario.class, Evento.class, Location.class}, version = 4, exportSchema = false)
+@Database(entities = {Usuario.class, Evento.class, Location.class}, version = 5, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase appDataBase;
     private static Context contexto;
