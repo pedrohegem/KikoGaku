@@ -1,5 +1,6 @@
 package com.example.proyecto.repository.room.DAO;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -20,7 +21,7 @@ public interface UsuarioDAO {
     void activarEstadoConexion(boolean conectado, int idu);
 
     @Query("SELECT * FROM usuario WHERE conectado = (:conectado)")
-    Usuario usuarioConectado(boolean conectado);
+    LiveData<Usuario> usuarioConectado(boolean conectado);
 
     @Update
     void modificarUsuario(Usuario usuario);
