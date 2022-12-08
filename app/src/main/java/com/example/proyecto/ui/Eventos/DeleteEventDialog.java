@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment;
 import android.view.ContextThemeWrapper;
 import android.widget.Toast;
 
-import com.example.proyecto.AppExecutors;
+import com.example.proyecto.utils.AppExecutors;
 import com.example.proyecto.MainActivity;
 import com.example.proyecto.repository.EventRepository;
 import com.example.proyecto.repository.room.AppDatabase;

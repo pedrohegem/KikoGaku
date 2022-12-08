@@ -38,6 +38,7 @@ import com.example.proyecto.models.Weather;
 import com.example.proyecto.repository.room.AppDatabase;
 import com.example.proyecto.ui.ListaEventos.ListaEventosFragment;
 import com.example.proyecto.repository.networking.APIManager;
+import com.example.proyecto.viewmodels.ModificarEventoViewModel;
 import com.example.proyecto.viewmodels.TiempoActualViewModel;
 
 import java.io.IOException;
@@ -85,22 +86,19 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
         transaction.replace(R.id.child_ListaEventos, childFragment).commit();
 
 
-        //---------------------REFACTORIZACION-------------
+        //---------------------REFACTORIZACION------------------
         AppContainer appContainer = ((MyApplication) mContext.getApplicationContext()).appContainer;
         TiempoActualViewModel mViewModel = new ViewModelProvider((ViewModelStoreOwner) this, (ViewModelProvider.Factory) appContainer.tiempoActualViewModelFactory).get(TiempoActualViewModel.class);
-        this.locationRepository = LocationRepository.getInstance(AppDatabase.getInstance(mContext).locationDAO());
 
-        final Observer<Location> observer = new Observer<Location>() {
+        mViewModel.getLocation(getUbicacionActual()).observe(getViewLifecycleOwner(), new Observer<Location>() {
             @Override
-            public void onChanged(final Location location) {
+            public void onChanged(Location location) {
                 Log.d(TAG, "Data changed on observer...");
                 if(location != null) {
                     updateUI(location);
                 }
             }
-        };
-
-        mViewModel.getLocation(getUbicacionActual()).observeForever(observer);
+        });
 
         return root;
     }
@@ -234,7 +232,7 @@ public class InicioFragment extends Fragment implements APIManagerDelegate {
     @Override
     public void onGetWeatherFailure() {
         String noPerms = "No se ha podido acceder al tiempo de la localización actual. Comprueba tu conexión a Internet";
-        Toast.makeText(getContext(), noPerms, Toast.LENGTH_LONG).show();
+        Toast.makeText(mContext, noPerms, Toast.LENGTH_LONG).show();
     }
 
     @Override

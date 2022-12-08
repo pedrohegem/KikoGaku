@@ -4,7 +4,7 @@ import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.proyecto.AppExecutors;
+import com.example.proyecto.utils.AppExecutors;
 import com.example.proyecto.models.Location;
 import com.example.proyecto.models.Weather;
 import com.example.proyecto.repository.networking.APIManager;

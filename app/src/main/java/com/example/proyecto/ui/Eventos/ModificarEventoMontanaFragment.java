@@ -21,7 +21,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.example.proyecto.AppContainer;
-import com.example.proyecto.AppExecutors;
+import com.example.proyecto.utils.AppExecutors;
 import com.example.proyecto.MyApplication;
 import com.example.proyecto.utils.JsonSingleton;
 import com.example.proyecto.R;

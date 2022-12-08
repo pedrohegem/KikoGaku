@@ -3,11 +3,8 @@ package com.example.proyecto.repository;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.Transformations;
 
-import com.example.proyecto.AppExecutors;
+import com.example.proyecto.utils.AppExecutors;
 import com.example.proyecto.models.Evento;
 import com.example.proyecto.models.Montana;
 import com.example.proyecto.models.Weather;
@@ -17,7 +14,6 @@ import com.example.proyecto.repository.room.DAO.EventoDAO;
 import com.example.proyecto.utils.ForecastDay;
 import com.example.proyecto.utils.JsonSingleton;
 
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

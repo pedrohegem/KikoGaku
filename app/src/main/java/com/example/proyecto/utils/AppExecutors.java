@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.proyecto;
+package com.example.proyecto.utils;
 
 import android.os.Handler;
 import android.os.Looper;

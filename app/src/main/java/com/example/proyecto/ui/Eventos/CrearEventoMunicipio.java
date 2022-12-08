@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import com.example.proyecto.utils.AppExecutors;
 import com.example.proyecto.repository.EventRepository;
 import com.example.proyecto.utils.JsonSingleton;
 import com.example.proyecto.R;
@@ -40,10 +41,6 @@ public class CrearEventoMunicipio extends Fragment{
     int idEvento, diaEvento;
 
     FragmentCrearEventoMunicipioBinding binding;
-
-    public CrearEventoMunicipio() {
-
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,6 +73,7 @@ public class CrearEventoMunicipio extends Fragment{
 
         descripcionEvento = binding.InputDescripcionEvento;
         botonCrear = binding.BotonModificar;
+
         botonCrear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -115,19 +113,16 @@ public class CrearEventoMunicipio extends Fragment{
                 } else {
                     // Ya tenemos los datos del formulario
                     e = new Evento(nombre, localidad, descripcion, fecha, true);
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            idEvento = EventRepository.getInstance(AppDatabase.getInstance(mContext).eventoDAO()).insertEvent(e);
+                    AppExecutors.getInstance().diskIO().execute(() -> {
+                        idEvento = EventRepository.getInstance(AppDatabase.getInstance(mContext).eventoDAO()).insertEvent(e);
 
-                            Intent intent = new Intent(mContext, DetallesEventoActivity.class);
-                            intent.putExtra("idEvento", idEvento);
-                            intent.putExtra("esMunicipio", true);
+                        Intent intent = new Intent(mContext, DetallesEventoActivity.class);
+                        intent.putExtra("idEvento", idEvento);
+                        intent.putExtra("esMunicipio", true);
 
-                            startActivity(intent);
-                        }
+                        startActivity(intent);
+                    });
 
-                    }).start();
                 }
             }
         });
@@ -167,5 +162,4 @@ public class CrearEventoMunicipio extends Fragment{
         CrearEventoActivity cea = (CrearEventoActivity) getActivity();
         cea.setDayLight();
     }
-
 }

@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,13 +18,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.example.proyecto.AppContainer;
-import com.example.proyecto.AppExecutors;
+import com.example.proyecto.utils.AppExecutors;
 import com.example.proyecto.MyApplication;
-import com.example.proyecto.repository.EventRepository;
 import com.example.proyecto.utils.JsonSingleton;
 import com.example.proyecto.R;
-import com.example.proyecto.repository.room.AppDatabase;
-import com.example.proyecto.repository.room.DAO.EventoDAO;
 import com.example.proyecto.models.Evento;
 import com.example.proyecto.utils.DateConverter;
 
@@ -34,9 +30,7 @@ import com.example.proyecto.ui.DatePickerFragment;
 import com.example.proyecto.viewmodels.ModificarEventoViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.

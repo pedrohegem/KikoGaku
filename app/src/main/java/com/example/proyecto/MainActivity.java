@@ -2,13 +2,12 @@ package com.example.proyecto;
 
 import android.content.Context;
 import android.content.Intent;
-import static java.lang.Thread.sleep;
+
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import com.example.proyecto.models.Location;
-import com.example.proyecto.repository.LocationRepository;
+
 import com.example.proyecto.repository.UserRepository;
 import com.example.proyecto.utils.JsonSingleton;
 import com.example.proyecto.models.Montana;
@@ -18,7 +17,7 @@ import com.example.proyecto.models.Usuario;
 import com.example.proyecto.databinding.ActivityMainBinding;
 import com.example.proyecto.ui.Eventos.CrearEventoActivity;
 import com.example.proyecto.ui.Localizaciones.LocalizacionesActivity;
-import com.example.proyecto.viewmodels.TiempoActualViewModel;
+
 import com.google.gson.stream.JsonReader;
 
 import android.util.Log;
@@ -31,17 +30,14 @@ import com.example.proyecto.repository.room.AppDatabase;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.lifecycle.LiveData;
+
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
 
 import com.google.gson.Gson;
 
@@ -50,12 +46,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    private String TAG = "MainActivity";
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
-
-    private String TAG = "MainActivity";
-
     private Context mContext;
 
     private UserRepository userRepository;
@@ -67,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         mContext = getApplicationContext();
 
         AppContainer appContainer = ((MyApplication) mContext.getApplicationContext()).appContainer;
-        this.userRepository = UserRepository.getInstance(AppDatabase.getInstance(this).usuarioDAO());
+        userRepository = appContainer.userRepository;
 
         final Observer<Usuario> observer = new Observer<Usuario>() {
             @Override
@@ -79,29 +73,19 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        this.userRepository.getUser().observeForever(observer);
+        userRepository.getUser().observeForever(observer);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.appBarMain.toolbar);
 
-        // Cargamos la base de datos (en la primera vez, se crea)
-        AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "database.db").build();
-
         // Cargamos los JSON en la base de datos
         cargarJSON_en_Singleton();
 
-        binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+        // Passing each menu ID as a set of Ids because each menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_inicio,R.id.nav_eventos, R.id.nav_perfil, R.id.nav_ajustes)
                 .setOpenableLayout(drawer)
@@ -137,11 +121,8 @@ public class MainActivity extends AppCompatActivity {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    AppContainer appContainer = ((MyApplication) mContext.getApplicationContext()).appContainer;
 
                     Usuario usuario = userRepository.getUserConectado();
-                    userRepository = UserRepository.getInstance(AppDatabase.getInstance(mContext).usuarioDAO());
-
                     userRepository.activarEstadoConex(false, usuario.getIdu());
 
                     runOnUiThread(new Runnable() {
