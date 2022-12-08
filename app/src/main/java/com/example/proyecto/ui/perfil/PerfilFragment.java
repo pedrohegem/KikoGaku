@@ -3,6 +3,7 @@ package com.example.proyecto.ui.perfil;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +13,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 
+import com.example.proyecto.AppContainer;
+import com.example.proyecto.AppExecutors;
+import com.example.proyecto.InicioSesion;
 import com.example.proyecto.MainActivity;
+import com.example.proyecto.MyApplication;
+import com.example.proyecto.repository.UserRepository;
 import com.example.proyecto.repository.room.AppDatabase;
 import com.example.proyecto.repository.room.DAO.UsuarioDAO;
 import com.example.proyecto.models.Usuario;
@@ -26,7 +33,12 @@ public class PerfilFragment extends Fragment {
 
     private EditText eUsername;
     private EditText eNewPassword;
+    private static final String TAG = "PerfilFragment";
     private EditText eCurrentPassword;
+
+    Usuario usuario;
+
+    private UserRepository userRepository;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -37,13 +49,27 @@ public class PerfilFragment extends Fragment {
 
 
         // Obtengo el usuario del singleton de la base de datos y se lo inserto al EditText de username
-        final Usuario usuario = AppDatabase.getUsuario();
+        AppContainer appContainer = ((MyApplication) mContext.getApplicationContext()).appContainer;
+        this.userRepository = UserRepository.getInstance(AppDatabase.getInstance(mContext).usuarioDAO());
+
+        final Observer<Usuario> observer = new Observer<Usuario>() {
+            @Override
+            public void onChanged(final Usuario user) {
+                Log.d(TAG, "Data changed on observer...");
+                if(user != null) {
+                    updateUI(user);
+                    usuario = user;
+                }
+            }
+        };
+
+        this.userRepository.getUser().observeForever(observer);
+
 
         eUsername = binding.username;
         eCurrentPassword = binding.currentPassword;
         eNewPassword = binding.newPassword;
 
-        eUsername.setText(usuario.getUsername());
 
         Button bGuardar = binding.bGuardar;
 
@@ -56,19 +82,17 @@ public class PerfilFragment extends Fragment {
                 if(!eUsername.getText().toString().isEmpty() && !eCurrentPassword.getText().toString().isEmpty() && !eNewPassword.getText().toString().isEmpty()){
 
                     // Si la contraseña actual coincide con el del usuario en el Singleton, entonces se modifica el de la base de datos y el del singleton
-                    if(eCurrentPassword.getText().toString().equals(AppDatabase.getUsuario().getPassword())){
+                    if(eCurrentPassword.getText().toString().equals(usuario.getPassword())){
 
                         // Se actualizan los datos del usuario
                         usuario.setUsername(eUsername.getText().toString());
                         usuario.setPassword(eNewPassword.getText().toString());
 
-                        AppDatabase.setUsuario(usuario); // Se actualiza el del singleton
-
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                UsuarioDAO usuarioDAO = AppDatabase.getInstance(mContext).usuarioDAO();
-                                usuarioDAO.modificarUsuario(usuario);
+                                userRepository.modifyUsuario(usuario);
+
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -103,7 +127,13 @@ public class PerfilFragment extends Fragment {
         return root;
     }
 
+public void updateUI(Usuario usuario){
+    eUsername = binding.username;
+    eCurrentPassword = binding.currentPassword;
+    eNewPassword = binding.newPassword;
 
+    eUsername.setText(usuario.getUsername());
+}
 
     @Override
     public void onDestroyView() {

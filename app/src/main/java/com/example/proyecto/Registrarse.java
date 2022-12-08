@@ -1,5 +1,6 @@
 package com.example.proyecto;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,7 +12,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.lifecycle.Observer;
 
+import com.example.proyecto.repository.UserRepository;
 import com.example.proyecto.repository.room.AppDatabase;
 import com.example.proyecto.repository.room.DAO.UsuarioDAO;
 import com.example.proyecto.models.Usuario;
@@ -20,6 +23,11 @@ public class Registrarse extends AppCompatActivity {
 
     EditText username, password;
     Button bRegistrarse;
+
+    private Context mContext;
+    private String TAG = "RegistrarseActivity";
+    private UserRepository userRepository;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +57,13 @@ public class Registrarse extends AppCompatActivity {
                         @Override
                         public void run() {
                             // Creamos un nuevo hilo y registramos en la base de datos el usuario
-                            usuarioDAO.registerUser(usuario);
+
+                            mContext = getApplicationContext();
+
+                            AppContainer appContainer = ((MyApplication) mContext.getApplicationContext()).appContainer;
+                            userRepository = UserRepository.getInstance(AppDatabase.getInstance(mContext).usuarioDAO());
+
+                            userRepository.registerUser(usuario);
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -60,6 +74,7 @@ public class Registrarse extends AppCompatActivity {
 
                         }
                     }).start();
+
                 }
             }
         });

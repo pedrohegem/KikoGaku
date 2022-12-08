@@ -6,12 +6,18 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
 
+import com.example.proyecto.AppContainer;
+import com.example.proyecto.InicioSesion;
 import com.example.proyecto.MainActivity;
+import com.example.proyecto.MyApplication;
+import com.example.proyecto.repository.UserRepository;
 import com.example.proyecto.repository.room.AppDatabase;
 import com.example.proyecto.repository.room.DAO.UsuarioDAO;
 import com.example.proyecto.models.Usuario;
@@ -19,6 +25,8 @@ import com.example.proyecto.models.Usuario;
 public class DeleteDialogFragment extends androidx.fragment.app.DialogFragment {
 
     private Context mContext;
+
+    private UserRepository userRepository;
 
     @NonNull
     @Override
@@ -34,11 +42,11 @@ public class DeleteDialogFragment extends androidx.fragment.app.DialogFragment {
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                Usuario usuario = AppDatabase.getUsuario();
-                                UsuarioDAO usuarioDAO = AppDatabase.getInstance(getContext()).usuarioDAO();
-                                usuarioDAO.deleteUser(usuario);
+                                AppContainer appContainer = ((MyApplication) mContext.getApplicationContext()).appContainer;
+                                userRepository = UserRepository.getInstance(AppDatabase.getInstance(mContext).usuarioDAO());
 
-                                AppDatabase.setUsuario(null);
+                                Usuario user = userRepository.getUserConectado();
+                                userRepository.deleteUsuario(user);
                                 getActivity().runOnUiThread(() -> startActivity(new Intent(mContext, MainActivity.class)));
                             }
                         }).start();

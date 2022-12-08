@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.proyecto.repository.EventRepository;
 import com.example.proyecto.repository.LocationRepository;
+import com.example.proyecto.repository.UserRepository;
 import com.example.proyecto.repository.room.AppDatabase;
 import com.example.proyecto.viewmodels.DetallesEventoViewModelFactory;
 import com.example.proyecto.viewmodels.DetallesLocalizacionViewModelFactory;
@@ -18,6 +19,7 @@ public class AppContainer {
     private AppDatabase database;
     public EventRepository eventRepository;
     public LocationRepository locationRepository;
+    public UserRepository userRepository;
     public ListaEventosViewModelFactory listaEventosViewModelFactory;
     public DetallesEventoViewModelFactory detallesEventoViewModelFactory;
     public TiempoActualViewModelFactory tiempoActualViewModelFactory;
@@ -28,6 +30,7 @@ public class AppContainer {
         database = AppDatabase.getInstance(context);
         eventRepository = EventRepository.getInstance(database.eventoDAO());
         locationRepository = LocationRepository.getInstance(database.locationDAO());
+        userRepository = UserRepository.getInstance(database.usuarioDAO());
         listaEventosViewModelFactory = new ListaEventosViewModelFactory(eventRepository);
         detallesEventoViewModelFactory = new DetallesEventoViewModelFactory(eventRepository);
         detallesLocalizacionViewModelFactory = new DetallesLocalizacionViewModelFactory(locationRepository);

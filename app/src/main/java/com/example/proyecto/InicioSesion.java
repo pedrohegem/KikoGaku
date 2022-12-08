@@ -1,5 +1,6 @@
 package com.example.proyecto;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import com.example.proyecto.repository.UserRepository;
 import com.example.proyecto.repository.room.AppDatabase;
 import com.example.proyecto.repository.room.DAO.UsuarioDAO;
 import com.example.proyecto.models.Usuario;
@@ -19,6 +21,10 @@ import com.example.proyecto.models.Usuario;
 public class InicioSesion extends AppCompatActivity {
 
     EditText username, password;
+
+    private Context mContext;
+    private UserRepository userRepository;
+
     Button bInicioSesion, bRegistrarse;
 
     @Override
@@ -43,12 +49,14 @@ public class InicioSesion extends AppCompatActivity {
                 }
                 else{
                     // Obtenemos la base de datos
-                    AppDatabase appDatabase = AppDatabase.getInstance(getApplicationContext());
-                    final UsuarioDAO usuarioDAO = appDatabase.usuarioDAO();
+                    mContext = getApplicationContext();
+
+                    AppContainer appContainer = ((MyApplication) mContext.getApplicationContext()).appContainer;
+                    userRepository = UserRepository.getInstance(AppDatabase.getInstance(mContext).usuarioDAO());
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            Usuario usuario = usuarioDAO.login(usernameText, passwordText);
+                            Usuario usuario = userRepository.login(usernameText, passwordText);
                             // Comprobamos si está logueado en la aplicación
                             if (usuario == null){
                                 runOnUiThread(new Runnable() {
@@ -59,16 +67,11 @@ public class InicioSesion extends AppCompatActivity {
                                 });
                             }
                             else{
-                                // Insertamos una instancia de usuario en el Singleton de AppDatabase
-                                usuario.setConectado(true);
-                                appDatabase.setUsuario(usuario);
-
                                 // Modificamos el estado 'conectado' del usuario en la base de datos a 'true' para controlar cuando se mantiene iniciada la sesión
-                                usuarioDAO.activarEstadoConexion(true, usuario.getIdu());
+                                userRepository.activarEstadoConex(true, usuario.getIdu());
 
                                 // Iniciamos la actividad principal Main
                                 runOnUiThread(() -> startActivity(new Intent(InicioSesion.this, MainActivity.class)));
-
                             }
                         }
                     }).start();

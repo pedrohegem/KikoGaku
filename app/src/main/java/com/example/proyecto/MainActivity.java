@@ -1,11 +1,15 @@
 package com.example.proyecto;
 
+import android.content.Context;
 import android.content.Intent;
 import static java.lang.Thread.sleep;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import com.example.proyecto.models.Location;
+import com.example.proyecto.repository.LocationRepository;
+import com.example.proyecto.repository.UserRepository;
 import com.example.proyecto.utils.JsonSingleton;
 import com.example.proyecto.models.Montana;
 import com.example.proyecto.models.Municipio;
@@ -14,6 +18,7 @@ import com.example.proyecto.models.Usuario;
 import com.example.proyecto.databinding.ActivityMainBinding;
 import com.example.proyecto.ui.Eventos.CrearEventoActivity;
 import com.example.proyecto.ui.Localizaciones.LocalizacionesActivity;
+import com.example.proyecto.viewmodels.TiempoActualViewModel;
 import com.google.gson.stream.JsonReader;
 
 import android.util.Log;
@@ -26,6 +31,10 @@ import com.example.proyecto.repository.room.AppDatabase;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -45,10 +54,33 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
 
+    private String TAG = "MainActivity";
+
+    private Context mContext;
+
+    private UserRepository userRepository;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        validarConexion();
+
+        mContext = getApplicationContext();
+
+        AppContainer appContainer = ((MyApplication) mContext.getApplicationContext()).appContainer;
+        this.userRepository = UserRepository.getInstance(AppDatabase.getInstance(this).usuarioDAO());
+
+        final Observer<Usuario> observer = new Observer<Usuario>() {
+            @Override
+            public void onChanged(final Usuario user) {
+                Log.d(TAG, "Data changed on observer...");
+                if(user == null) {
+                    startActivity(new Intent(MainActivity.this, InicioSesion.class));
+                }
+            }
+        };
+
+        this.userRepository.getUser().observeForever(observer);
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -105,9 +137,12 @@ public class MainActivity extends AppCompatActivity {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    AppDatabase.getInstance(getApplicationContext()).usuarioDAO().activarEstadoConexion(false, AppDatabase.getUsuario().getIdu());
-                    // Se pone a null el usuario del singleton AppDataBase
-                    AppDatabase.setUsuario(null);
+                    AppContainer appContainer = ((MyApplication) mContext.getApplicationContext()).appContainer;
+
+                    Usuario usuario = userRepository.getUserConectado();
+                    userRepository = UserRepository.getInstance(AppDatabase.getInstance(mContext).usuarioDAO());
+
+                    userRepository.activarEstadoConex(false, usuario.getIdu());
 
                     runOnUiThread(new Runnable() {
                         @Override
@@ -154,27 +189,6 @@ public class MainActivity extends AppCompatActivity {
         for (Municipio m: municipioList) {
             JsonSingleton.getInstance().municipioMap.put(m.getMunicipio(), new Municipio(m.getCodigo(), m.getMunicipio(), m.getProvincia()));
         }
-    }
-
-    public void validarConexion(){
-        AppDatabase appDatabase = AppDatabase.getInstance(getApplicationContext());
-        final UsuarioDAO usuarioDAO = appDatabase.usuarioDAO();
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Usuario usuario = usuarioDAO.usuarioConectado(true);
-                // Si no hay ningun usuario con el campo 'conectado' a true, entonces nos dirigimos al iniciar sesion
-                if(usuario == null){
-                    startActivity(new Intent(MainActivity.this, InicioSesion.class));
-                }
-                else{
-                    // Si existe un usuario conectado a la aplicacion, entonces se añade en el Singleton
-                    runOnUiThread(() -> AppDatabase.getInstance(getApplicationContext()).setUsuario(usuario));
-
-                }
-            }
-        }).start();
     }
 
     public void setDayLight(){
