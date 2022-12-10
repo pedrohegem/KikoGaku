@@ -12,18 +12,21 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.example.proyecto.repository.UserRepository;
 import com.example.proyecto.repository.room.AppDatabase;
 import com.example.proyecto.repository.room.DAO.UsuarioDAO;
 import com.example.proyecto.models.Usuario;
+import com.example.proyecto.viewmodels.DetallesEventoViewModel;
+import com.example.proyecto.viewmodels.IniciarSesionViewModel;
 
 public class InicioSesion extends AppCompatActivity {
 
     EditText username, password;
 
     private Context mContext;
-    private UserRepository userRepository;
 
     Button bInicioSesion, bRegistrarse;
 
@@ -37,6 +40,11 @@ public class InicioSesion extends AppCompatActivity {
         bInicioSesion = findViewById(R.id.bIniciarSesion);
         bRegistrarse = findViewById(R.id.bRegistrarse);
 
+        mContext = getApplicationContext();
+        AppContainer appContainer = ((MyApplication) mContext.getApplicationContext()).appContainer;
+
+        IniciarSesionViewModel mViewModel = new ViewModelProvider((ViewModelStoreOwner) this, (ViewModelProvider.Factory) appContainer.iniciarSesionViewModelFactory).get(IniciarSesionViewModel.class);
+
         // Se encarga de iniciar sesión en la aplicación con unos credenciales
         bInicioSesion.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,15 +56,11 @@ public class InicioSesion extends AppCompatActivity {
                     Toast.makeText(InicioSesion.this, "Rellena todos los campos de las credenciales", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    // Obtenemos la base de datos
-                    mContext = getApplicationContext();
 
-                    AppContainer appContainer = ((MyApplication) mContext.getApplicationContext()).appContainer;
-                    userRepository = UserRepository.getInstance(AppDatabase.getInstance(mContext).usuarioDAO());
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            Usuario usuario = userRepository.login(usernameText, passwordText);
+                            Usuario usuario = mViewModel.login(usernameText, passwordText);
                             // Comprobamos si está logueado en la aplicación
                             if (usuario == null){
                                 runOnUiThread(new Runnable() {
@@ -68,7 +72,7 @@ public class InicioSesion extends AppCompatActivity {
                             }
                             else{
                                 // Modificamos el estado 'conectado' del usuario en la base de datos a 'true' para controlar cuando se mantiene iniciada la sesión
-                                userRepository.activarEstadoConex(true, usuario.getIdu());
+                                mViewModel.activarEstadoConection(true, usuario.getIdu());
 
                                 // Iniciamos la actividad principal Main
                                 runOnUiThread(() -> startActivity(new Intent(InicioSesion.this, MainActivity.class)));

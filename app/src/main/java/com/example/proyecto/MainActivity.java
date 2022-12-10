@@ -18,6 +18,8 @@ import com.example.proyecto.databinding.ActivityMainBinding;
 import com.example.proyecto.ui.Eventos.CrearEventoActivity;
 import com.example.proyecto.ui.Localizaciones.LocalizacionesActivity;
 
+import com.example.proyecto.viewmodels.BorrarPerfilViewModel;
+import com.example.proyecto.viewmodels.MainUsuarioViewModel;
 import com.google.gson.stream.JsonReader;
 
 import android.util.Log;
@@ -32,6 +34,8 @@ import com.google.android.material.navigation.NavigationView;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -52,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private Context mContext;
 
-    private UserRepository userRepository;
+    private MainUsuarioViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         mContext = getApplicationContext();
 
         AppContainer appContainer = ((MyApplication) mContext.getApplicationContext()).appContainer;
-        userRepository = appContainer.userRepository;
+        mViewModel = new ViewModelProvider((ViewModelStoreOwner) this, (ViewModelProvider.Factory) appContainer.mainUsuarioViewModelFactory).get(MainUsuarioViewModel.class);
 
         final Observer<Usuario> observer = new Observer<Usuario>() {
             @Override
@@ -73,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        userRepository.getUser().observeForever(observer);
+        mViewModel.getUser().observeForever(observer);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -115,19 +119,15 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         else if (id == R.id.cerrarSesion) {
-            // Se invoca un metodo del DAO usuario que se encarga de modificar el estadoConectado a false del usuario. De esta forma, al
-            UsuarioDAO usuarioDAO = AppDatabase.getInstance(getApplicationContext()).usuarioDAO();
 
             new Thread(new Runnable() {
                 @Override
                 public void run() {
 
-                    Usuario usuario = userRepository.getUserConectado();
-                    userRepository.activarEstadoConex(false, usuario.getIdu());
-
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            mViewModel.activarEstadoConection(false, mViewModel.getUsuarioConectado().getIdu());
                             Toast.makeText(getApplicationContext(), "Se ha cerrado sesión", Toast.LENGTH_SHORT).show();
                             // Se inicia la actividad Main para comprobar que, efectivamente, el usuario ha cerrado sesión
                             startActivity(new Intent(getApplicationContext(), InicioSesion.class));

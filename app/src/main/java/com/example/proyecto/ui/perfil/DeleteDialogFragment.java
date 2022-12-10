@@ -11,10 +11,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.example.proyecto.AppContainer;
 import com.example.proyecto.MainActivity;
 import com.example.proyecto.MyApplication;
+import com.example.proyecto.viewmodels.BorrarPerfilViewModel;
+import com.example.proyecto.viewmodels.RegistrarseViewModel;
 
 
 public class DeleteDialogFragment extends androidx.fragment.app.DialogFragment {
@@ -26,6 +30,9 @@ public class DeleteDialogFragment extends androidx.fragment.app.DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), android.R.style.Theme_DeviceDefault_Dialog));
 
+        AppContainer appContainer = ((MyApplication) mContext.getApplicationContext()).appContainer;
+        BorrarPerfilViewModel mViewModel = new ViewModelProvider((ViewModelStoreOwner) this, (ViewModelProvider.Factory) appContainer.borrarPerfilViewModelFactory).get(BorrarPerfilViewModel.class);
+
         builder.setMessage("¿Deseas eliminar la cuenta?")
                 .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                     @Override
@@ -35,9 +42,8 @@ public class DeleteDialogFragment extends androidx.fragment.app.DialogFragment {
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                AppContainer appContainer = ((MyApplication) mContext.getApplicationContext()).appContainer;
+                                mViewModel.deleteUsuario();
 
-                                appContainer.userRepository.deleteUsuario();
                                 getActivity().runOnUiThread(() -> startActivity(new Intent(mContext, MainActivity.class)));
                             }
                         }).start();

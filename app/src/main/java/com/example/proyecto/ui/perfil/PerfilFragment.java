@@ -15,13 +15,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.example.proyecto.AppContainer;
 
 import com.example.proyecto.MainActivity;
 import com.example.proyecto.MyApplication;
+import com.example.proyecto.models.Location;
 import com.example.proyecto.models.Usuario;
 import com.example.proyecto.databinding.FragmentPerfilBinding;
+import com.example.proyecto.repository.LocationRepository;
+import com.example.proyecto.repository.room.AppDatabase;
+import com.example.proyecto.viewmodels.DetallesLocalizacionViewModel;
+import com.example.proyecto.viewmodels.PerfilViewModel;
 
 public class PerfilFragment extends Fragment {
 
@@ -35,6 +42,8 @@ public class PerfilFragment extends Fragment {
     private EditText eCurrentPassword;
 
     private Usuario usuario;
+
+    PerfilViewModel mViewModel;
     private AppContainer appContainer;
 
     @Override
@@ -42,7 +51,8 @@ public class PerfilFragment extends Fragment {
         super.onCreate(savedInstanceState);
         // Obtengo el usuario de la base de datos y se lo inserto al EditText de username
         appContainer = ((MyApplication) mContext.getApplicationContext()).appContainer;
-        appContainer.userRepository.getUser().observe(this, new Observer<Usuario>() {
+
+        final Observer<Usuario> observer = new Observer<Usuario>() {
             @Override
             public void onChanged(Usuario user) {
                 Log.d(TAG, "Data changed on observer...");
@@ -54,7 +64,11 @@ public class PerfilFragment extends Fragment {
                     usuario = user;
                 }
             }
-        });
+        };
+
+        mViewModel = new ViewModelProvider((ViewModelStoreOwner) this, (ViewModelProvider.Factory) appContainer.perfilViewModelFactory).get(PerfilViewModel.class);
+
+        mViewModel.getUser().observeForever(observer);
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -82,7 +96,7 @@ public class PerfilFragment extends Fragment {
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                appContainer.userRepository.modifyUsuario(usuario);
+                                mViewModel.modifyUser(usuario);
 
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
